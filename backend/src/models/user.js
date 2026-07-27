@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/db";
+import sequelize from "../config/db.js";
 import { toDefaultValue } from "sequelize/lib/utils";
 
 const Users = sequelize.define("Users", {
@@ -10,6 +10,12 @@ const Users = sequelize.define("Users", {
     },
     studentId: {
         type: DataTypes.STRING(12),
+    },
+    first:{
+        type:DataTypes.STRING
+    },
+    last:{
+        type:DataTypes.STRING
     },
     email: {
         type: DataTypes.STRING(255),
@@ -51,4 +57,4 @@ const Users = sequelize.define("Users", {
 
 );
 
-GPUShaderModule.exports = Users;
+export default Users;
