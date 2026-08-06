@@ -21,13 +21,12 @@ app.use(morgan('dev'));
 
 
 //cors
-/**
 const corsOptions = {
     origin:"http://localhost:3000",
     credentials:true,
 }
 app.use(cors(corsOptions))
-*/
+
 
 //app routers
 app.use("/api/auth/", authRouter);

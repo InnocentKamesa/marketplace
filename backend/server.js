@@ -2,7 +2,7 @@ import app from "./app.js";
 import { Sequelize } from "sequelize";
 import sequelize from "./src/config/db.js";
 
-const port = process.env.LOCAL_API_PORT || 3000;
+const port = process.env.LOCAL_API_PORT || 5000;
 
 
 //server function
