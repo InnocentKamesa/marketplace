@@ -21,7 +21,9 @@ const registrationSchema = z.object({
         })
         .refine((val) => /[^A-Za-z0-9]/.test(val), {
             message: "Password must contain at least one special character",
-        })
+        }),
+        confirm:z.string().optional()
+        
 }
 )
 
@@ -76,7 +78,7 @@ export const registrationValidator = (req, res, next) => {
 
     const validation = registrationSchema.safeParse(req.body);
     if(!validation.success){
-        return res.status(400).json({message:"input validation failed", errpr:validation.error})
+        return res.status(400).json({message:"input validation failed", error:validation.error})
     }
 
     next();
