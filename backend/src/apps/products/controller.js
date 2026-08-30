@@ -2,12 +2,12 @@ import { createProduct } from "./services/products.js";
 
 export const addProduct = async (req, res) => {
       try {
-          const sellerId = req.user.id;
-
-          const product = await createProduct({
+           const sellerId = req.user.id;    
+           const product = await createProduct({
               sellerId,
               ...req.body,
             });
+
 
           return res.status(201).json({
               success: true,

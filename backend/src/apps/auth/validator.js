@@ -64,6 +64,7 @@ export const loginValidator = (req, res, next) => {
 }
 
 export const registrationValidator = (req, res, next) => {
+    console.log(req.body);
     const {first, last, email, password, confirm, phone} = req.body;
 
     //all fields required

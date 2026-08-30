@@ -1,5 +1,5 @@
-import Product from "../models/Product.js";
-import Category from "../models/Category.js";
+import {Products} from "../../../models/products.js";
+import Category from "../../../models/categories.js";
 
 export const createProduct = async ({
       sellerId,
@@ -20,12 +20,12 @@ export const createProduct = async ({
       }
   
    // 2. Verify category exists
-    const existingCategory = await Category.findByPk(category);
-    if (!existingCategory) {
-      const error = new Error("Invalid category");
-      error.statusCode = 400;
-      throw error;
-    }
+    //const existingCategory = await Category.findByPk(category);
+//    if (!existingCategory) {
+//      const error = new Error("Invalid category");
+  //    error.statusCode = 400;
+    //  throw error;
+//    }
   
     // 3. Apply marketplace business rule
     1// Services don't necessarily have physical stock
@@ -37,7 +37,7 @@ export const createProduct = async ({
     const status = "active";
 
     // 4. Create the product
-    const product = await Product.create({
+    const product = await Products.create({
       sellerId,
       type,
       title,

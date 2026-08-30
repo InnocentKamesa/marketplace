@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize";
-import sequelize from "../config/db";
+import sequelize from "../config/db.js";
 
-const Products = sequelize.define("Products", {
+export const Products = sequelize.define("Products", {
     id:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
@@ -39,7 +39,7 @@ const Products = sequelize.define("Products", {
     timestamps:true
 });
 
-const ProductImages = sequelize.define("ProductImages", {
+export const ProductImages = sequelize.define("ProductImages", {
     id: {
         type:DataTypes.INTEGER,
         autoIncrement:true,
@@ -53,4 +53,4 @@ const ProductImages = sequelize.define("ProductImages", {
 Products.hasOne(ProductImages, {onDelete:"CASCADE"});
 ProductImages.belongsTo(Products);
 
-module.exports = {Products, ProductImages};
+

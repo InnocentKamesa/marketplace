@@ -1,4 +1,4 @@
-mport { z } from "zod";
+import { z } from "zod";
 
 const productSchema = z.object({
     type: z.enum(["product", "service"]),
@@ -20,8 +20,7 @@ const productSchema = z.object({
       .positive("Price must be greater than 0"),
 
     category: z
-      .string()
-      .trim()
+      .number()
       .min(1, "Category is required"),
 
     stockQTY: z
@@ -34,27 +33,31 @@ const productSchema = z.object({
         "inactive",
         "sold",
         "removed",
-      ]),
+      ]).optional(),
 
     location: z
       .string()
       .trim()
       .min(2, "Location is required")
-      .max(100, "Location must be less than 100 characters"),
-});
-  ])
+      .max(100, "Location must be less than 100 characters").optional(),
 });
 
 export const productValidator = (req, res, next) => {
   const {title, description, price, type, stockQTY, status, category} = req.body;
 
-  if(!title || !description || !price || !type || !stockQTY || !status || !category) {
+  if(!title || !description || !price || !type || !stockQTY || !category) {
     return res.status(400).json({message: "All fields required"});
   }
-  const validation = roductSchema.safeParse(req.body);
+  const validation = productSchema.safeParse(req.body);
   if(!validation.success){
+    console.log(validation.error)
     return res.status(400).json({message:"Input validation failed"});
   }
+
+  const user = {
+    id:1,
+  }
+  req.user = user;
 
   next()
 }

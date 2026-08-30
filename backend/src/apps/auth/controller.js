@@ -1,9 +1,9 @@
 import Users from "../../models/user.js";
 import hash from "../../utils/hash.js";
 import { generateTokens } from "../../utils/tokens.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
-/**
+/*
  * @description accepts first, last, email ,  password and creates user returning session tokens
  * @param {*} req 
  * @param {*} res 
