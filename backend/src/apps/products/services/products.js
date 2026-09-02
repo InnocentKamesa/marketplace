@@ -1,4 +1,4 @@
-import {Products} from "../../../models/products.js";
+import {products} from "../../../models/products.js";
 import Category from "../../../models/categories.js";
 
 export const createProduct = async ({
@@ -34,10 +34,10 @@ export const createProduct = async ({
     }
     
     // A newly created listing should become active
-    const status = "active";
+    const status = "available";
 
     // 4. Create the product
-    const product = await Products.create({
+    const product = await products.create({
       sellerId,
       type,
       title,
@@ -57,13 +57,13 @@ export const createProduct = async ({
 export const getHomeSections = async () => {
       const [latest, services, essentials, electronics, campusLiving] =
       await Promise.all([
-              Product.findAll({
+              products.findAll({
                   where: { status: "available" },
                   limit: 10,
                   order: [["createdAt", "DESC"]]
                 }),
 
-              Product.findAll({
+              products.findAll({
                   where: {
                       status: "available",
                       type: "service"
@@ -72,7 +72,7 @@ export const getHomeSections = async () => {
                   order: [["createdAt", "DESC"]]
                 }),
 
-              Product.findAll({
+              products.findAll({
                   where: {
                       status: "available",
                       category: "essentials"
@@ -81,7 +81,7 @@ export const getHomeSections = async () => {
                   order: [["createdAt", "DESC"]]
                 }),
 
-              Product.findAll({
+              products.findAll({
                   where: {
                       status: "available",
                       category: "electronics"
@@ -90,7 +90,7 @@ export const getHomeSections = async () => {
                   order: [["createdAt", "DESC"]]
                 }),
 
-              Product.findAll({
+              products.findAll({
                   where: {
                       status: "available",
                       category: "campus-living"
@@ -108,5 +108,73 @@ export const getHomeSections = async () => {
           campusLiving
         };
   };
-}
 
+export const searchProducts = async ({
+    q,
+    page = 1,
+    limit = 20,
+}) => {
+    if (!q || !q.trim()) {
+        return {
+            products: [],
+            pagination: {
+                page,
+                limit,
+                total: 0,
+                pages: 0,
+            },
+        };
+    }
+
+    const offset = (page - 1) * limit;
+    const searchTerm = q.trim();
+
+    const replacements = {
+        searchTerm,
+        limit,
+        offset,
+    };
+
+    const [products, countResult] = await Promise.all([
+        sequelize.query(
+            `
+            SELECT *
+            FROM "products"
+            WHERE "title" % :searchTerm
+            ORDER BY similarity("title", :query) DESC, "createdAt" DESC
+            LIMIT :limit
+            OFFSET :offset
+            `,
+            {
+                replacements,
+                type: sequelize.QueryTypes.SELECT,
+                model: products,
+                mapToModel: true,
+            }
+        ),
+
+        sequelize.query(
+            `
+            SELECT COUNT(*)::int AS "count"
+            FROM "products"
+            WHERE "title" % :searchTerm
+            `,
+            {
+                replacements: { searchTerm },
+                type: sequelize.QueryTypes.SELECT,
+            }
+        ),
+    ]);
+
+    const total = countResult[0]?.count || 0;
+
+    return {
+        products,
+        pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit),
+        },
+    };
+};

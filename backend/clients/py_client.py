@@ -20,5 +20,26 @@ payload = {
     "type":"product"
   }
 
-create_product(payload)
+
+import requests
+
+BASE_URL = "http://localhost:5000/api/products"
+
+
+def search_products(query):
+    response = requests.get(
+        f"{BASE_URL}/search",
+        params={"q": query}
+    )
+    print(response.json())
+    response.raise_for_status()
+  
+    return response.json()
+
+
+query = input("Search for a product: ")
+
+results = search_products(query)
+
+print(results)
 

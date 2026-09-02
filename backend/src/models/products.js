@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from "sequelize";
 import sequelize from "../config/db.js";
 
-export const Products = sequelize.define("Products", {
+export const products = sequelize.define("Products", {
     id:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
@@ -30,7 +30,7 @@ export const Products = sequelize.define("Products", {
         type:DataTypes.INTEGER,
     },
     status:{
-        type:DataTypes.ENUM('sold', 'inactive', 'active', 'removed'),
+        type:DataTypes.ENUM('sold', 'available', 'unavailable', 'removed'),
     },
     location:{
         type:DataTypes.STRING
@@ -50,7 +50,7 @@ export const ProductImages = sequelize.define("ProductImages", {
     }
 });
 
-Products.hasOne(ProductImages, {onDelete:"CASCADE"});
-ProductImages.belongsTo(Products);
+products.hasOne(ProductImages, {onDelete:"CASCADE"});
+ProductImages.belongsTo(products);
 
 

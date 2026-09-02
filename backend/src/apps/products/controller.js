@@ -1,4 +1,4 @@
-import { createProduct } from "./services/products.js";
+import { createProduct, getHomeSections, searchProducts } from "./services/products.js";
 
 export const addProduct = async (req, res) => {
       try {
@@ -42,4 +42,26 @@ export const getAll = async (req, res) => {
           });
   }
 }
-        
+
+       
+export const search = async (req, res) => {
+      try {
+            const { q, page, limit } = req.query;
+
+            const result = await searchProducts(q, {
+                  page,
+                  limit
+              });
+
+            res.status(200).json({
+                  success: true,
+                  data: result
+              });
+        } catch (error) {
+            res.status(500).json({
+                  success: false,
+                  message: error.message
+              });
+        }
+};
+
