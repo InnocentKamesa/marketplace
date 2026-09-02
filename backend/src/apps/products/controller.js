@@ -23,3 +23,23 @@ export const addProduct = async (req, res) => {
             });
           }
   };
+
+
+export const getAll = async (req, res) => {
+    try {
+        const sections = await getHomeSections();
+
+        return res.status(200).json({
+            success: true,
+            data: sections
+          });
+        } catch (error) {
+        console.error("Error fetching home sections:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch home sections"
+          });
+  }
+}
+        

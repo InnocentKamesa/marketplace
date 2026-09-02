@@ -54,3 +54,59 @@ export const createProduct = async ({
    };
 
 
+export const getHomeSections = async () => {
+      const [latest, services, essentials, electronics, campusLiving] =
+      await Promise.all([
+              Product.findAll({
+                  where: { status: "available" },
+                  limit: 10,
+                  order: [["createdAt", "DESC"]]
+                }),
+
+              Product.findAll({
+                  where: {
+                      status: "available",
+                      type: "service"
+                    },
+                  limit: 10,
+                  order: [["createdAt", "DESC"]]
+                }),
+
+              Product.findAll({
+                  where: {
+                      status: "available",
+                      category: "essentials"
+                    },
+                  limit: 10,
+                  order: [["createdAt", "DESC"]]
+                }),
+
+              Product.findAll({
+                  where: {
+                      status: "available",
+                      category: "electronics"
+                    },
+                  limit: 10,
+                  order: [["createdAt", "DESC"]]
+                }),
+
+              Product.findAll({
+                  where: {
+                      status: "available",
+                      category: "campus-living"
+                    },
+                  limit: 10,
+                  order: [["createdAt", "DESC"]]
+                })
+            ]);
+
+      return {
+          latest,
+          services,
+          essentials,
+          electronics,
+          campusLiving
+        };
+  };
+}
+
