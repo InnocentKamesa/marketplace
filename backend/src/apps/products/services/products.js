@@ -1,6 +1,6 @@
 import {products} from "../../../models/products.js";
 import Category from "../../../models/categories.js";
-
+import sequelize from "../../../config/db.js";
 export const createProduct = async ({
       sellerId,
       type,
@@ -109,13 +109,13 @@ export const getHomeSections = async () => {
         };
   };
 
-export const searchProducts = async ({
+export const searchProducts = async (
     q,
     page = 1,
     limit = 20,
-}) => {
+) => {
     if (!q || !q.trim()) {
-        return {
+        return {message:"Could not search products",
             products: [],
             pagination: {
                 page,
@@ -129,34 +129,32 @@ export const searchProducts = async ({
     const offset = (page - 1) * limit;
     const searchTerm = q.trim();
 
-    const replacements = {
-        searchTerm,
-        limit,
-        offset,
-    };
 
-    const [products, countResult] = await Promise.all([
-        sequelize.query(
-            `
-            SELECT *
-            FROM "products"
-            WHERE "title" % :searchTerm
-            ORDER BY similarity("title", :query) DESC, "createdAt" DESC
-            LIMIT :limit
-            OFFSET :offset
-            `,
-            {
-                replacements,
-                type: sequelize.QueryTypes.SELECT,
-                model: products,
-                mapToModel: true,
-            }
-        ),
+    const [[products], countResult] = await Promise.all([
+        sequelize.query(`
+        SELECT
+            id,
+            title,
+            description,
+            price,
+            similarity(title, :searchTerm) AS score
+        FROM public."Products"
+        WHERE title % :searchTerm
+        ORDER BY score DESC
+        LIMIT :limit
+        OFFSET :offset
+    `, {
+        replacements: {
+            searchTerm,
+          limit,
+          offset
+        }
+    }),
 
         sequelize.query(
             `
             SELECT COUNT(*)::int AS "count"
-            FROM "products"
+            FROM public."Products"
             WHERE "title" % :searchTerm
             `,
             {
@@ -178,3 +176,4 @@ export const searchProducts = async ({
         },
     };
 };
+

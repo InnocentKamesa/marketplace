@@ -47,11 +47,12 @@ export const getAll = async (req, res) => {
 export const search = async (req, res) => {
       try {
             const { q, page, limit } = req.query;
+            if(!q){
+      console.error("Unsupported q")
+    }
+    console.log(q)
 
-            const result = await searchProducts(q, {
-                  page,
-                  limit
-              });
+            const result = await searchProducts(q);
 
             res.status(200).json({
                   success: true,

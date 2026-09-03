@@ -2,11 +2,11 @@ import requests
 
 API_URL = "http://127.0.0.1:5000/api/products/"
 
-def create_product(payload):
+def create_product(payload={}):
 
-    USER_URL = f"{API_URL}add/"
+    USER_URL = f"{API_URL}all/"
 
-    response = requests.post(USER_URL, json=payload);
+    response = requests.get(USER_URL);
     r_json = response.json()
     print(r_json)
 
@@ -31,7 +31,6 @@ def search_products(query):
         f"{BASE_URL}/search",
         params={"q": query}
     )
-    print(response.json())
     response.raise_for_status()
   
     return response.json()
@@ -40,6 +39,5 @@ def search_products(query):
 query = input("Search for a product: ")
 
 results = search_products(query)
-
 print(results)
-
+#create_product()
