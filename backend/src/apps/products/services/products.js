@@ -1,6 +1,29 @@
 import {products} from "../../../models/products.js";
 import Category from "../../../models/categories.js";
 import sequelize from "../../../config/db.js";
+
+export const getProductById = async (productId) => {
+    const product = await products.findByPk(productId, {
+        attributes: [
+            "id",
+            "type",
+            "title",
+            "description",
+            "price",
+            "category",
+            "stockQTY",
+            "status",
+            "location",
+            "createdAt"
+        ]
+    });
+
+    if (!product) {
+        throw new Error("Product not found");
+    }
+    return product;
+};
+
 export const createProduct = async ({
       sellerId,
       type,

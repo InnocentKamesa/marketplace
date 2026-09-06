@@ -25,6 +25,16 @@ import requests
 
 BASE_URL = "http://localhost:5000/api/products"
 
+def getProduct():
+    response = requests.get(
+        f"{BASE_URL}/1"
+    )
+
+    response.raise_for_status()
+  
+    return response.json()
+
+print(getProduct())
 
 def search_products(query):
     response = requests.get(
@@ -36,8 +46,4 @@ def search_products(query):
     return response.json()
 
 
-query = input("Search for a product: ")
 
-results = search_products(query)
-print(results)
-#create_product()

@@ -1,135 +1,194 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db";
 import Users from "./user";
-import { Listings } from "./listing";
 
-const Orders = sequelize.define("Orders", {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+
+export const order = sequelize.define(
+    "order",
+    {
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+        },
+
+        buyerId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+        },
+
+        orderNumber: {
+            type: DataTypes.STRING(30),
+            allowNull: false,
+            unique: true,
+        },
+
+        status: {
+            type: DataTypes.ENUM(
+                "pending",
+                "confirmed",
+                "processing",
+                "shipped",
+                "delivered",
+                "cancelled",
+                "refunded"
+            ),
+            allowNull: false,
+            defaultValue: "pending",
+        },
+
+        paymentStatus: {
+            type: DataTypes.ENUM(
+                "pending",
+                "paid",
+                "failed",
+                "refunded"
+            ),
+            allowNull: false,
+            defaultValue: "pending",
+        },
+
+        paymentMethod: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+        },
+
+        subtotal: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            defaultValue: 0,
+        },
+
+        deliveryFee: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            defaultValue: 0,
+        },
+
+        totalAmount: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            defaultValue: 0,
+        },
+
+        shippingAddress: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+
+        notes: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+
+        placedAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
+
+        deliveredAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
+
+        cancelledAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
     },
-    buyer_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Users,
-            key: "id"
-        }
-    },
-    seller_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Users,
-            key: "id"
-        }
-    },
-    listing_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Listings,
-            key: "id"
-        }
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1
-    },
-    unit_price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-    },
-    total_amount: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-    },
-    status: {
-        type: DataTypes.ENUM("pending", "confirmed", "processing", "delivered", "cancelled", "disputed"),
-        allowNull: false,
-        defaultValue: "pending"
-    },
-    delivery_mode: {
-        type: DataTypes.ENUM("pickup", "delivery"),
-        allowNull: false,
-        defaultValue: "pickup"
-    },
-    otp_code_hash: {
-        type: DataTypes.STRING(255),
-        allowNull: true
-    },
-    otp_expires_at: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    otp_attempts: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0
+    {
+        tableName: "orders",
+        timestamps: true,
+        indexes: [
+            {
+                fields: ["buyerId"],
+            },
+            {
+                fields: ["status"],
+            },
+            {
+                fields: ["paymentStatus"],
+            },
+            {
+                fields: ["createdAt"],
+            },
+        ],
     }
-}, {
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-    tableName: "orders"
-});
+);
+ 
+export const OrderItem = sequelize.define(
+    "OrderItem",
+    {
+        id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true,
+        },
 
-const OrderStatusHistory = sequelize.define("OrderStatusHistory", {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+        orderId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+        },
+
+        productId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+        },
+
+        sellerId: {
+            type: DataTypes.UUID,
+            allowNull: false,
+        },
+
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: {
+                min: 1,
+            },
+        },
+
+        // Price when the order was placed
+        unitPrice: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+        },
+
+        // quantity * unitPrice
+        subtotal: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+        },
+
+        fulfillmentStatus: {
+            type: DataTypes.ENUM(
+                "pending",
+                "processing",
+                "shipped",
+                "delivered",
+                "cancelled",
+                "refunded"
+            ),
+            allowNull: false,
+            defaultValue: "pending",
+        },
     },
-    order_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Orders,
-            key: "id"
-        }
-    },
-    from_status: {
-        type: DataTypes.STRING(50),
-        allowNull: true
-    },
-    to_status: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    },
-    actor_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: Users,
-            key: "id"
-        }
-    },
-    note: {
-        type: DataTypes.STRING(500),
-        allowNull: true
+    {
+        tableName: "order_items",
+        timestamps: true,
+
+        indexes: [
+            {
+                fields: ["orderId"],
+            },
+            {
+                fields: ["productId"],
+            },
+            {
+                fields: ["sellerId"],
+            },
+        ],
     }
-}, {
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-    tableName: "order_status_history",
-    createdAt: "created_at",
-    updatedAt: false
-});
+);
 
-Orders.belongsTo(Users, { foreignKey: "buyer_id", as: "buyer" });
-Orders.belongsTo(Users, { foreignKey: "seller_id", as: "seller" });
-Orders.belongsTo(Listings, { foreignKey: "listing_id" });
 
-Users.hasMany(Orders, { foreignKey: "buyer_id", as: "purchases" });
-Users.hasMany(Orders, { foreignKey: "seller_id", as: "sales" });
-Listings.hasMany(Orders, { foreignKey: "listing_id" });
-
-Orders.hasMany(OrderStatusHistory, { foreignKey: "order_id", onDelete: "CASCADE" });
-OrderStatusHistory.belongsTo(Orders, { foreignKey: "order_id" });
-OrderStatusHistory.belongsTo(Users, { foreignKey: "actor_id", as: "actor" });
-Users.hasMany(OrderStatusHistory, { foreignKey: "actor_id", as: "actions" });
-
-module.exports = { Orders, OrderStatusHistory };

@@ -1,4 +1,39 @@
-import { createProduct, getHomeSections, searchProducts } from "./services/products.js";
+import { createProduct, getHomeSections, searchProducts, getProductById } from "./services/products.js";
+
+
+// controllers/product.controller.js
+
+
+export const getProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if(!id || id < 1) {
+      return res.status(400).json({message:"Enter a valid product id"})
+    }
+
+        const product = await getProductById(id);
+
+        return res.status(200).json({
+            success: true,
+            product
+        });
+
+    } catch (error) {
+        if (error.message === "Product not found") {
+            return res.status(404).json({
+                success: false,
+                message: error.message
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to retrieve product"
+        });
+    }
+};
+
 
 export const addProduct = async (req, res) => {
       try {
@@ -47,11 +82,6 @@ export const getAll = async (req, res) => {
 export const search = async (req, res) => {
       try {
             const { q, page, limit } = req.query;
-            if(!q){
-      console.error("Unsupported q")
-    }
-    console.log(q)
-
             const result = await searchProducts(q);
 
             res.status(200).json({
