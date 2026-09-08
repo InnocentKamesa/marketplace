@@ -1,49 +1,81 @@
 import requests
 
-API_URL = "http://127.0.0.1:5000/api/products/"
+class ProductTests:
+    def __init__(self):
+        self.API_URL = "http://localhost:5000/api/products"
 
-def create_product(payload={}):
+    def get_all(self):
+        response = requests.get(f"{self.API_URL}/all/")
 
-    USER_URL = f"{API_URL}all/"
+        print(response.json())
 
-    response = requests.get(USER_URL);
-    r_json = response.json()
-    print(r_json)
+    def get_one(self, id):
+        params ={
+            "id":id
+        }
+        response = requests.get(f"{self.API_URL}/", params=params)
 
-
-payload = {
-    "title":"shoe",
-    "description":"Air Force 1 sneaker, red on black",
-    "price":10000,
-    "category":1,
-    "stockQTY":2,
-    "type":"product"
-  }
+        print(response.json())
 
 
-import requests
 
-BASE_URL = "http://localhost:5000/api/products"
+class CartTests:
+    def __init__(self):
+        self.API_URL = "http://localhost:5000/api/cart"
 
-def getProduct():
-    response = requests.get(
-        f"{BASE_URL}/1"
-    )
+    def get_cart(self):
 
-    response.raise_for_status()
-  
-    return response.json()
+        response = requests.get(f"{self.API_URL}/")
 
-print(getProduct())
+        print(response.json())
 
-def search_products(query):
-    response = requests.get(
-        f"{BASE_URL}/search",
-        params={"q": query}
-    )
-    response.raise_for_status()
-  
-    return response.json()
+    def update_item(self, id, quantity):
+
+        params={
+            "itemId":id
+        }
+        body={
+            "quantity":quantity
+        }
+
+        response = requests.patch(f"{self.API_URL}/items/{id}", json=body)
+
+        print(response.json())
+
+    def remove_cart(self):
+
+        response = requests.delete(f"{self.API_URL}/")
+
+        print(response.json())
+
+
+    def remove_from_cart(self, id):
+
+        response = requests.delete(f"{self.API_URL}/items/{id}")
+
+        print(response.json())
+
+
+    def add_to_cart(self):
+        payload ={
+            "productId":36,
+            "quantity":1
+        }
+
+        response = requests.post(f"{self.API_URL}/items", json=payload)
+
+        print(response.json())
+
+
+products = ProductTests()
+#products.get_all()
+
+cart = CartTests()
+#cart.get_cart()
+#cart.update_item(1, 1)
+#cart.remove_from_cart(1)
+#cart.remove_cart()
+
 
 
 

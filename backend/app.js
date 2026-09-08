@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import productRouter from "./src/apps/products/router.js";
+import cartRouter from "./src/apps/cart/router.js";
 
 dotenv.config();
 
@@ -32,5 +33,6 @@ app.use(cors(corsOptions))
 //app routers
 app.use("/api/auth/", authRouter);
 app.use("/api/products/", productRouter);
+app.use("/api/cart/", cartRouter);
 
 export default app;

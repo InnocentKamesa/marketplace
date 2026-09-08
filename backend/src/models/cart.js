@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
 export const Cart = sequelize.define(
         "Cart",
@@ -10,7 +11,7 @@ export const Cart = sequelize.define(
             },
 
             userId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
         },
@@ -31,12 +32,12 @@ export const CartItem = sequelize.define(
             },
 
             cartId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
 
             productId: {
-                type: DataTypes.UUID,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
 
