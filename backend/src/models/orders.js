@@ -1,19 +1,19 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/db";
-import Users from "./user";
-
+import sequelize from "../config/db.js";
+import Users from "./user.js";
+import { products } from "./products.js";
 
 export const order = sequelize.define(
     "order",
     {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
         },
 
         buyerId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
 
@@ -26,9 +26,8 @@ export const order = sequelize.define(
         status: {
             type: DataTypes.ENUM(
                 "pending",
-                "confirmed",
+                "paid",
                 "processing",
-                "shipped",
                 "delivered",
                 "cancelled",
                 "refunded"
@@ -115,28 +114,28 @@ export const order = sequelize.define(
         ],
     }
 );
- 
+
 export const OrderItem = sequelize.define(
     "OrderItem",
     {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
         },
 
         orderId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
 
         productId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
 
         sellerId: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
 
@@ -148,13 +147,11 @@ export const OrderItem = sequelize.define(
             },
         },
 
-        // Price when the order was placed
         unitPrice: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
         },
 
-        // quantity * unitPrice
         subtotal: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -164,7 +161,6 @@ export const OrderItem = sequelize.define(
             type: DataTypes.ENUM(
                 "pending",
                 "processing",
-                "shipped",
                 "delivered",
                 "cancelled",
                 "refunded"
@@ -176,7 +172,6 @@ export const OrderItem = sequelize.define(
     {
         tableName: "order_items",
         timestamps: true,
-
         indexes: [
             {
                 fields: ["orderId"],
@@ -190,5 +185,38 @@ export const OrderItem = sequelize.define(
         ],
     }
 );
+
+Users.hasMany(order, {
+    foreignKey: "buyerId",
+    as: "orders",
+    onDelete: "CASCADE",
+});
+
+order.belongsTo(Users, {
+    foreignKey: "buyerId",
+    as: "buyer",
+});
+
+order.hasMany(OrderItem, {
+    foreignKey: "orderId",
+    as: "items",
+    onDelete: "CASCADE",
+});
+
+OrderItem.belongsTo(order, {
+    foreignKey: "orderId",
+    as: "order",
+});
+
+products.hasMany(OrderItem, {
+    foreignKey: "productId",
+    as: "orderItems",
+    onDelete: "RESTRICT",
+});
+
+OrderItem.belongsTo(products, {
+    foreignKey: "productId",
+    as: "product",
+});
 
 

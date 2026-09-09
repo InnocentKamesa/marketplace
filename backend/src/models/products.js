@@ -16,6 +16,11 @@ export const products = sequelize.define("Products", {
         type:DataTypes.STRING(50),
         allowNull:false
     },
+    sellerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+    },
     description:{
         type:DataTypes.STRING(500),
     },
@@ -48,6 +53,19 @@ export const ProductImages = sequelize.define("ProductImages", {
     url:{
         type:DataTypes.STRING
     }
+});
+
+import Users from "./user.js";
+
+products.belongsTo(Users, {
+    foreignKey: "sellerId",
+    as: "seller",
+});
+
+Users.hasMany(products, {
+    foreignKey: "sellerId",
+    as: "products",
+    onDelete: "CASCADE",
 });
 
 products.hasOne(ProductImages, {onDelete:"CASCADE"});
