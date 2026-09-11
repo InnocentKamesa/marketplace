@@ -8,12 +8,15 @@ import {
     updateOrderStatus,
 } from "./services/orders.js";
 
+import generateTxRef from "../../utils/tx_ref.js";
+
 export const checkout = async (req, res) => {
     const userId = 1;
 
     try {
         const { shippingAddress, notes, paymentMethod } = req.body;
 
+        //create order
         const orderData = await createOrderFromCart({
             userId,
             shippingAddress,
@@ -21,9 +24,15 @@ export const checkout = async (req, res) => {
             paymentMethod,
         });
 
+        //generate tx_ref
+        const tx_ref = generateTxRef(orderData.id)
+        console.log(tx_ref)
+
+        //return
         return res.status(201).json({
             success: true,
             message: "Order created successfully",
+            tx_ref:tx_ref,
             order: orderData,
         });
     } catch (error) {
