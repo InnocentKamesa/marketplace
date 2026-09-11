@@ -52,6 +52,37 @@ export const order = sequelize.define(
             allowNull: true,
         },
 
+        payChanguReference: {
+            type: DataTypes.STRING(100),
+            allowNull: true,
+            unique: true,
+        },
+
+        payChanguStatus: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+        },
+
+        paymentVerifiedAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
+
+        otpCodeHash: {
+            type: DataTypes.STRING(255),
+            allowNull: true,
+        },
+
+        otpExpiresAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
+
+        otpVerifiedAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
+
         subtotal: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,

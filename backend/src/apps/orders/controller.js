@@ -5,10 +5,10 @@ import {
     createBuyNowOrder,
     createPaymentLink,
     confirmPayment,
+    verifyOrderOtp,
     updateOrderStatus,
 } from "./services/orders.js";
 
-import generateTxRef from "../../utils/tx_ref.js";
 
 export const checkout = async (req, res) => {
     const userId = 1;
@@ -24,9 +24,6 @@ export const checkout = async (req, res) => {
             paymentMethod,
         });
 
-        //generate tx_ref
-        const tx_ref = generateTxRef(orderData.id)
-        console.log(tx_ref)
 
         //return
         return res.status(201).json({
@@ -136,15 +133,46 @@ export const confirmPayChanguPayment = async (req, res) => {
 
     try {
         const { id } = req.params;
+        const { reference, amount, currency } = req.body;
 
-        const orderData = await confirmPayment({
+        const paymentResult = await confirmPayment({
             orderId: id,
             userId,
+            reference,
+            amount,
+            currency,
         });
 
         return res.status(200).json({
             success: true,
             message: "Payment confirmed successfully",
+            otpCode: paymentResult.otpCode,
+            order: paymentResult.order,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+export const verifyPaymentOtp = async (req, res) => {
+    const userId = 1;
+
+    try {
+        const { id } = req.params;
+        const { otpCode } = req.body;
+
+        const orderData = await verifyOrderOtp({
+            orderId: id,
+            userId,
+            otpCode,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP verified successfully",
             order: orderData,
         });
     } catch (error) {
