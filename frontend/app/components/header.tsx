@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/u
 
 export default function MenuBar() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full px-2 py-4">
     {/**app abr */ }
     <div className="flex flex-row justify-between">
       <SidebarTrigger/>

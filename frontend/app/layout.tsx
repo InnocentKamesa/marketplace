@@ -29,8 +29,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="bg-white h-screen  text-black">
+        <SidebarProvider>
           {children}
-       
+          </SidebarProvider>
       </body>
     </html>
   );

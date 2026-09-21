@@ -3,7 +3,7 @@
 import React from "react";
 import MenuBar from "./components/header";
 
-import { Search } from "lucide-react"
+import { Search, X } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Field, FieldLabel } from "@/components/ui/field"
 import {
@@ -13,7 +13,7 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { MainCard, SectionCard } from "./components/card";
-
+import {useRouter} from "next/navigation";
 
 function CategoryCard({ text }) {
   return (
@@ -29,7 +29,7 @@ function Section() {
   return (
     <div>
       {/**headings */}
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between my-3">
         <p className="text-sm">Featured products</p>
         <p className="text-sm hover:underline">See all</p>
       </div>
@@ -49,19 +49,24 @@ function Section() {
 }
 
 export default function HomePage() {
+  const router = useRouter();
   return (
     <div className="flex flex-col">
       <MenuBar />
       {/**welcome text */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2 px-4 pt-4">
         <p className="font-semibold text-lg">Hi, Innocent</p>
         <p className="font-bold text-3xl max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
       {/**Search */}
-      <Field className="my-6 max-w-[90%] mx-auto">
+      <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full" onSubmit={(e) => {
+        e.preventDefault();
+        
+        router.push(`/search?query=`);
+      }}>
         <InputGroup className="py-6 px-2 text-md">
-          <InputGroupInput id="input-group-search" placeholder="Search items and services" />
+          <InputGroupInput id="input-group-search"  placeholder="Search items and services" />
           <InputGroupAddon align="inline-end">
             <Search className="h-6 w-6" />
           </InputGroupAddon>
@@ -98,8 +103,21 @@ export default function HomePage() {
         <Section />
         <Section />
 
-      </div>
-    </div>
+        {/**recommended for you */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row justify-between my-3">
+            <p className="text-sm">Recommended for you</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 overflow-hidden">
+            <SectionCard />
+            <SectionCard />
+            <SectionCard />
+            <SectionCard />
+          </div>
+        </div>
+      
+          </div>
+        </div>
 
   );
 }
