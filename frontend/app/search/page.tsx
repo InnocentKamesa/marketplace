@@ -11,14 +11,15 @@ import { Search, X, ArrowLeft, ListSortDescending } from "lucide-react"
 import {useRouter} from "next/navigation";
 import {SectionCard} from "../components/card";
 import { List, Funnel} from 'lucide-react';
-<ListSortDescending />
+import {useState} from "react"
 
 
 export default function SearchPage() {
     const router = useRouter();
+    const [products, setProducts] = useState(null);
     return (
         <div className="flex flex-col">
-            <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50">
+            <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
                 <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full">
                     <InputGroup className="py-6 px-2 text-md">
                         <InputGroupAddon align="inline-start">
@@ -33,7 +34,14 @@ export default function SearchPage() {
             </div>
 
             {/**products view */}
-            <div className="bg-gray-50 min-h-screen grid grid-cols-2 gap-4 p-4 mb-20">
+            {
+                !products ? (
+                    <div className="bg-gray-50 min-h-screen w-full flex justify-center items-center">
+                        <p className="Font-extrabold text-2xl">No Items Found</p>
+                    </div>
+
+                ) : (
+                    <div className="bg-gray-50 min-h-screen grid grid-cols-2 gap-4 p-4 mb-20">
                 <SectionCard />
                 <SectionCard />
                 <SectionCard />
@@ -41,6 +49,10 @@ export default function SearchPage() {
                 <SectionCard />
                 <SectionCard />
             </div>
+                )
+                
+            }
+            
 
             {/**bottom options */}
             <div className="bg-white shadow-md fixed bottom-0 z-50 flex flex-row w-full justify-center gap-18 px-4 py-2">
