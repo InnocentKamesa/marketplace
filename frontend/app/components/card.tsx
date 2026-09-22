@@ -27,6 +27,8 @@ export function SectionCard(){
                     <Star className="h-4 w-4 text-yellow-400"/>
                     <p className="text-sm">4.9</p>
                 </div>
+
+                
             </div>
         </div>
     )
