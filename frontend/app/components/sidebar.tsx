@@ -36,7 +36,7 @@ export default function AppSideBar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger>
                                 <SidebarMenuButton>
                                    <Menu className="w-4 h-4"/>
                                 </SidebarMenuButton>
