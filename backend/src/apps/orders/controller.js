@@ -29,7 +29,6 @@ export const checkout = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: "Order created successfully",
-            tx_ref:tx_ref,
             order: orderData,
         });
     } catch (error) {
