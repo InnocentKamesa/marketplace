@@ -16,7 +16,11 @@ import { MainCard, SectionCard } from "./components/card";
 import {useRouter} from "next/navigation";
 import Section from "./components/section";
 
-function CategoryCard({ text }) {
+type CategoryCardProps = {
+  text: string;
+};
+
+function CategoryCard({ text }: CategoryCardProps) {
   return (
     <div>
       <div className="rounded-full text-white/80 shadow-md px-2 py-1  bg-green-600">
