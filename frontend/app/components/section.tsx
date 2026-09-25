@@ -6,7 +6,7 @@ export default function Section() {
     <div>
       {/**headings */}
       <div className="flex flex-row justify-between my-3">
-        <p className="text-sm">Featured products</p>
+        <p className="text-lg">Featured products</p>
         <p className="text-sm hover:underline">See all</p>
       </div>
       {/**products */}

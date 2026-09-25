@@ -3,7 +3,7 @@
 import React from "react";
 import MenuBar from "./components/header";
 
-import { Search, X } from "lucide-react"
+import { Scroll, Search, X } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Field, FieldLabel } from "@/components/ui/field"
 import {
@@ -13,7 +13,7 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { MainCard, SectionCard } from "./components/card";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import Section from "./components/section";
 
 type CategoryCardProps = {
@@ -44,13 +44,13 @@ export default function HomePage() {
       </div>
 
       {/**Search */}
-      <Field className="my-4 max-w-[90%] mx-auto w-full" onSubmit={(e) => {
+      <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-gray-100 text-sm w-full" onSubmit={(e) => {
         e.preventDefault();
-        
+
         router.push(`/search?query=`);
       }}>
         <InputGroup className="py-4 px-2 text-md">
-          <InputGroupInput id="input-group-search"  placeholder="Search items and services" />
+          <InputGroupInput id="input-group-search" placeholder="Search items and services" />
           <InputGroupAddon align="inline-end">
             <Search className="h-6 w-6" />
           </InputGroupAddon>
@@ -75,10 +75,15 @@ export default function HomePage() {
             </div>
             <ScrollBar orientation="horizontal" className="hidden" />
           </ScrollArea>
-          <div className="flex flex-row space-x-2 overflow-hidden">
-          <MainCard />
-          <MainCard />
-          </div>
+
+          <ScrollArea>
+            <div className="flex flex-row space-x-2 overflow-hidden">
+              <MainCard />
+              <MainCard />
+              <MainCard />
+            </div>
+            <ScrollBar orientation="horizontal" className="hidden" />
+          </ScrollArea>
         </div>
 
         {/**sections */}
@@ -99,9 +104,9 @@ export default function HomePage() {
             <SectionCard />
           </div>
         </div>
-      
-          </div>
-        </div>
+
+      </div>
+    </div>
 
   );
 }
