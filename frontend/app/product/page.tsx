@@ -6,14 +6,16 @@ import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Section from "../components/section";
+import { useRouter } from "next/navigation";
 
 export default function ProductPage() {
+    const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     return (
         <div className="h-screen w-screen flex flex-col">
             {/**header */}
             <div className="p-6 flex flex-row sticky top-0 bg-white background-blur-md shadow-md w-full">
-                <ArrowLeft className="w-6 h-6" />
+                <ArrowLeft className="w-6 h-6" onClick={() => router.back()} />
             </div>
 
             {/**product details */}

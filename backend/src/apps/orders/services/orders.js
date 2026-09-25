@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { Cart, CartItem } from "../../../models/cart.js";
 import { products } from "../../../models/products.js";
 import { order, OrderItem } from "../../../models/orders.js";
-import { verifyPayChanguTransaction } from "../../../utils/payments.js";
+import { verifyPayChanguTransaction } from "./paychangu.js";
 
 const generateOrderNumber = () => {
     return `ORD-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;

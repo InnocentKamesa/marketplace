@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/input-group";
 import { MainCard, SectionCard } from "./components/card";
 import {useRouter} from "next/navigation";
+import Section from "./components/section";
 
 function CategoryCard({ text }) {
   return (
@@ -25,28 +26,7 @@ function CategoryCard({ text }) {
   )
 }
 
-function Section() {
-  return (
-    <div>
-      {/**headings */}
-      <div className="flex flex-row justify-between my-3">
-        <p className="text-sm">Featured products</p>
-        <p className="text-sm hover:underline">See all</p>
-      </div>
-      {/**products */}
-      <ScrollArea>
-        <div className="flex flex-row space-x-4 overflow-hidden">
-          <SectionCard />
-          <SectionCard />
-          <SectionCard />
-          <SectionCard />
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
 
-    </div>
-  )
-}
 
 export default function HomePage() {
   const router = useRouter();

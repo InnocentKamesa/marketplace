@@ -62,7 +62,13 @@ export default function LoginPahge() {
       <p className="font-bold text-3xl my-4">Login to Shopify</p>
 
       {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button className="btn btn-primary w-full rounded-sm bg-blue-600 border-0 text-white" onClick={() => document.getElementById('my_modal_5').showModal()}>Login with Email</button>
+      <button 
+  className="btn btn-primary w-full rounded-sm bg-blue-600 border-0 text-white" 
+  onClick={() => (
+    document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()}
+  >
+  Login with Email
+</button>
 
       {/**modal */}
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
