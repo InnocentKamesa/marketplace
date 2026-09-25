@@ -38,7 +38,7 @@ export default function HomePage() {
     <div className="flex flex-col text-sm text-black/80">
       <MenuBar />
       {/**welcome text */}
-      <div className="flex flex-col gap-2 px-4 pt-4">
+      <div className="flex flex-col gap-1 px-4 pt-4">
         <p className="">Hi, Innocent</p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
