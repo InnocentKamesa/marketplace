@@ -35,21 +35,21 @@ function CategoryCard({ text }: CategoryCardProps) {
 export default function HomePage() {
   const router = useRouter();
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col text-sm text-black/80">
       <MenuBar />
       {/**welcome text */}
       <div className="flex flex-col gap-2 px-4 pt-4">
-        <p className="font-semibold text-lg">Hi, Innocent</p>
-        <p className="font-bold text-3xl max-w-[90%]">What are you looking to buy today?</p>
+        <p className="">Hi, Innocent</p>
+        <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
       {/**Search */}
-      <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full" onSubmit={(e) => {
+      <Field className="my-4 max-w-[90%] mx-auto w-full" onSubmit={(e) => {
         e.preventDefault();
         
         router.push(`/search?query=`);
       }}>
-        <InputGroup className="py-6 px-2 text-md">
+        <InputGroup className="py-4 px-2 text-md">
           <InputGroupInput id="input-group-search"  placeholder="Search items and services" />
           <InputGroupAddon align="inline-end">
             <Search className="h-6 w-6" />
