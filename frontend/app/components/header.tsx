@@ -13,7 +13,7 @@ export default function MenuBar() {
     {/**app abr */ }
     <div className="flex flex-row justify-between">
       <SidebarTrigger/>
-      <p className="font-extrabold text-xl">NRC MarketPlace</p>
+      <p className="font-bold text-xl">NRC MarketPlace</p>
       {/**avatar */}
       <ShoppingCart  className="w-6 h-6"/>
       </div>
