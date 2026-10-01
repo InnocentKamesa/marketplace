@@ -5,7 +5,6 @@ import {
     createBuyNowOrder,
     createPaymentLink,
     confirmPayment,
-    verifyOrderOtp,
     updateOrderStatus,
 } from "./services/orders.js";
 
