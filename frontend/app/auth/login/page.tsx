@@ -48,7 +48,7 @@ export default function LoginPahge() {
       
       }
       setTimeout( () => {
-        router.push("/dashboard")}, 3000)
+        router.push("/")}, 3000)
     }
   
   catch(error) {
