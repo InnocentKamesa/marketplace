@@ -37,7 +37,7 @@ export const register = async(req, res, next) => {
 
          //session cookies
            const cookieOptions = {
-            secure: false,
+            secure: true,
             sameSite: 'none',
             httpOnly: true,
             path:"/"
@@ -85,7 +85,7 @@ export const login = async(req, res, next) => {
 
     //set cookies
            const cookieOptions = {
-            secure: false,
+            secure: true,
             sameSite: 'none',
             httpOnly: true,
             path:"/"

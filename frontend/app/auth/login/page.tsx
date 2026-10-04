@@ -34,7 +34,7 @@ export default function LoginPahge() {
 
     // You can add your login logic here, such as making an API call to authenticate the user.
     try{
-      const response = await fetch(`${API_URL}/auth/login/`, {
+      const response = await fetch(`${API_URL}/api/auth/login/`, {
         method:"POST",
         credentials:"include",
         headers:{

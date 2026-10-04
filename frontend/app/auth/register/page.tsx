@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PhoneInput from 'react-phone-number-input';
 
-const API_URL = "http://127.0.0.1:5000/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000/api"
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -40,6 +40,7 @@ export default function RegisterPage() {
 
         //phone validation
         const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        console.log(form.phone)
         if (!phoneRegex.test(form.phone)) {
             alert("Provided phone not valid")
         }
@@ -56,7 +57,7 @@ export default function RegisterPage() {
         };
 
         try {
-            const response = await fetch(`${API_URL}/auth/register/`, {
+            const response = await fetch(`${API_URL}/api/auth/register/`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -68,12 +69,13 @@ export default function RegisterPage() {
             if (!response.ok) {
                 const error = await response.json();
                 if (response.status === 400) {
+                    alert(Object.values(error))
                     console.log(error.error)
                 }
                 throw new Error("Server did not return success")
             }
             setTimeout(() => {
-                router.push("/dashboard")
+                router.push("/")
             }, 3000);
         }
         catch (error) {
