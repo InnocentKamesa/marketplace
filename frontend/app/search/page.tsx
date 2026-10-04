@@ -42,12 +42,7 @@ export default function SearchPage() {
 
                 ) : (
                     <div className="bg-gray-50 min-h-screen grid grid-cols-2 gap-4 p-4 mb-20">
-                <SectionCard />
-                <SectionCard />
-                <SectionCard />
-                <SectionCard />
-                <SectionCard />
-                <SectionCard />
+            
             </div>
                 )
                 
