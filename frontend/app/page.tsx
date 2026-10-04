@@ -60,7 +60,10 @@ function CategoryCard({ text }: CategoryCardProps) {
 
 export default function HomePage() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    id:1,
+    first:"Mock"
+  });
   const [homeSections, setHomeSections] = useState<HomeSectionsData>(fallbackHomeData);
 
   useEffect(() => {
@@ -150,7 +153,7 @@ export default function HomePage() {
     <div className="flex flex-col text-sm text-black/80">
       <MenuBar />
       <div className="flex flex-col gap-1 px-4 pt-4">
-        <p>Hi, <span  className="font-bold">{user ? user.first : "Innocent"}</span></p>
+        <p>Hi, <span  className="font-bold">{user ? user.first : "User"}</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
