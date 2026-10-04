@@ -101,3 +101,20 @@ export const login = async(req, res, next) => {
         next(err)
     }
 }
+
+export const me = async(req, res, next) => {
+    try{
+        const userId = req.user.id;
+        if(!userId){
+            return res.status(401).json({message:"User not authenticated"})
+        }
+        const user = await Users.findByPk(userId, {attributes:["first", "last", "email", "role"]});
+        if(!user){
+            return res.status(404).json({message:"User not found"})
+        }
+        return res.status(200).json({message:"User found", data:user})
+    }
+    catch(err){
+        next(err)
+    }
+};
