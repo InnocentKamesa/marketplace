@@ -75,7 +75,6 @@ export default function ProductPage() {
                     </div>
 
                     {/**related products */}
-                    <Section />
                 </div>
             </div>
 

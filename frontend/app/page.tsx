@@ -127,7 +127,7 @@ export default function HomePage() {
     <div className="flex flex-col text-sm text-black/80">
       <MenuBar />
       <div className="flex flex-col gap-1 px-4 pt-4">
-        <p>Hi, Innocent</p>
+        <p>Hi, <span  className="font-bold">Innocent</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
