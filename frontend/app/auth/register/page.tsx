@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 </label>
 
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-primary bg-blue-600 text-white rounded-md border-0 my-2" type="submit">Register</button>
+                <button className="btn btn-primary bg-green-400 text-zinc-400 rounded-md border-0 my-2" type="submit">Register</button>
             </form>
             {/**Sign in prompt */}
             <div className="flex flex-row gap-2 items-center my-4">
