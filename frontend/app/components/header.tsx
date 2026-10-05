@@ -14,7 +14,7 @@ export default function MenuBar() {
   return (
     <div className="w-full px-2 py-4 sticky top-0 background-blur-md bg-white z-50 border-2 border-gray-100">
     {/**app abr */ }
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-row justify-between items-center">
       <SidebarTrigger/>
       <p className="font-bold text-xl">NRC MarketPlace</p>
       {/**avatar */}
