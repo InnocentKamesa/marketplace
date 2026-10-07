@@ -2,17 +2,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { ProductItem } from "../types/product";
 
-export type ProductItem = {
-  id: number | string;
-  title: string;
-  description?: string;
-  price?: number | string;
-  category?: string;
-  type?: string;
-  status?: string;
-  location?: string;
-};
 
 const formatPrice = (value?: number | string) => {
   const numericValue = Number(value ?? 0);

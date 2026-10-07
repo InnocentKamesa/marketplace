@@ -19,16 +19,17 @@ import {
 } from "next/navigation";
 import {SectionCard} from "../components/card";
 import {LoadingSpinner} from "..//components/spinner";
-
+import type { ProductItem } from "../types/product";
 
 const API_URL =
   "http://localhost:5000";
+
 
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState(
     searchParams.get("query") || ""
@@ -55,7 +56,7 @@ function SearchContent() {
       const responseJson = await response.json();
       const results = responseJson.data.products;
       if(!results || results.length === 0) {
-        setProducts(null);
+        setProducts([]);
         setLoading(false);
       } else {
         setTimeout(()=>{
