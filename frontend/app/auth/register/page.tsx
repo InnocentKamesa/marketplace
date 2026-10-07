@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PhoneInput from 'react-phone-number-input';
+import {ButtonSpinner} from "../../components/spinner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000/api"
 
 export default function RegisterPage() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
         first: "",
         last: "",
@@ -49,6 +51,7 @@ export default function RegisterPage() {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         console.log(form);
 
         //validation
@@ -72,10 +75,12 @@ export default function RegisterPage() {
                     alert(Object.values(error))
                     console.log(error.error)
                 }
+                setLoading(false);
                 throw new Error("Server did not return success")
             }
             setTimeout(() => {
-                router.push("/")
+                setLoading(false);
+                router.push("/");
             }, 3000);
         }
         catch (error) {
@@ -139,7 +144,7 @@ export default function RegisterPage() {
                 </label>
 
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-primary bg-green-400 text-zinc-400 rounded-md border-0 my-2" type="submit">Register</button>
+                <button className="btn btn-primary bg-green-400 text-zinc-600 rounded-md border-0 my-2" type="submit">Register</button>
             </form>
             {/**Sign in prompt */}
             <div className="flex flex-row gap-2 items-center my-4">

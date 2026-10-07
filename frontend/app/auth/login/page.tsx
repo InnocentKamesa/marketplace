@@ -4,6 +4,7 @@ import {Mail, Lock} from "lucide-react";
 import Link from "next/link";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {ButtonSpinner} from "../../components/spinner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -50,6 +51,7 @@ export default function LoginPahge() {
       const data = await response.json();
       console.log("Login successful:", data);
       setTimeout( () => {
+        setLoading(false);
         router.push("/")}, 3000)
     }
   
@@ -95,7 +97,7 @@ export default function LoginPahge() {
               </label>
 
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-primary bg-blue-600 text-white rounded-md border-0 my-2" type="submit">Login</button>
+              <button className="btn btn-primary bg-green-400 text-zinc-600 rounded-md border-0 my-2" type="submit">{loading ? <ButtonSpinner /> : "Login"}</button>
             </form>
           </div>
         </div>
