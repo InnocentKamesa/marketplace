@@ -51,7 +51,7 @@ type CategoryCardProps = {
 function CategoryCard({ text }: CategoryCardProps) {
   return (
     <div>
-      <div className="rounded-full text-white/80 shadow-md px-2 py-1 bg-green-600">
+      <div className="rounded-full text-zinc-600 shadow-md px-4 py-2 bg-green-400">
         <p>{text}</p>
       </div>
     </div>
@@ -60,9 +60,10 @@ function CategoryCard({ text }: CategoryCardProps) {
 
 export default function HomePage() {
   const router = useRouter();
+  const [status, setStatus] = useState<"logged" | "not-logged">("not-logged");
   const [user, setUser] = useState({
     id:1,
-    first:"Mock"
+    first:"User",
   });
   const [homeSections, setHomeSections] = useState<HomeSectionsData>(fallbackHomeData);
 
@@ -102,6 +103,7 @@ export default function HomePage() {
 
      const fetchUserData = async () => {
 
+
       try {
         const response = await fetch(`${API_URL}/api/auth/me/`, {
           method: "GET",
@@ -114,6 +116,7 @@ export default function HomePage() {
 
         const responseJson = await response.json();
         setUser(responseJson?.data ?? null);
+        setStatus("logged");
         console.log("User data fetched:", user);
       } catch (error) {
         console.error("User data fetch failed:", error);
@@ -151,9 +154,9 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col text-sm text-black/80">
-      <MenuBar />
+      <MenuBar status={status}/>
       <div className="flex flex-col gap-1 px-4 pt-4">
-        <p>Hi, <span  className="font-bold">{user ? user.first : "User"}</span></p>
+        <p>Welcome, <span  className="font-bold">{user ? user.first : "User"}</span>.</p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
