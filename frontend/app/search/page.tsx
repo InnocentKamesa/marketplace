@@ -48,12 +48,12 @@ export default function SearchPage() {
         <div className="flex flex-col">
             <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
 
-                <form onSubmit={() => {
+                <form onSubmit={(e) => {
                     e.preventDefault();
                     perfromSearch();
                 }}>
-                    <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full">
-                    <InputGroup className="py-6 px-2 text-md">
+                    <Field className="my-3 max-w-[90%] mx-auto w-full">
+                    <InputGroup className="py-4 px-2 text-md">
                         <InputGroupAddon align="inline-start">
                             <ArrowLeft className="h-6 w-6 mr-4"  onClick={()=> {router.push("/")}}/>
                         </InputGroupAddon>

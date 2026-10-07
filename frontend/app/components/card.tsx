@@ -57,7 +57,7 @@ export function SectionCard({ product }: { product: ProductItem }) {
           <Star className="h-4 w-4 text-yellow-400" />
           <p className="text-sm">4.9</p>
         </div>
-        <p className="text-md font-bold">{formatPrice(product.price)}</p>
+        <p className="text-lg font-bold">{formatPrice(product.price)}</p>
       </div>
     </div>
   );
