@@ -22,6 +22,7 @@ import {LoadingSpinner} from "..//components/spinner";
 import type { ProductItem } from "../types/product";
 
 const API_URL =
+process.env.NEXT_PUBLIC_API_URL ||
   "http://localhost:5000";
 
 
