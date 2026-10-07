@@ -12,11 +12,16 @@ import {useRouter} from "next/navigation";
 import {SectionCard} from "../components/card";
 import { List, Funnel} from 'lucide-react';
 import {useState} from "react"
+import {useSearchParams} from "next/navigation";
 
 
 export default function SearchPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [products, setProducts] = useState(null);
+    const [query, setQuery] = useState(searchParams.get("query") || "");
+
+    
     return (
         <div className="flex flex-col">
             <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
@@ -25,7 +30,7 @@ export default function SearchPage() {
                         <InputGroupAddon align="inline-start">
                             <ArrowLeft className="h-6 w-6 mr-4"  onClick={()=> {router.push("/")}}/>
                         </InputGroupAddon>
-                        <InputGroupInput id="input-group-search"  placeholder="Search items and services" />
+                        <InputGroupInput id="input-group-search" value={query}  placeholder="Search items and services" />
                         <InputGroupAddon align="inline-end">
                             <X className="h-6 w-6" />
                         </InputGroupAddon>

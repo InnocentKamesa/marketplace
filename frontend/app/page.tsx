@@ -153,25 +153,33 @@ export default function HomePage() {
     ...homeSections.campusLiving,
   ].slice(0, 4);
 
+  const handleSearch = (query: string) => {
+    router.push(`/search?query=${encodeURIComponent(query)}`);
+  }
+
   return (
     <div className="flex flex-col text-sm text-black/80">
       <MenuBar status={status}/>
       <div className="flex flex-col gap-1 px-4 pt-4">
-        <p>Welcome, <span  className="font-bold">{user ? user.first : "User"}</span>.</p>
+        <p>Welcome  <span  className="font-bold">{user ? user.first : "."}</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
 
-      <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-gray-100 text-sm w-full" onSubmit={(e) => {
+``````<form onSubmit={(e) => {
         e.preventDefault();
-        router.push("/search?query=");
+        handleSearch("" + (document.getElementById("input-group-search") as HTMLInputElement)?.value);
       }}>
+  <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-gray-100 text-sm w-full" >
         <InputGroup className="py-4 px-2 text-md">
-          <InputGroupInput id="input-group-search" placeholder="Search items and services" />
+          <InputGroupInput id="input-group-search" placeholder="Search items and services" type="search"/>
           <InputGroupAddon align="inline-end">
             <Search className="h-6 w-6" />
           </InputGroupAddon>
         </InputGroup>
       </Field>
+
+      </form>
+      
 
       <div className="bg-gray-100 w-screen min-h-screen rounded-t-lg p-4 flex flex-col space-y-6 overflow-auto">
         <div className="flex flex-col gap-4">
