@@ -164,12 +164,11 @@ export default function HomePage() {
         <p>Welcome  <span  className="font-bold">{user ? user.first : "."}</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
-
-``````<form onSubmit={(e) => {
+      <form onSubmit={(e) => {
         e.preventDefault();
         handleSearch("" + (document.getElementById("input-group-search") as HTMLInputElement)?.value);
       }}>
-  <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-gray-100 text-sm w-full" >
+  <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-zinc-50 shadow-sm text-sm w-full" >
         <InputGroup className="py-4 px-2 text-md">
           <InputGroupInput id="input-group-search" placeholder="Search items and services" type="search"/>
           <InputGroupAddon align="inline-end">
