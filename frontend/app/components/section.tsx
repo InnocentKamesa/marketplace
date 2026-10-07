@@ -1,5 +1,6 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { SectionCard, type ProductItem } from "./card";
+import { SectionCard } from "./card";
+import type { ProductItem } from "../types/product";
 
 type SectionProps = {
   title: string;
