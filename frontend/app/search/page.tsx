@@ -17,36 +17,56 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import {SectionCard} from "../components/card";
+import {LoadingSpinner} from "..//components/spinner";
+
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  "http://localhost:5000";
 
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [products, setProducts] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState(
     searchParams.get("query") || ""
   );
 
   const performSearch = async () => {
     console.log(query);
+    setLoading(true)
 
     try {
       const response = await fetch(
-        `${API_URL}/api/products/search?query=${encodeURIComponent(query)}`
+        `${API_URL}/api/products/search?query=${encodeURIComponent(query)}`, {
+            method:"GET",
+        }
       );
 
       if (!response.ok) {
+        const responseJson = await response.json();
+        alert(responseJson.message)
+        setLoading(false);
         throw new Error("Failed to fetch search results");
       }
 
       const responseJson = await response.json();
+      const results = responseJson.data.products;
+      if(!results || results.length === 0) {
+        setProducts(null);
+        setLoading(false);
+      } else {
+        setTimeout(()=>{
+            setProducts(results);
+            setLoading(false);
 
-      setProducts(responseJson.data);
-
-      console.log("Search results:", responseJson.data);
+        },200
+        )
+        
+      }
+      console.log("Search results:", responseJson.data.products);
     } catch (err) {
       console.error("Search failed:", err);
     }
@@ -62,9 +82,11 @@ function SearchContent() {
     <div className="flex flex-col">
       {/* Search bar */}
       <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
+
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setLoading(true);
             performSearch();
           }}
         >
@@ -93,7 +115,14 @@ function SearchContent() {
         </form>
       </div>
 
-      {/* Products */}
+      { loading ? (
+        <div className="bg-gray-50 min-h-screen w-full flex justify-center items-center">
+            <LoadingSpinner />
+        </div>
+      ) : (
+        
+    <div>
+        {/* Products */}
       {!products ? (
         <div className="bg-gray-50 min-h-screen w-full flex justify-center items-center">
           <p className="font-extrabold text-2xl">
@@ -101,11 +130,19 @@ function SearchContent() {
           </p>
         </div>
       ) : (
-        <div className="bg-gray-50 min-h-screen grid grid-cols-2 gap-4 p-4 mb-20">
-          {/* Render products here */}
+        <div className="bg-gray-50 grid grid-cols-2 gap-4 p-4 mb-20">
+            {products.map((product) => (
+                <SectionCard key={product.id} product={product} />
+            ))}
         </div>
-      )}
-
+      ) 
+        }
+    </div>
+      )
+    }
+      
+    
+ 
       {/* Bottom options */}
       <div className="bg-white shadow-md fixed bottom-0 z-50 flex flex-row w-full justify-center gap-18 px-4 py-2">
         <div className="flex flex-col gap-2">
@@ -114,10 +151,11 @@ function SearchContent() {
         </div>
 
         <div className="flex flex-col gap-2 items-start">
-          <ListSortDescending className="h-6 w-6" />
+          <ListSortDescending className="h-4 w-4" />
           <p className="text-sm">Sort</p>
         </div>
       </div>
+
     </div>
   );
 }

@@ -37,9 +37,8 @@ export const getProduct = async (req, res) => {
 
 export const addProduct = async (req, res) => {
       try {
-           const sellerId = req.user.id;    
+           const sellerId = null;    
            const product = await createProduct({
-              sellerId,
               ...req.body,
             });
 
@@ -81,7 +80,8 @@ export const getAll = async (req, res) => {
        
 export const search = async (req, res) => {
       try {
-            const { q, page, limit } = req.query;
+            const { query:q, page, limit } = req.query;
+            console.log(q);
             const result = await searchProducts(q);
 
             res.status(200).json({

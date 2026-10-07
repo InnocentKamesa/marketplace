@@ -160,9 +160,9 @@ export const searchProducts = async (
             title,
             description,
             price,
-            similarity(title, :searchTerm) AS score
+            similarity(title::text, CAST(:searchTerm AS text)) AS score
         FROM public."Products"
-        WHERE title % :searchTerm
+        WHERE title::text % CAST(:searchTerm AS text)
         ORDER BY score DESC
         LIMIT :limit
         OFFSET :offset
