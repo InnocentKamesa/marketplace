@@ -63,50 +63,36 @@ export default function LoginPahge() {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-bold text-3xl my-4">Login to Shopify</p>
 
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button 
-  className="btn btn-primary w-full rounded-sm bg-blue-600 border-0 text-white" 
-  onClick={() => (
-    document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()}
-  >
-  Login with Email
-</button>
-
-      {/**modal */}
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box bg-gray-100">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="text-sm text-black/60">Kindly fill in the details to login</p>
-          <div className="modal-action">
+      <div className="flex flex-col gap-2 px-2 my-4 ">
+        <p className="font-bold text-3xl">Login to Account</p>
+        <p className="text-sm text-black/60">Kindly fill in the details to login</p>
+      </div>
+          
             {/**login form */}
-            <form method="POST" onSubmit={handleSubmit}>
-              <button className="btn btn-lg btn-circle btn-ghost text-black absolute  right-2 top-2">✕</button>
-
+            <form method="POST" onSubmit={handleSubmit} className="flex flex-col gap-2 px-2">
+            
               {/**email */}
-              <label className="input my-2">
+              <label className="input my-2 w-full">
                 <Mail className="w-4 h-4"/>
                 <input type="text" name="email" onChange={handleChange} className="bg-gray-200 p-2" placeholder="Email Id" />
               </label>
 
               {/**password */}
-              <label className="input my-2">
+              <label className="input my-2 w-full">
                 <Lock className="w-4 h-4"/>
                 <input type="password" name="password" onChange={handleChange} className="grow bg-gray-200 p-2" placeholder="Password" />
               </label>
 
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-primary bg-green-400 text-zinc-600 rounded-md border-0 my-2" type="submit">{loading ? <ButtonSpinner /> : "Login"}</button>
+              <button className="btn btn-primary bg-green-400 text-zinc-600 rounded-md border-0 my-2 w-full" type="submit">{loading ? <ButtonSpinner /> : "Login"}</button>
             </form>
-          </div>
-        </div>
-      </dialog>
-
+      
+    
       {/**Sign up prompt */}
-      <div className="flex flex-row gap-2 items-center absolute bottom-4">
+      <div className="flex flex-row gap-2 items-center my-4">
         <p className="text-md">Dont have an account? </p>
-        <Link href="/auth/register/"  className="text-blue-600 text-md underline">Register</Link>
+        <Link href="/auth/register/"  className="text-green-900 text-md">Register</Link>
       </div>
     </div>
   )

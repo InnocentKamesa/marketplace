@@ -57,7 +57,6 @@ function SearchContent() {
       const responseJson = await response.json();
       const results = responseJson.data.products;
       if(!results || results.length === 0) {
-        setProducts([]);
         setLoading(false);
       } else {
         setTimeout(()=>{
@@ -81,10 +80,9 @@ function SearchContent() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-gray-50 gap-2">
       {/* Search bar */}
       <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
-
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -109,9 +107,6 @@ function SearchContent() {
                 placeholder="Search items and services"
               />
 
-              <InputGroupAddon align="inline-end">
-                <X className="h-6 w-6 cursor-pointer" />
-              </InputGroupAddon>
             </InputGroup>
           </Field>
         </form>
@@ -125,7 +120,7 @@ function SearchContent() {
         
     <div>
         {/* Products */}
-      {!products ? (
+      {products.length === 0 ? (
         <div className="bg-gray-50 min-h-screen w-full flex justify-center items-center">
           <p className="font-extrabold text-2xl">
             No Items Found
@@ -148,7 +143,7 @@ function SearchContent() {
       {/* Bottom options */}
       <div className="bg-white shadow-md fixed bottom-0 z-50 flex flex-row w-full justify-center gap-18 px-4 py-2">
         <div className="flex flex-col gap-2">
-          <Funnel className="h-6 w-6" />
+          <Funnel className="h-4 w-4" />
           <p className="text-sm">Filter</p>
         </div>
 

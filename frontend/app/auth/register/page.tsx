@@ -98,7 +98,7 @@ export default function RegisterPage() {
             </div>
 
             {/**register form */}
-            <form method="POST" className="flex flex-col gap-2 px-2" onSubmit={onSubmit}>
+            <form method="POST" className="flex  w-full flex-col gap-2 px-2" onSubmit={onSubmit}>
 
                 {/**first and last */}
                 <div className="flex flex-row justify-between w-full">
@@ -149,7 +149,7 @@ export default function RegisterPage() {
             {/**Sign in prompt */}
             <div className="flex flex-row gap-2 items-center my-4">
                 <p className="text-md">Already have an account? </p>
-                <Link href="/auth/login/" className="text-blue-600 text-md underline">Login</Link>
+                <Link href="/auth/login/" className="text-green-900 text-md">Login</Link>
             </div>
         </div >
     )
