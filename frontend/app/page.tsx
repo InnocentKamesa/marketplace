@@ -51,7 +51,7 @@ type CategoryCardProps = {
 function CategoryCard({ text }: CategoryCardProps) {
   return (
     <div>
-      <div className="rounded-full text-zinc-600 shadow-md px-4 py-2 bg-green-400">
+      <div className="rounded-full text-zinc-600 shadow-md px-4 py-2 bg-green-400 line-clamp-1 text-sm font-semibold">
         <p>{text}</p>
       </div>
     </div>
