@@ -11,9 +11,10 @@ import { Search, X, ArrowLeft, ListSortDescending } from "lucide-react"
 import {useRouter} from "next/navigation";
 import {SectionCard} from "../components/card";
 import { List, Funnel} from 'lucide-react';
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import {useSearchParams} from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default function SearchPage() {
     const router = useRouter();
@@ -21,21 +22,50 @@ export default function SearchPage() {
     const [products, setProducts] = useState(null);
     const [query, setQuery] = useState(searchParams.get("query") || "");
 
+    const perfromSearch = async() => {
+        try{
+            const response = await fetch(`${API_URL}/api/products/search?query=${encodeURIComponent(query)}`);
+            if(!response.ok){
+                throw new Error("Failed to fetch search results");
+            }
+            const responseJson = await response.json();
+            setProducts(responseJson.data);
+            console.log("Search results:", responseJson.data);
+        }   
+        catch(err){
+            console.error("Search failed:", err);
+        }
+    }
+    useEffect(() => {
+        perfromSearch();
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+    }
     
     return (
         <div className="flex flex-col">
             <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
-                <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full">
+
+                <form onSubmit={() => {
+                    e.preventDefault();
+                    perfromSearch();
+                }}>
+                    <Field className="mt-6 mb-6 max-w-[90%] mx-auto w-full">
                     <InputGroup className="py-6 px-2 text-md">
                         <InputGroupAddon align="inline-start">
                             <ArrowLeft className="h-6 w-6 mr-4"  onClick={()=> {router.push("/")}}/>
                         </InputGroupAddon>
-                        <InputGroupInput id="input-group-search" value={query}  placeholder="Search items and services" />
+                        <InputGroupInput id="input-group-search" value={query} type="search" onChange={handleChange} placeholder="Search items and services" />
                         <InputGroupAddon align="inline-end">
                             <X className="h-6 w-6" />
                         </InputGroupAddon>
                     </InputGroup>
-                </Field>    
+                </Field>
+
+                </form>
+                    
             </div>
 
             {/**products view */}
