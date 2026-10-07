@@ -6,9 +6,10 @@ import { Search } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Field } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { MainCard, SectionCard, type ProductItem } from "./components/card";
+import { MainCard, SectionCard} from "./components/card";
 import { useRouter } from "next/navigation";
 import Section from "./components/section";
+import type { ProductItem } from "./types/product";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
