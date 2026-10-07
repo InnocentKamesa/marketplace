@@ -81,6 +81,7 @@ export default function HomePage() {
         }
 
         const result = await response.json();
+        console.log(result)
         const apiData = result?.data ?? {};
 
         if (!isMounted) return;
@@ -199,7 +200,7 @@ export default function HomePage() {
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between my-3">
-            <p className="text-sm">Recommended for you</p>
+            <p className="text-lg">Recommended for you</p>
           </div>
           <div className="grid grid-cols-2 gap-4 overflow-hidden">
             {recommendedProducts.map((product) => (
