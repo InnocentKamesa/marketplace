@@ -27,7 +27,7 @@ function ProductPageContents() {
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<ProductItem | null>(null);
 
     const productId = searchParams.get("id");
 
@@ -89,7 +89,7 @@ function ProductPageContents() {
                     </div>
 
                     {/**price */}
-                    <p className="font-bold text-lg text-black/80">MK {product.price?.toLocaleString()}</p>
+                    <p className="font-bold text-lg text-blacsk/80">MK {product.price?.toLocaleString()}</p>
 
                     {/**quantity */}
                     <div className="flex flex-col gap-2">
