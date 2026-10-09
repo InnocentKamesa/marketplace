@@ -62,12 +62,10 @@ function ProductPageContents() {
             {/**back */}            
             
                 <button className="p-2 rounded-full fixed top-4 left-4 bg-white shadow-md z-10"  onClick={() => router.back()} >
-                    <ArrowLeft className="w-4 h-4 text-zinc-600"/>
+                    <ArrowLeft className="w-6 h-6 text-zinc-600"/>
 
                 </button>
                 
-            
-
             {/**product details */}
             { product ? (
             <div className="flex flex-col gap-3">
