@@ -9,6 +9,16 @@ import Section from "../components/section";
 import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
+import {LoadingSpinner} from "../components/spinner";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  inStock: boolean;
+}
+
 
 const API_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5000"
 
@@ -17,7 +27,7 @@ function ProductPageContents() {
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
-    const [product, setProduct] = useState<ProductItem>(null as unknown as ProductItem);
+    const [product, setProduct] = useState<Product | null>(null);
 
     const productId = searchParams.get("id");
 
@@ -50,6 +60,7 @@ function ProductPageContents() {
 
     return (
         <div className="h-screen w-screen flex flex-col">
+
             {/**back */}            
             
                 <button className="p-2 rounded-full fixed top-4 left-4 bg-white shadow-md z-10"  onClick={() => router.back()} >
@@ -60,6 +71,7 @@ function ProductPageContents() {
             
 
             {/**product details */}
+            { product ? (
             <div className="flex flex-col gap-3">
                 <Image src="/headset preview.png" alt="product" width={90} height={50} className="w-full" />
                 {/**description */}
@@ -120,11 +132,17 @@ function ProductPageContents() {
                     {/**related products */}
                 </div>
             </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center h-full">
+                    <LoadingSpinner />
+                </div>
+            )
+            }
 
             {/**actions */}
             <div className="p-6 fixed bottom-0 w-full bg-white flex flex-row justify-between shadow-sm">
-                <button className="bg-white border-2 border-blue-600 text-blue-600 p-2 rounded-md w-full">Add to Cart</button>
-                <button className="bg-blue-600 text-white p-2 rounded-md ml-4 w-full ">Buy Now</button>
+                <button className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">Add to Cart</button>
+                <button className="bg-green-400 text-zinc-600 p-2 rounded-md ml-4 w-full ">Buy Now</button>
             </div>
         </div>
     )
