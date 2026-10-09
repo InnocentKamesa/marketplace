@@ -48,7 +48,7 @@ function ProductPageContents() {
     }
     catch(error){
         console.error("Error fetching product data:", error);
-        alert("Error fetching product data")
+        alert('Error fetching product data: ' + error);
     }
     }
 
