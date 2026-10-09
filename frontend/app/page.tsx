@@ -168,15 +168,11 @@ export default function HomePage() {
       <form onSubmit={(e) => {
         e.preventDefault();
         handleSearch("" + (document.getElementById("input-group-search") as HTMLInputElement)?.value);
-      }}>
-  <Field className="my-4 max-w-[90%] mx-auto rounded-sm border border-zinc-50 shadow-sm text-sm w-full" >
-        <InputGroup className="py-4 px-2 text-md">
-          <InputGroupInput id="input-group-search" placeholder="Search items and services" type="search"/>
-          <InputGroupAddon align="inline-end">
-            <Search className="h-6 w-6" />
-          </InputGroupAddon>
-        </InputGroup>
-      </Field>
+        
+      }}
+      className="flex "
+      >
+        <input type="search" placeholder="Search items & services" className="w-[90%] mx-auto rounded-sm px-2 py-3 my-3 border border-gray-300"/>
 
       </form>
       

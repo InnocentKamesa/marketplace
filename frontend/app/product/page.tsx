@@ -13,10 +13,14 @@ export default function ProductPage() {
     const [quantity, setQuantity] = useState(1);
     return (
         <div className="h-screen w-screen flex flex-col">
-            {/**header */}
-            <div className="p-6 flex flex-row sticky top-0 bg-white background-blur-md shadow-md w-full">
-                <ArrowLeft className="w-6 h-6" onClick={() => router.back()} />
-            </div>
+            {/**back */}            
+            
+                <button className="p-2 rounded-full fixed top-4 left-4 bg-white shadow-md z-10"  onClick={() => router.back()} >
+                    <ArrowLeft className="w-4 h-4 text-zinc-600"/>
+
+                </button>
+                
+            
 
             {/**product details */}
             <div className="flex flex-col gap-3">
@@ -24,8 +28,10 @@ export default function ProductPage() {
                 {/**description */}
                 <div className="px-6 flex flex-col gap-3 mb-25">
 
-                    <p className="text-lg font-semibold text-black/80">EarPods</p>
-                    <p className="text-md text-black/80">Product description, this is the product description for earpods</p>
+                    <div>
+                        <p className="text-md font-semibold text-black/80">EarPods</p>
+                        <p className="text-sm px-2 text-black/60">Product description, this is the product description for earpods</p>
+                    </div>
 
                     {/**ratings */}
                     <div className=" items-center flex flex-row gap-2 text-white bg-yellow-400 rounded-sm px-2 py-1 w-16">
