@@ -17,7 +17,7 @@ function ProductPageContents() {
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
-    const [product, setProduct] = useState<ProductItem[]>([]);
+    const [product, setProduct] = useState<ProductItem>(null as unknown as ProductItem);
 
     const productId = searchParams.get("id");
 
