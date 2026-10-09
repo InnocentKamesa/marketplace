@@ -183,14 +183,6 @@ export default function HomePage() {
 
       <div className="bg-gray-100 w-screen min-h-screen rounded-t-lg p-4 flex flex-col space-y-6 overflow-auto">
         <div className="flex flex-col gap-4">
-          <ScrollArea>
-            <div className="flex flex-row p-2 space-x-4 overflow-scroll-x">
-              {sectionCards.map((section) => (
-                <CategoryCard key={section.key} text={section.title} />
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" className="hidden" />
-          </ScrollArea>
 
           <ScrollArea>
             <div className="flex flex-row space-x-2 overflow-scroll-x">
