@@ -19,11 +19,9 @@ interface Product {
   inStock: boolean;
 }
 
-
-const API_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 function ProductPageContents() {
-
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
