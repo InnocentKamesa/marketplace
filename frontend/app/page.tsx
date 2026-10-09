@@ -167,12 +167,12 @@ export default function HomePage() {
       </div>
       <form onSubmit={(e) => {
         e.preventDefault();
-        handleSearch("" + (document.getElementById("input-group-search") as HTMLInputElement)?.value);
+        handleSearch("" + (document.getElementById("search") as HTMLInputElement)?.value);
         
       }}
       className="flex "
       >
-        <input type="search" placeholder="Search items & services" className="w-[90%] mx-auto rounded-sm px-2 py-3 my-3 border border-gray-300"/>
+        <input type="search" placeholder="Search items & services" id="search" className="w-[90%] mx-auto rounded-sm px-2 py-3 my-3 border border-gray-300"/>
 
       </form>
       

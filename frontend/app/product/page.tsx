@@ -3,14 +3,51 @@
 import { ArrowLeft, Star } from "lucide-react";
 import Image from "next/image";
 import { Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import Section from "../components/section";
 import { useRouter } from "next/navigation";
+import {useSearchParams} from "next/navigation";
+import type { ProductItem } from "../types/product";
 
-export default function ProductPage() {
+const API_URL = "http://localhost:5000"
+
+function ProductPageContents() {
+
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
+    const searchParams = useSearchParams();
+    const [product, setProduct] = useState<ProductItem[]>([]);
+
+    const productId = searchParams.get("id");
+
+
+    const fetchProduct = async() => {
+
+        try{
+        const response = await fetch(`${API_URL}/api/products/${productId}`, {
+            method:"GET"
+        });
+        if(!response.ok){
+            throw new Error("Failed to get product data")
+        };
+
+        const responseJson = await response.json();
+        console.log("product data", responseJson.product)
+        setProduct(responseJson.product)
+    }
+    catch(error){
+        console.error("Error fetching product data:", error);
+        alert("Error fetching product data")
+    }
+    }
+
+    useEffect(() => {
+
+    fetchProduct();
+    }, [productId]);
+
+
     return (
         <div className="h-screen w-screen flex flex-col">
             {/**back */}            
@@ -29,8 +66,8 @@ export default function ProductPage() {
                 <div className="px-6 flex flex-col gap-3 mb-25">
 
                     <div>
-                        <p className="text-md font-semibold text-black/80">EarPods</p>
-                        <p className="text-sm px-2 text-black/60">Product description, this is the product description for earpods</p>
+                        <p className="text-xl font-semibold text-black/80">{product.title}</p>
+                        <p className="text-sm px-2 text-black/60">{product.description}</p>
                     </div>
 
                     {/**ratings */}
@@ -40,7 +77,7 @@ export default function ProductPage() {
                     </div>
 
                     {/**price */}
-                    <p className="font-bold text-lg text-black/80">MK 350,000</p>
+                    <p className="font-bold text-lg text-black/80">MK {product.price?.toLocaleString()}</p>
 
                     {/**quantity */}
                     <div className="flex flex-col gap-2">
@@ -90,5 +127,13 @@ export default function ProductPage() {
                 <button className="bg-blue-600 text-white p-2 rounded-md ml-4 w-full ">Buy Now</button>
             </div>
         </div>
+    )
+}
+
+export default function ProductPage(){
+    return (
+        <Suspense>
+            <ProductPageContents />
+        </Suspense>
     )
 }
