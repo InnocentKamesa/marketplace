@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
 
-const API_URL = "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5000"
 
 function ProductPageContents() {
 
