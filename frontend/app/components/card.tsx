@@ -40,14 +40,10 @@ export function SectionCard({ product }: { product: ProductItem }) {
   const router = useRouter();
 
   return (
-    <div onClick={() => router.push(`/product?id=${product.id}`)} className="p-4 bg-zinc-50 max-w-45 flex flex-col shadow-lg rounded-md shrink-0 cursor-pointer">
+    <div onClick={() => router.push(`/product?id=${product.id}`)} className="p-4 bg-zinc-50 max-w-45 flex flex-col shadow-lg rounded-lg shrink-0 cursor-pointer">
       <Image alt={product.title} src="/headset preview.png" width={40} height={50} className="h-40 w-40 rounded-sm" />
       <div className="flex-1 flex flex-col gap-1 mt-2">
-        <p className="text-sm line-clamp-2">{product.title}</p>
-        <div className="items-center flex flex-row gap-1">
-          <Star className="h-4 w-4 text-yellow-400" />
-          <p className="text-sm">4.9</p>
-        </div>
+        <p className="text-md line-clamp-2">{product.title}</p>
         <p className="text-lg font-bold">{formatPrice(product.price)}</p>
       </div>
     </div>

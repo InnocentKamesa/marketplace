@@ -177,7 +177,7 @@ export default function HomePage() {
       </form>
       
 
-      <div className="bg-gray-100 w-screen min-h-screen rounded-t-lg p-4 flex flex-col space-y-6 overflow-auto">
+      <div className="bg-gray-200 w-screen min-h-screen rounded-t-lg p-4 flex flex-col space-y-6 overflow-auto">
         <div className="flex flex-col gap-4">
 
           <ScrollArea>
