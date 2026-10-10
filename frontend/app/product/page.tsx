@@ -20,7 +20,7 @@ interface Product {
   inStock: boolean;
 }
 
-const API_URL =  "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 function ProductPageContents() {
     const router = useRouter();
@@ -94,7 +94,11 @@ function ProductPageContents() {
 
                     <Image src="/headset preview.png" className="w-full my-6" alt={product.title} width={90} height={50} />
 
-                    
+                    {/**options */}
+                    <div className="flex p-3 flex-col gap-2 w-[95%] mx-auto rounded-lg min-h-20 bg-gray-100 shadow-sm">
+                        <p className="font-semibold text-xl">Options</p>
+
+                    </div>
 
                     {/**quantity */}
                     <div className="flex flex-col gap-2">
