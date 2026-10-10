@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {LoadingSpinner} from "../components/spinner";
+import { ShoppingCart } from "lucide-react";
 
 interface Product {
   id: number;
@@ -19,7 +20,7 @@ interface Product {
   inStock: boolean;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const API_URL =  "http://localhost:5000"
 
 function ProductPageContents() {
     const router = useRouter();
@@ -59,33 +60,41 @@ function ProductPageContents() {
     return (
         <div className="h-screen w-screen flex flex-col">
 
-            {/**back */}            
+            {/**header */}            
+            <div className="flex w-full flex-row items-center justify-between p-4 bg-white px-4 py-6">
             
-                <button className="p-2 rounded-full fixed top-4 left-4 bg-white shadow-md z-10"  onClick={() => router.back()} >
+
+                <button className=""  onClick={() => router.back()} >
                     <ArrowLeft className="w-6 h-6 text-zinc-600"/>
 
                 </button>
+
+                <button>
+                    <ShoppingCart  className="h-6 w-6 text-zinc-600"/>
+                </button>
+            </div>
+
+
                 
             {/**product details */}
             { product ? (
-            <div className="flex flex-col gap-3">
-                <Image src="/headset preview.png" alt="product" width={90} height={50} className="w-full" />
+            <div className="flex flex-col">
                 {/**description */}
-                <div className="px-6 flex flex-col gap-3 mb-25">
-
-                    <div>
-                        <p className="text-xl font-semibold text-black/80">{product.title}</p>
-                        <p className="text-sm px-2 text-black/60">{product.description}</p>
+                <div className="px-6 flex flex-col gap-2 mt-8">
+                    <div className="flex flex-col gap-2">
+                        <p className="font-bold text-md text-green-600">MK {product.price?.toLocaleString()}</p>
+                        <p className="text-2xl font-bold text-black/80">{product.title}</p>
                     </div>
 
-                    {/**ratings */}
-                    <div className=" items-center flex flex-row gap-2 text-white bg-yellow-400 rounded-sm px-2 py-1 w-16">
-                        <Star className="h-6 w-6 " />
-                        <p className="text-lg">4.9</p>
+                    {/**tab */}
+                    <div role="tablist" className="tabs tabs-border">
+                        <a role="tab" className="tab">Overview</a>
+                        <a role="tab" className="tab tab-active">Description</a>
                     </div>
 
-                    {/**price */}
-                    <p className="font-bold text-lg text-blacsk/80">MK {product.price?.toLocaleString()}</p>
+                    <Image src="/headset preview.png" className="w-full my-6" alt={product.title} width={90} height={50} />
+
+                    
 
                     {/**quantity */}
                     <div className="flex flex-col gap-2">
@@ -148,6 +157,7 @@ export default function ProductPage(){
     return (
         <Suspense>
             <ProductPageContents />
+     
         </Suspense>
     )
 }
