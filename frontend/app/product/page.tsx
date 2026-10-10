@@ -78,9 +78,9 @@ function ProductPageContents() {
                 
             {/**product details */}
             { product ? (
-            <div className="flex flex-col">
+            <div className="flex flex-col min-h-screen w-full bg-white rounded-t-lg">
                 {/**description */}
-                <div className="px-6 flex flex-col gap-2 mt-8">
+                <div className="px-6 flex flex-col gap-2 mt-4">
                     <div className="flex flex-col gap-2">
                         <p className="font-bold text-md text-green-600">MK {product.price?.toLocaleString()}</p>
                         <p className="text-2xl font-bold text-black/80">{product.title}</p>
@@ -95,10 +95,8 @@ function ProductPageContents() {
                     <Image src="/headset preview.png" className="w-full my-6" alt={product.title} width={90} height={50} />
 
                     {/**options */}
-                    <div className="flex p-3 flex-col gap-2 w-[95%] mx-auto rounded-lg min-h-20 bg-gray-100 shadow-sm">
+                    <div className="flex p-3 flex-col gap-3 w-[95%] mx-auto rounded-lg overflow-auto bg-gray-100 shadow-sm">
                         <p className="font-semibold text-xl">Options</p>
-
-                    </div>
 
                     {/**quantity */}
                     <div className="flex flex-col gap-2">
@@ -137,6 +135,9 @@ function ProductPageContents() {
                             <button className="bg-gray-200 text-gray-800 p-2 rounded-md">Express</button>
                         </div>
                     </div>
+
+                    </div>
+
 
                     {/**related products */}
                 </div>
