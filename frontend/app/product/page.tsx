@@ -68,13 +68,14 @@ function ProductPageContents() {
                     <ArrowLeft className="w-6 h-6 text-zinc-600"/>
 
                 </button>
-<div className="flex flex-row gap-2 items-center px-2">
-                <button>
-                    <ShoppingCart  className="h-6 w-6 text-zinc-600"/>
-                </button>
+<div className="flex flex-row gap-4 items-center px-2">
+
+                                <button>
+                  <Search className="h-6 w-6 text-zinc-600" />
+                </button>      
 
                 <button>
-                  <Search className="h-6 w-6 text-zinc-600" />
+                    <ShoppingCart  className="h-6 w-6 text-zinc-600"/>
                 </button>
 </div>
             </div>
