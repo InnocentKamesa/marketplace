@@ -61,7 +61,7 @@ function ProductPageContents() {
         <div className="h-screen w-screen flex flex-col">
 
             {/**header */}            
-            <div className="flex w-full flex-row items-center justify-between p-4 bg-white px-4 py-6">
+            <div className="flex w-full flex-row items-center justify-between bg-white px-4 py-6">
             
 
                 <button className=""  onClick={() => router.back()} >
@@ -80,7 +80,7 @@ function ProductPageContents() {
             { product ? (
             <div className="flex flex-col min-h-screen w-full bg-white rounded-t-lg">
                 {/**description */}
-                <div className="px-6 flex flex-col gap-2 mt-4">
+                <div className="px-6 flex flex-col gap-2 mt-2">
                     <div className="flex flex-col gap-2">
                         <p className="font-bold text-md text-green-600">MK {product.price?.toLocaleString()}</p>
                         <p className="text-2xl font-bold text-black/80">{product.title}</p>
