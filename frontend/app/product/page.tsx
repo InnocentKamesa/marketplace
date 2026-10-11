@@ -142,10 +142,6 @@ function ProductPageContents() {
                     {/**delivery options */}
                     <div className="flex flex-col gap-2">
                         <p className="text-md text-black/80">Delivery Options</p>
-                        <div className="flex flex-row gap-2">
-                            <button className="bg-gray-200 text-gray-800 p-2 rounded-md">Standard</button>
-                            <button className="bg-gray-200 text-gray-800 p-2 rounded-md">Express</button>
-                        </div>
                     </div>
 
                     </div>
