@@ -95,8 +95,8 @@ function ProductPageContents() {
                     <Image src="/headset preview.png" className="w-full my-6" alt={product.title} width={90} height={50} />
 
                     {/**options */}
-                    <div className="flex p-3 flex-col gap-3 mx-auto rounded-lg overflow-auto border border-gray-100 shadow-sm">
-                        <p className="font-semibold text-xl"></p>
+                    <div className="flex p-3 flex-col gap-3 mx-auto rounded-lg overflow-auto border border-gray-100 shadow-sm w-full">
+                        <p className="font-semibold text-xl">{product.price}</p>
                         <p className="font-semibold text-xl">Options</p>
 
                     {/**quantity */}
