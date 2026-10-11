@@ -96,7 +96,7 @@ function ProductPageContents() {
 
                     {/**options */}
                     <div className="flex p-3 flex-col gap-3 mx-auto rounded-lg overflow-auto border border-gray-100 shadow-sm w-full">
-                        <p className="font-semibold text-xl">{product.price}</p>
+                        <p className="font-semibold text-xl">MKW {product.price}</p>
                         <p className="font-semibold text-xl">Options</p>
 
                     {/**quantity */}
