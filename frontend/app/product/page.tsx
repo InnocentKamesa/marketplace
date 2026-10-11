@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {LoadingSpinner} from "../components/spinner";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Search } from "lucide-react";
 
 interface Product {
   id: number;
@@ -68,10 +68,15 @@ function ProductPageContents() {
                     <ArrowLeft className="w-6 h-6 text-zinc-600"/>
 
                 </button>
-
+<div className="flex flex-row gap-2 items-center px-2">
                 <button>
                     <ShoppingCart  className="h-6 w-6 text-zinc-600"/>
                 </button>
+
+                <button>
+                  <Search className="h-6 w-6 text-zinc-600" />
+                </button>
+</div>
             </div>
 
 
