@@ -134,6 +134,11 @@ function ProductPageContents() {
 
                     </div>
 
+                    <div className="flex flex-row gap-2">
+                      <p className="text-black/80">Payment method:</p>
+                      <p className="font-semibold">PayChangu</p>
+                    </div>
+
                     {/**delivery options */}
                     <div className="flex flex-col gap-2">
                         <p className="text-md text-black/80">Delivery Options</p>
