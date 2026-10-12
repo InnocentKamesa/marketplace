@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {LoadingSpinner} from "../components/spinner";
-import { ShoppingCart, Search } from "lucide-react";
+import { ShoppingCart, User, Search } from "lucide-react";
 
 interface Product {
   id: number;
@@ -101,8 +101,13 @@ function ProductPageContents() {
                     <Image src="/headset preview.png" className="w-full h-full my-6" alt={product.title} width={90} height={50} />
 
                     {/**Reviews */}
-                    <div>
-                        <p className="font-semibold text-md">Reviews (0)</p>
+                    <div className="flex flex-col gap-2">
+                        <p className="font-semibold text-md">Reviews (3)</p>
+                        <div className="flex flex-col gap-3">
+                        <CommentCard />
+                        <CommentCard />
+                        <CommentCard />
+                        </div>
                     </div>
                     
 
@@ -132,6 +137,21 @@ export default function ProductPage(){
             <ProductPageContents />
      
         </Suspense>
+    )
+}
+
+function CommentCard(){
+    return (
+        <div className="flex flex-row items-center gap-3">
+            <button className="rounded-full p-2 bg-gray-200">
+                <User  className="h-4 w-4 text-zinc-600"/>
+            </button>
+            <div className="flex flex-col gap-1">
+            <p className="line-clamp-1 text-md font-semibold">Innocent Kamesa</p>
+            <p className="text-md text-black/80">This is a beautiful product</p>
+            </div>
+
+        </div>
     )
 }
 
