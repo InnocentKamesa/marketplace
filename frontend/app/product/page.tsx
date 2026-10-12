@@ -98,53 +98,13 @@ function ProductPageContents() {
                         <a role="tab" className="tab tab-active">Description</a>
                     </div>
 
-                    <Image src="/headset preview.png" className="w-full my-6" alt={product.title} width={90} height={50} />
+                    <Image src="/headset preview.png" className="w-full h-full my-6" alt={product.title} width={90} height={50} />
 
-                    {/**options */}
-                    <div className="flex p-3 flex-col gap-3 mx-auto rounded-lg overflow-auto border border-gray-100 shadow-sm w-full">
-                        <p className="font-semibold text-xl">MKW {product.price}</p>
-                        <p className="font-semibold text-xl">Options</p>
-
-                    {/**quantity */}
-                    <div className="flex flex-col gap-2">
-                        <p className="text-md text-black/80">Select quantity</p>
-                        <div className="flex items-center gap-2">
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-9 w-9"
-                                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                            >
-                                <Minus className="h-4 w-4" />
-                            </Button>
-
-                            <span className="w-8 text-center font-medium">
-                                {quantity}
-                            </span>
-
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-9 w-9"
-                                onClick={() => setQuantity((q) => q + 1)}
-                            >
-                                <Plus className="h-4 w-4" />
-                            </Button>
-                        </div>
-
+                    {/**Reviews */}
+                    <div>
+                        <p className="font-semibold text-md">Reviews (0)</p>
                     </div>
-
-                    <div className="flex flex-row gap-2">
-                      <p className="text-black/80">Payment method:</p>
-                      <p className="font-semibold">PayChangu</p>
-                    </div>
-
-                    {/**delivery options */}
-                    <div className="flex flex-col gap-2">
-                        <p className="text-md text-black/80">Delivery Options</p>
-                    </div>
-
-                    </div>
+                    
 
 
                     {/**related products */}
@@ -172,5 +132,54 @@ export default function ProductPage(){
             <ProductPageContents />
      
         </Suspense>
+    )
+}
+
+function OPtionCard(){
+    return (
+        <div className="flex p-3 flex-col gap-3 mx-auto rounded-lg border border-gray-100 shadow-sm w-full">
+                        <p className="font-semibold text-xl my-2">MKW </p>
+                        <p className=" text-xl">Options</p>
+
+                    {/**quantity */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-md text-black/80">Select quantity</p>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-9 w-9"
+                                
+                            >
+                                <Minus className="h-4 w-4" />
+                            </Button>
+
+                            <span className="w-8 text-center font-medium">
+                                
+                            </span>
+
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-9 w-9"
+                                
+                            >
+                                <Plus className="h-4 w-4" />
+                            </Button>
+                        </div>
+
+                    </div>
+
+                    <div className="flex flex-row gap-2">
+                      <p className="text-black/80">Payment method:</p>
+                      <p className="font-semibold">PayChangu</p>
+                    </div>
+
+                    {/**delivery options */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-md text-black/80">Delivery Options</p>
+                    </div>
+
+                    </div>
     )
 }
