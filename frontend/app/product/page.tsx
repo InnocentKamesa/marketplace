@@ -20,6 +20,15 @@ interface Product {
   inStock: boolean;
 }
 
+const productData = {
+  latest: [
+    { id: 1, title: "Original JBL Earphones", description: "Wireless sound for lectures, workouts and everyday commute.", price: 35000, category: "electronics", type: "product" },
+    { id: 2, title: "Campus Study Desk", description: "Compact desk setup built for focused study sessions.", price: 29000, category: "campus-living", type: "product" },
+    { id: 3, title: "Portable Power Bank", description: "Fast-charging backup for phones, tablets and earbuds.", price: 22000, category: "essentials", type: "product" },
+  ],
+};
+
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 function ProductPageContents() {
@@ -113,6 +122,7 @@ function ProductPageContents() {
 
 
                     {/**related products */}
+                    <Section title="Related products" products={productData.latest}/>
                 </div>
             </div>
             ) : (
