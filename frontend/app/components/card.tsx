@@ -64,7 +64,7 @@ export function CartItemCard(){
                             <Button
                                 variant="outline"
                                 size="icon"
-                                className="h-8 w-8 border-gray-400"
+                                className="h-6 w-6 border-gray-400"
                                 
                             >
                                 <Minus className="h-4 w-4 text-zinc-600" />
@@ -77,7 +77,7 @@ export function CartItemCard(){
                             <Button
                                 variant="outline"
                                 size="icon"
-                                className="h-8 border-gray-400 w-8"
+                                className="h-6 border-gray-400 w-6"
                                 
                             >
                                 <Plus className="h-4 w-4 text-zinc-600" />
@@ -87,7 +87,7 @@ export function CartItemCard(){
               </div>
                     
               <button>
-                <Trash className="text-gray-400 h-6 w-6"/>
+                <Trash className="text-gray-400 h-4 w-4"/>
               </button>
           </div>
 
