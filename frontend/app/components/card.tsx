@@ -55,8 +55,8 @@ export function CartItemCard(){
     <div className="w-full rounded-lg shadow-sm flex flex-row gap-2 p-2 bg-gray-50 backdrop-blur-md">
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
         <div className="flex flex-col w-full gap-1">
-          <p className="text-lg text-semibold text-black/80">Wireless Earphones</p>
-          <p className="font-semibold text-lg">MKW 250, 000</p>
+          <p className="text-sm text-semibold text-black/80">Wireless Earphones</p>
+          <p className="font-semibold text-md">MKW 250, 000</p>
           <div className="w-full flex flex-row justify-betwen">
               <div className="w-full">
 
