@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star, Trash, Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { ProductItem } from "../types/product";
 
@@ -48,4 +48,50 @@ export function SectionCard({ product }: { product: ProductItem }) {
       </div>
     </div>
   );
+}
+
+export function CartItemCard(){
+  return (
+    <div className="w-full rounded-lg shadow-sm flex flex-row gap-2 p-2 bg-gray-50 backdrop-blur-md">
+        <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
+        <div className="flex flex-col w-full gap-1">
+          <p className="text-lg text-semibold text-black/80">Wireless Earphones</p>
+          <p className="font-semibold text-lg">MKW 250, 000</p>
+          <div className="w-full flex flex-row justify-betwen">
+              <div className="w-full">
+
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 w-8 border-gray-400"
+                                
+                            >
+                                <Minus className="h-4 w-4 text-zinc-600" />
+                            </Button>
+
+                            <span className="w-8 text-center font-medium">
+                                1
+                            </span>
+
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-8 border-gray-400 w-8"
+                                
+                            >
+                                <Plus className="h-4 w-4 text-zinc-600" />
+                            </Button>
+                        </div>
+
+              </div>
+                    
+              <button>
+                <Trash className="text-gray-400 h-6 w-6"/>
+              </button>
+          </div>
+
+        </div>
+    </div>
+  )
 }

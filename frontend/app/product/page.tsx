@@ -134,7 +134,7 @@ function ProductPageContents() {
 
             {/**actions */}
             <div className="p-6 fixed bottom-0 w-full bg-white flex flex-row justify-between shadow-sm">
-                <button className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">Add to Cart</button>
+                <button onClick={ () => {router.push("/cart")}} className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">Add to Cart</button>
                 <button className="bg-green-400 text-zinc-600 p-2 rounded-md ml-4 w-full ">Buy Now</button>
             </div>
         </div>
