@@ -8,15 +8,15 @@ import {
     clearCart
 } from "./controller.js";
 
-// import { authenticate } from "../middleware/auth.js";
+import { authenticate } from "../auth/middleware.js";
 
 const cartRouter = express.Router();
 
 // router.use(authenticate);
 
-cartRouter.get("/", getCart);
+cartRouter.get("/", authenticate, getCart);
 
-cartRouter.post("/items/", addToCart);
+cartRouter.post("/items/", authenticate, addToCart);
 
 cartRouter.patch(
     "/items/:itemId",

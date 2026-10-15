@@ -8,7 +8,12 @@ import {
 
 export const getCart = async (req, res) => {
 
-  const userId = 1;
+  const userId = req.user.id || null;
+
+  if(!userId){
+    return res.status(400).json({message:"Failed to retreive user id"})
+  }
+
     try {
         const cart = await getCartService(userId);
 
@@ -28,10 +33,20 @@ export const getCart = async (req, res) => {
 };
 
 export const addToCart = async (req, res) => {
-  const userId = 1;
+    const { productId, quantity } = req.body;
+    console.log(req.user)
+    const userId = req.user.id;
+
+    if (!productId || !quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "productId and quantity is required",
+      });
+    }
+
 
     try {
-        const { productId, quantity } = req.body;
+        
 
         const cartItem = await addToCartService({
             userId: userId,

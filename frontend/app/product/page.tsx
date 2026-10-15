@@ -9,7 +9,7 @@ import Section from "../components/section";
 import { useRouter } from "next/navigation";
 import {useSearchParams} from "next/navigation";
 import type { ProductItem } from "../types/product";
-import {LoadingSpinner} from "../components/spinner";
+import {LoadingSpinner, ButtonSpinner} from "../components/spinner";
 import { ShoppingCart, User, Search } from "lucide-react";
 
 interface Product {
@@ -29,13 +29,14 @@ const productData = {
 };
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const API_URL = "http://localhost:5000"
 
 function ProductPageContents() {
     const router = useRouter();
     const [quantity, setQuantity] = useState(1);
     const searchParams = useSearchParams();
     const [product, setProduct] = useState<ProductItem | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const productId = searchParams.get("id");
 
@@ -58,6 +59,47 @@ function ProductPageContents() {
         console.error("Error fetching product data:", error);
         alert('Error fetching product data: ' + error);
     }
+    }
+
+    const addProductToCart = async() => {
+        setLoading(true);
+
+        if(!quantity || quantity <= 0){
+            throw new Error("Please provide a valid product quantity!")
+        }
+        if(!product){
+            throw new Error("Please provide a valid product to add to cart!")
+        }
+        const payload = {
+            productId:product.id,
+            qunatity: quantity
+        }
+        try{
+            console.log(payload);
+            const response = await fetch(`${API_URL}/api/cart/items/`, {
+                method:"POST",
+                credentials:"include",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(payload)
+            }); 
+            if(!response.ok){
+                const responseJson = await response.json();
+            alert(responseJson.message)
+                setLoading(false);
+                throw new Error("Failed to add Product")
+            }
+            const responseJson = await response.json();
+            alert(responseJson)
+            setLoading(false);
+
+        }
+        catch (error){
+            console.error(error)
+        }
+    }
+    const handleAddToCart = async(e) => {
+        e.preventDefault();
+        addProductToCart()
     }
 
     useEffect(() => {
@@ -109,6 +151,38 @@ function ProductPageContents() {
 
                     <Image src="/headset preview.png" className="w-full h-full my-6" alt={product.title} width={90} height={50} />
 
+                    {/**quantity selector */}
+                    {/**quantity */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-md text-black/80">Select quantity</p>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-9 w-9"
+                                onClick={()=>{setQuantity(quantity -1)}}
+                                
+                            >
+                                <Minus className="h-4 w-4" />
+                            </Button>
+
+                            <span className="w-8 text-center font-medium">
+                                {quantity}
+                            </span>
+
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="h-9 w-9"
+                                onClick={()=>{setQuantity(quantity +1)}}
+                                
+                            >
+                                <Plus className="h-4 w-4" />
+                            </Button>
+                        </div>
+
+                    </div>
+
                     {/**Reviews */}
                     <div className="flex flex-col gap-2">
                         <p className="font-semibold text-md">Reviews (3)</p>
@@ -134,7 +208,7 @@ function ProductPageContents() {
 
             {/**actions */}
             <div className="p-6 fixed bottom-0 w-full bg-white flex flex-row justify-between shadow-sm">
-                <button onClick={ () => {router.push("/cart")}} className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">Add to Cart</button>
+                <button onClick={handleAddToCart} className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">{loading ? <ButtonSpinner /> : "Add To Cart"}</button>
                 <button className="bg-green-400 text-zinc-600 p-2 rounded-md ml-4 w-full ">Buy Now</button>
             </div>
         </div>
