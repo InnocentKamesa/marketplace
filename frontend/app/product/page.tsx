@@ -97,7 +97,7 @@ function ProductPageContents() {
             console.error(error)
         }
     }
-    const handleAddToCart = async(e) => {
+    const handleAddToCart = async(e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         addProductToCart()
     }
