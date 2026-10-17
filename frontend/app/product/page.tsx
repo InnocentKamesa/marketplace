@@ -73,7 +73,7 @@ function ProductPageContents() {
         }
         const payload = {
             productId:product.id,
-            qunatity: quantity
+            quantity: quantity
         }
         try{
             console.log(payload);
@@ -90,7 +90,7 @@ function ProductPageContents() {
                 throw new Error("Failed to add Product")
             }
             const responseJson = await response.json();
-            alert(responseJson)
+            alert(responseJson.message)
             setLoading(false);
 
         }
