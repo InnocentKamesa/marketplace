@@ -40,7 +40,7 @@ export const addToCart = async (req, res) => {
     if (!productId || !quantity) {
       return res.status(400).json({
         success: false,
-        message: "productId and quantity is required",
+        message: `productId and quantity is required: ${productId}, ${quantity}`,
       });
     }
 
