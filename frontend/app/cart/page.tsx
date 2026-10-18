@@ -7,12 +7,25 @@ import {useState, useEffect} from "react";
 import type {ProductItem} from "../types/product";
 
 
+export type CartItem = {
+  id: number;
+  cartId: number;
+  productId: number;
+  quantity: number;
+  createdAt: string; // ISO date string from API
+  updatedAt: string; // ISO date string from API
+  product: ProductItem;
+};
+
+export type Cart = {
+  items: CartItem[];
+};
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ||"http://localhost:5000"
 
 export default function CartPage(){
     const router = useRouter();
-    const [products, setProducts] = useState<ProductItem[]>([]);
+    const [cart, setCart] = useState<CartItem[]>([])
 
     const getCartItems = async() => {
         try{
@@ -30,7 +43,7 @@ export default function CartPage(){
                 throw new Error("No cart items found")
             }
             console.log(cart.items);
-            setProducts(cart.tems);
+            setCart(cart.items);
         }
         catch(error){
             console.error("Error:", error)
@@ -55,7 +68,7 @@ export default function CartPage(){
             </div>
 
             {/**body */}
-            { !products ?
+            { !cart ?
             (
                 <div className="w-full flex items-center h-screen">
                     <p>No items found</p>
@@ -64,7 +77,7 @@ export default function CartPage(){
             ):(
                 <div className="flex flex-col gap-3 px-2 w-full">
                 {
-                    products?.map( (product) => <CartItemCard product={product} key={product.id}/>)
+                    cart?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id}/>)
                 }
                 </div>
             )}
