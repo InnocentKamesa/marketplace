@@ -50,13 +50,13 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
-export function CartItemCard(){
+export function CartItemCard({product}: {product : ProductItem}){
   return (
     <div className="w-full rounded-lg shadow-sm flex flex-row gap-3 p-2 bg-gray-50 backdrop-blur-md">
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
         <div className="flex flex-col w-full justify-center gap-1 h-full">
-          <p className="text-md line-clamp-3 text-semibold text-black/80">Wireless Earphones</p>
-          <p className="font-semibold text-md">MKW 250, 000</p>
+          <p className="text-md line-clamp-3 text-semibold text-black/80">{product.title}</p>
+          <p className="font-semibold text-md">{product.price}</p>
           <div className="w-full flex flex-row justify-betwen px-2">
               <div className="w-full">
 

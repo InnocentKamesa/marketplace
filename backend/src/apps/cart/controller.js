@@ -19,7 +19,7 @@ export const getCart = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            cart
+            data:cart
         });
 
     } catch (error) {
