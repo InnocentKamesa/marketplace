@@ -29,7 +29,7 @@ export default function CartPage(){
                 alert("No cart items found");
                 throw new Error("No cart items found")
             }
-            console.log(cart);
+            console.log(cart.items.product);
             setProducts(cart.tems);
         }
         catch(error){

@@ -73,6 +73,8 @@ function ProductPageContents() {
         }
         const payload = {
             productId:product.id,
+            title:product.title,
+            price:product.price,
             quantity: quantity
         }
         try{
