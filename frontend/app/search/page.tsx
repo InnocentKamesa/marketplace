@@ -95,7 +95,7 @@ function SearchContent() {
               <InputGroupAddon align="inline-start">
                 <ArrowLeft
                   className="h-6 w-6 mr-4 cursor-pointer"
-                  onClick={() => router.push("/")}
+                  onClick={() => router.back()}
                 />
               </InputGroupAddon>
 
