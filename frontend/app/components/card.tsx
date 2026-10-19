@@ -50,12 +50,13 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
-const API_URL = "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5000"
 
 export function CartItemCard({product}: {product : ProductItem}){
   const router = useRouter();
   const handleDeleteProduct = async() => {
     const id = product.id;
+    console.log("Submitting")
     try{
       if(!id){
       throw new Error("Cannot perfom the requested opertion")
@@ -79,7 +80,7 @@ export function CartItemCard({product}: {product : ProductItem}){
 
   }
   return (
-    <div className="w-full rounded-lg shadow-sm flex flex-row gap-3 p-2 bg-gray-50 backdrop-blur-md">
+    <div className="w-full rounded-lg shadow-md flex flex-row gap-3 p-2 bg-white backdrop-blur-md">
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
         <div className="flex flex-col w-full justify-center gap-1 h-full">
           <p className="text-md line-clamp-3 text-semibold text-black/80">{product.title}</p>

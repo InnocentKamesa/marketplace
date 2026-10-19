@@ -36,15 +36,19 @@ export default function CartPage(){
                 credentials:"include"
             });
             if(!response.ok){
+
                 console.error("Failed to retreive cart items");
+            
                 setCartItems([]);
                 return;
             }
             const responseJson = await response.json();
-            const cartData = responseJson?.data as Cart | undefined;
+            const cartData = responseJson?.data as Cart | null;
             const items = cartData?.items ?? [];
+            console.log(cartData)
             setCartItems(items);
-            setCart(cart);
+            setCart(cartData);
+            
         }
         catch(error){
             console.error("Error:", error);
@@ -78,7 +82,7 @@ export default function CartPage(){
     }
 
     return (
-        <div className="w-full flex flex-col min-h-screen gap-4 mb-20">
+        <div className="w-full flex flex-col min-h-screen bg-gray-50 gap-4 mb-20">
             {/**header */}
             <div className="flex flex-row justify-between p-4 z-50 sticky top-0 bg-white">
 
@@ -92,7 +96,7 @@ export default function CartPage(){
             </div>
 
             {/**body */}
-            { !cart ?
+            { !cartItems ?
             (
                 <div className="w-full flex items-center h-screen">
                     <p>No items found</p>
