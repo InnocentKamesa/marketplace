@@ -20,7 +20,7 @@ export default function MenuBar({status}:{status:"logged"|"not-logged"}) {
       {/**avatar */}
       {
         status === "logged" ?
-        <ShoppingCart className="w-6 h-6 text-green-400"  onClick={ () => { router.push("/cart");}}/> :
+        <ShoppingCart className="w-7 h-7 text-green-600"  onClick={ () => { router.push("/cart");}}/> :
       
       <Button  className="text-sm text-zinc-600 shadow-sm p-4 bg-green-400" onClick={() => router.push("/auth/login")}>
         Sign In
