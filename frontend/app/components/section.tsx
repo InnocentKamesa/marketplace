@@ -18,7 +18,7 @@ export default function Section({ title, products }: SectionProps) {
       </div>
 
       <ScrollArea>
-        <div className="flex flex-row space-x-4 overflow-scroll-x">
+        <div className="flex flex-row space-x-4 overflow-scroll-x py-2">
           {visibleProducts.length > 0 ? (
             visibleProducts.map((product) => <SectionCard key={product.id} product={product} />)
           ) : (
