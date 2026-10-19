@@ -159,7 +159,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col text-sm text-black/80">
+    <div className="flex flex-col bg-gray-50 text-sm text-black/80">
       <MenuBar status={status}/>
       <div className="flex flex-col gap-1 px-4 pt-4">
         <p>Welcome  <span  className="font-bold">{user ? user.first : "."}</span></p>
