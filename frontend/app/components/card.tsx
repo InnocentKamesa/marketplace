@@ -19,7 +19,7 @@ export function MainCard({ product }: { product: ProductItem }) {
   const router = useRouter();
 
   return (
-    <div className="p-4 justify-between rounded-md shadow-lg flex flex-row gap-4 min-w-[95%] bg-zinc-50">
+    <div className="p-4 bg-white border-1 border-gray-200 justify-between rounded-md shadow-lg flex flex-row gap-4 min-w-[95%] bg-zinc-50">
       <div className="flex gap-4 max-w-[45%] flex-col">
         <p className="font-bold text-3xl">{product.title}</p>
         <p className="text-sm text-zinc-600 line-clamp-2">{product.description || "Fresh picks from your marketplace."}</p>

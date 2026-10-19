@@ -139,7 +139,7 @@ function ProductPageContents() {
                 
             {/**product details */}
             { product ? (
-            <div className="flex flex-col min-h-screen w-full bg-white rounded-t-lg">
+            <div className="flex mb-20 flex-col min-h-screen w-full bg-white rounded-t-lg">
                 {/**description */}
                 <div className="px-6 flex flex-col gap-2 mt-2">
                     <div className="flex flex-col gap-2">
