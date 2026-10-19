@@ -50,7 +50,7 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
-const API_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:5000"
+const API_URL =  "http://localhost:5000"
 
 export function CartItemCard({product}: {product : ProductItem}){
   const router = useRouter();
@@ -69,6 +69,9 @@ export function CartItemCard({product}: {product : ProductItem}){
         }
       });
       if(!response.ok){
+        console.log("reached");
+        const responseJson = await response.json();
+        alert(responseJson.message)
         throw new Error("Failed to delete cart item")
       }
       setTimeout( () => { alert("Cart item removed successfully"); router.refresh(); }, 200);
@@ -84,7 +87,7 @@ export function CartItemCard({product}: {product : ProductItem}){
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
         <div className="flex flex-col w-full justify-center gap-1 h-full">
           <p className="text-md line-clamp-3 text-semibold text-black/80">{product.title}</p>
-          <p className="font-semibold text-md">{product.price}</p>
+          <p className="font-semibold text-md">MKW {product.price}</p>
           <div className="w-full flex flex-row justify-betwen px-2">
               <div className="w-full">
 

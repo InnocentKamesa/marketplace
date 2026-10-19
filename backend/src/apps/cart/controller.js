@@ -112,7 +112,7 @@ export const updateCartItem = async (req, res) => {
 };
 
 export const removeFromCart = async (req, res) => {
-  const userId = req.user.id;
+  const userId = 6;
 
   if(!userId){
     return res.ststus(400).json({message:"User id required"})
