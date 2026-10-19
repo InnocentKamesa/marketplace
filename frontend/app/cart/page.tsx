@@ -18,14 +18,16 @@ export type CartItem = {
 };
 
 export type Cart = {
+    id:string;
   items: CartItem[];
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ||"http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:5000"
 
 export default function CartPage(){
     const router = useRouter();
-    const [cart, setCart] = useState<CartItem[]>([])
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cart,setCart] = useState<Cart | null>(null);
 
     const getCartItems = async() => {
         try{
@@ -34,24 +36,46 @@ export default function CartPage(){
                 credentials:"include"
             });
             if(!response.ok){
-                console.error("Failed to retreive cart items")
+                console.error("Failed to retreive cart items");
+                setCartItems([]);
+                return;
             }
             const responseJson = await response.json();
-            const cart = responseJson.data;
-            if(!cart){
-                alert("No cart items found");
-                throw new Error("No cart items found")
-            }
-            console.log(cart.items);
-            setCart(cart.items);
+            const cartData = responseJson?.data as Cart | undefined;
+            const items = cartData?.items ?? [];
+            setCartItems(items);
+            setCart(cart);
         }
         catch(error){
-            console.error("Error:", error)
+            console.error("Error:", error);
+            setCartItems([]);
         }
     }
     useEffect( () => {
         getCartItems();
     }, [])
+
+    const handleClearcart = async () => {
+        const cartId = cart.id;
+        if(!cart){
+            console.error("cart id is required")
+        }
+        try{
+            const response = await fetch (`${API_URL}/api/cart/`, {
+                method:"DELETE",
+                credentials:"include"
+            });
+            if(!response.ok){
+                throw new Error("Failed to clear cart")
+            };
+            alert("Cart cleared")
+            router.refresh()
+        }
+        catch (error){
+            console.error(error)
+        }
+            
+    }
 
     return (
         <div className="w-full flex flex-col min-h-screen gap-4 mb-20">
@@ -62,7 +86,7 @@ export default function CartPage(){
                     <ArrowLeft className="h-6 w-6 text-zinc-600"/>
                 </button>
                 <p className="font-bold text-lg">Shopping Cart</p>
-                <button>
+                <button onClick={handleClearcart}>
                     <Trash className="h-6 w-6 text-zinc-600"/>
                 </button>
             </div>

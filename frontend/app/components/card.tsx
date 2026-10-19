@@ -50,7 +50,34 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
+const API_URL = "http://localhost:5000"
+
 export function CartItemCard({product}: {product : ProductItem}){
+  const router = useRouter();
+  const handleDeleteProduct = async() => {
+    const id = product.id;
+    try{
+      if(!id){
+      throw new Error("Cannot perfom the requested opertion")
+      }
+      const response = await fetch (`${API_URL}/api/cart/items/${product.id}`, {
+        method:"DELETE",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      });
+      if(!response.ok){
+        throw new Error("Failed to delete cart item")
+      }
+      setTimeout( () => { alert("Cart item removed successfully"); router.refresh(); }, 200);
+
+    }
+    catch (error){
+      console.error("Error while removing cart item")
+    }
+
+  }
   return (
     <div className="w-full rounded-lg shadow-sm flex flex-row gap-3 p-2 bg-gray-50 backdrop-blur-md">
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
@@ -86,7 +113,7 @@ export function CartItemCard({product}: {product : ProductItem}){
 
               </div>
                     
-              <button>
+              <button onClick={handleDeleteProduct}>
                 <Trash className="text-gray-400 h-4 w-4"/>
               </button>
           </div>

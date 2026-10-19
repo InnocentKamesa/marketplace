@@ -112,7 +112,11 @@ export const updateCartItem = async (req, res) => {
 };
 
 export const removeFromCart = async (req, res) => {
-  const userId = 1;
+  const userId = req.user.id;
+
+  if(!userId){
+    return res.ststus(400).json({message:"User id required"})
+  }
 
     try {
         const { itemId } = req.params;
@@ -138,7 +142,7 @@ export const removeFromCart = async (req, res) => {
 };
 
 export const clearCart = async (req, res) => {
-  const userId = 1;
+  const userId =  req.user.id;
 
     try {
         await clearCartService(userId);

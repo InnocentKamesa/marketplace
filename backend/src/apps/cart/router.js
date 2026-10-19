@@ -25,9 +25,10 @@ cartRouter.patch(
 
 cartRouter.delete(
     "/items/:itemId",
+    authenticate,
     removeFromCart
 );
 
-cartRouter.delete("/", clearCart);
+cartRouter.delete("/", authenticate, clearCart);
 
 export default cartRouter;

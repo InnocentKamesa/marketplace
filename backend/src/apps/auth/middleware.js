@@ -4,7 +4,7 @@ export  const authenticate = (req, res, next) => {
     const accessToken = req.cookies.access;
 
     if(!accessToken){
-        return res.status(401).json({message:"Access token not found"})
+        return res.status(401).json({message:"Session expired, Please Login"})
     }
 
     try{
