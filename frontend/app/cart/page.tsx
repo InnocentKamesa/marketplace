@@ -56,8 +56,8 @@ export default function CartPage(){
     }, [])
 
     const handleClearcart = async () => {
-        const cartId = cart.id;
-        if(!cart){
+        const cartId = cart?.id;
+        if(!cartId){
             console.error("cart id is required")
         }
         try{
@@ -101,7 +101,7 @@ export default function CartPage(){
             ):(
                 <div className="flex flex-col gap-3 px-2 w-full">
                 {
-                    cart?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id}/>)
+                    cartItems?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id}/>)
                 }
                 </div>
             )}
