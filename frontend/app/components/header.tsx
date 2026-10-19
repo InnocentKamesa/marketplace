@@ -12,7 +12,7 @@ import {Button} from "@/components/ui/button";
 export default function MenuBar({status}:{status:"logged"|"not-logged"}) {
   const router = useRouter();
   return (
-    <div className="w-full px-4 py-4 sticky top-0 background-blur-md bg-white z-50 border-2 border-gray-100">
+    <div className="w-full px-3 py-4 sticky top-0 background-blur-md bg-white z-50 border-2 border-gray-100">
     {/**app abr */ }
     <div className="flex flex-row justify-between items-center">
       <SidebarTrigger/>
@@ -20,7 +20,7 @@ export default function MenuBar({status}:{status:"logged"|"not-logged"}) {
       {/**avatar */}
       {
         status === "logged" ?
-        <ShoppingCart className="w-6 h-6"  onClick={ () => { router.push("/cart");}}/> :
+        <ShoppingCart className="w-6 h-6 text-green-400"  onClick={ () => { router.push("/cart");}}/> :
       
       <Button  className="text-sm text-zinc-600 shadow-sm p-4 bg-green-400" onClick={() => router.push("/auth/login")}>
         Sign In
