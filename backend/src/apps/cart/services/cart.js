@@ -166,10 +166,11 @@ export const removeFromCart = async ({
     if (!cart) {
         throw new Error("Cart not found");
     }
+    console.log(`${cart.id}, ${itemId}`)
 
     const cartItem = await CartItem.findOne({
         where: {
-            id: itemId,
+            productId: itemId,
             cartId: cart.id,
         },
     });
@@ -190,6 +191,7 @@ export const removeFromCart = async ({
  * Remove all items from the cart
  */
 export const clearCart = async (userId) => {
+    
     const cart = await Cart.findOne({
         where: { userId },
     });

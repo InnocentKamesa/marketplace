@@ -51,8 +51,7 @@ export default function LoginPahge() {
       const data = await response.json();
       console.log("Login successful:", data);
       setTimeout( () => {
-        setLoading(false);
-        router.push("/")}, 3000)
+        router.push("/")}, 500)
     }
   
   catch(error) {

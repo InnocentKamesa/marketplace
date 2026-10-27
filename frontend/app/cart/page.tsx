@@ -63,13 +63,16 @@ export default function CartPage(){
         const cartId = cart?.id;
         if(!cartId){
             console.error("cart id is required")
+            return
         }
         try{
             const response = await fetch (`${API_URL}/api/cart/`, {
                 method:"DELETE",
-                credentials:"include"
+                credentials:"include",
             });
             if(!response.ok){
+                const {message} = await response.json();
+                console.log(message)
                 throw new Error("Failed to clear cart")
             };
             alert("Cart cleared")
@@ -79,6 +82,14 @@ export default function CartPage(){
             console.error(error)
         }
             
+    }
+
+    const handleQuantityChange = async(itemId, quantity) => {
+        console.log("updating quantity")
+        const cartItem = cartItems.find((item) => item.id === itemId);
+        console.log(cartItem)
+        cartItem.quantity = quantity;
+
     }
 
     return (
@@ -105,13 +116,17 @@ export default function CartPage(){
             ):(
                 <div className="flex flex-col gap-3 px-2 w-full">
                 {
-                    cartItems?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id}/>)
+                    cartItems?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id} quantity={cartItem.quantity} onQuantityChange={handleQuantityChange}/>)
                 }
                 </div>
             )}
 
             {/**options */}
-            <div className="w-full px-2 py-4 items-center flex fixed bottom-0 bg-white">
+            <div className="w-full px-2 py-4 items-center flex gap-2 flex-col fixed bottom-0 bg-white">
+                <div className="flex flex-row justify-between w-full px-2">
+                    <p className="text-md text-black/80">Total</p>
+                    <p className="text-md text-black font-bold">MK 40, 000</p>
+                </div>
                 <button className="w-full p-3 bg-green-400 flex gap-1 justify-between rounded-md">
                     <p className="text-md text-white font-bold">Proceed to checkout</p>
                     <ArrowRight className="w-6 h-6 text-zinc-600" />

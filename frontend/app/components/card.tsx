@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight, Star, Trash, Minus, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
 import type { ProductItem } from "../types/product";
+import {useState} from "react";
 
 
 const formatPrice = (value?: number | string) => {
@@ -52,7 +53,14 @@ export function SectionCard({ product }: { product: ProductItem }) {
 
 const API_URL =  "http://localhost:5000"
 
-export function CartItemCard({product}: {product : ProductItem}){
+type CartItemProps = {
+  product: ProductItem;
+  quantity:number;
+  onQuantityChange: (productId: string, quantity: number) => void;
+};
+
+
+export function CartItemCard({product, quantity, onQuantityChange}: CartItemProps){
   const router = useRouter();
   const handleDeleteProduct = async() => {
     const id = product.id;
@@ -62,7 +70,7 @@ export function CartItemCard({product}: {product : ProductItem}){
       throw new Error("Cannot perfom the requested opertion")
       }
       const response = await fetch (`${API_URL}/api/cart/items/${product.id}`, {
-        method:"DELETE",
+        method:"DELETE", 
         credentials:"include",
         headers:{
           "Content-Type":"application/json"
@@ -82,6 +90,8 @@ export function CartItemCard({product}: {product : ProductItem}){
     }
 
   }
+ 
+
   return (
     <div className="w-full rounded-lg shadow-md flex flex-row gap-3 p-2 bg-white backdrop-blur-md">
         <Image src="/headset preview.png" alt="product image" width={50} height={50} className="w-25 h-25" />
@@ -96,19 +106,21 @@ export function CartItemCard({product}: {product : ProductItem}){
                                 variant="outline"
                                 size="icon"
                                 className="h-6 w-6 border-gray-400"
+                                onClick={onQuantityChange(product.id, quantity-1)}
                                 
                             >
                                 <Minus className="h-4 w-4 text-zinc-600" />
                             </Button>
 
                             <span className="w-8 text-center font-medium">
-                                1
+                                {quantity}
                             </span>
 
                             <Button
                                 variant="outline"
                                 size="icon"
                                 className="h-6 border-gray-400 w-6"
+                                onClick={onQuantityChange(product.id, quantity+1)}
                                 
                             >
                                 <Plus className="h-4 w-4 text-zinc-600" />
