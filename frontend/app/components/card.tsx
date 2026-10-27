@@ -106,7 +106,7 @@ export function CartItemCard({product, quantity, onQuantityChange}: CartItemProp
                                 variant="outline"
                                 size="icon"
                                 className="h-6 w-6 border-gray-400"
-                                onClick={onQuantityChange(product.id, quantity-1)}
+                                onClick={ () => { onQuantityChange(product.id, quantity-1)}}
                                 
                             >
                                 <Minus className="h-4 w-4 text-zinc-600" />
@@ -120,7 +120,7 @@ export function CartItemCard({product, quantity, onQuantityChange}: CartItemProp
                                 variant="outline"
                                 size="icon"
                                 className="h-6 border-gray-400 w-6"
-                                onClick={onQuantityChange(product.id, quantity+1)}
+                                onClick={ () => {onQuantityChange(product.id, quantity+1)}}
                                 
                             >
                                 <Plus className="h-4 w-4 text-zinc-600" />
