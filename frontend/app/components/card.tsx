@@ -4,6 +4,7 @@ import { ArrowRight, Star, Trash, Minus, Plus } from "lucide-react";
 import { useRouter} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {useState} from "react";
+import type {CartItem} from "../cart/page";
 
 
 const formatPrice = (value?: number | string) => {
@@ -57,10 +58,13 @@ type CartItemProps = {
   product: ProductItem;
   quantity:number;
   onQuantityChange: (productId: number, quantity: number) => void;
+    setCartItems: React.Dispatch<
+        React.SetStateAction<CartItem[]>
+    >;
 };
 
 
-export function CartItemCard({product, quantity, onQuantityChange}: CartItemProps){
+export function CartItemCard({product, quantity, onQuantityChange, setCartItems}: CartItemProps){
   const router = useRouter();
   const handleDeleteProduct = async() => {
     const id = product.id;
@@ -82,7 +86,9 @@ export function CartItemCard({product, quantity, onQuantityChange}: CartItemProp
         alert(responseJson.message)
         throw new Error("Failed to delete cart item")
       }
-      setTimeout( () => { alert("Cart item removed successfully"); router.refresh(); }, 200);
+        setCartItems(prevItems =>
+            prevItems.filter(item => item.id !== product.id) 
+        );
 
     }
     catch (error){

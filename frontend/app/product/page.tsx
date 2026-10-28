@@ -114,11 +114,6 @@ function ProductPageContents() {
 
             {/**header */}            
             <div className="flex w-full flex-row items-center justify-between bg-white px-4 py-6">
-
-
-
-            
-
                 <button className=""  onClick={() => router.back()} >
                     <ArrowLeft className="w-6 h-6 text-zinc-600"/>
 
@@ -130,7 +125,7 @@ function ProductPageContents() {
                 </button>      
 
                 <button  onClick={() => router.push("/cart")}>
-                    <ShoppingCart  className="h-6 w-6 text-zinc-600"/>
+                    <ShoppingCart  className="h-8 w-8 text-green-600"/>
                 </button>
 </div>
             </div>

@@ -212,3 +212,69 @@ export const clearCart = async (userId) => {
         message: "Cart cleared",
     };
 };
+
+export const syncCartItemsOnCheckout = async(userId, items) => {
+
+    //get cart
+    const cart = await Cart.findOne({
+        where: { userId },
+    });
+
+    if (!cart) {
+        throw new Error("Cart not found");
+    }
+
+    //validate items
+    const productIds = items.map(item => item.productId);
+
+    const existingItems = await CartItem.findAll({
+    where: {
+        cartId: cart.id,
+        productId: productIds,
+    },
+    attributes: ["productId"],
+    });
+
+    if (existingItems.length !== productIds.length) {
+    return {
+        success:false,
+        message:"one or more products are not in cart"
+    }
+    }
+
+    //update items
+    const updatedItems = await sequelize.transaction(
+        async (transaction) => {
+            for (const item of items) {
+                await CartItem.update(
+                    { quantity: item.quantity },
+                    {
+                        where: {
+                            cartId: cart.id,
+                            productId: item.productId,
+                        },
+                        transaction,
+                    }
+                );
+            }
+
+            return await CartItem.findAll({
+                where: { cartId: cart.id },
+                include: ["product"],
+                transaction,
+            });
+        }
+    );
+
+    return {
+        success: true,
+        message: "Cart synchronized successfully",
+        data: updatedItems,
+    };
+
+
+
+
+
+     
+}

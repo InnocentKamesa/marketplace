@@ -9,6 +9,7 @@ import {
 } from "./controller.js";
 
 import { authenticate } from "../auth/middleware.js";
+import {cartSyncValidator} from "./validator.js";
 
 const cartRouter = express.Router();
 
@@ -22,6 +23,10 @@ cartRouter.patch(
     "/items/:itemId",
     updateCartItem
 );
+
+
+cartRouter.put("/items/sync", authenticate, cartSyncValidator, syncCart);
+
 
 cartRouter.delete(
     "/items/:itemId",

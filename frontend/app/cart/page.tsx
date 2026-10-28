@@ -5,6 +5,7 @@ import {CartItemCard} from "../components/card";
 import {useRouter} from "next/navigation";
 import {useState, useEffect, useMemo} from "react";
 import type {ProductItem} from "../types/product";
+import {ButtonSpinner} from "../components/spinner";
 
 
 export type CartItem = {
@@ -28,6 +29,7 @@ export default function CartPage(){
     const router = useRouter();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [cart,setCart] = useState<Cart | null>(null);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
 
 
 
@@ -39,6 +41,10 @@ export default function CartPage(){
                 credentials:"include"
             });
             if(!response.ok){
+                if(response.status === 401){
+                    alert("Session expired, Login");
+                    router.push("/auth/login")
+                }
 
                 console.error("Failed to retreive cart items");
             
@@ -107,6 +113,54 @@ export default function CartPage(){
 }, [cartItems]);
 
 
+    const handleProceedToCheckout = async (): Promise<void> => {
+        if (cartItems.length === 0 || isCheckingOut) {
+            return;
+        }
+
+    setIsCheckingOut(true);
+
+    try {
+        const response = await fetch(
+            `${API_URL}/api/cart/items/sync`,
+            {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items: cartItems.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                }),
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || result.success === false) {
+            throw new Error(
+                result.message ?? "Failed to synchronize cart"
+            );
+        }
+
+        // Navigate only after the backend sync succeeds.
+        alert("products synced")
+    } catch (error) {
+        console.error("Checkout preparation failed:", error);
+
+        alert(
+            error instanceof Error
+                ? error.message
+                : "Could not update your cart. Please try again."
+        );
+    } finally {
+        setIsCheckingOut(false);
+    }
+};
+
     return (
         <div className="w-full flex flex-col min-h-screen bg-gray-50 gap-4 mb-20">
             {/**header */}
@@ -132,7 +186,7 @@ export default function CartPage(){
             ):(
                 <div className="flex flex-col gap-3 px-2 w-full">
                 {
-                    cartItems?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id} quantity={cartItem.quantity} onQuantityChange={handleQuantityChange}/>)
+                    cartItems?.map( (cartItem) => <CartItemCard product={cartItem.product} key={cartItem.product.id} quantity={cartItem.quantity} setCartItems={setCartItems} onQuantityChange={handleQuantityChange}/>)
                 }
                 </div>
             )}
@@ -143,8 +197,9 @@ export default function CartPage(){
                     <p className="text-md text-black/80">Total</p>
                     <p className="text-md text-black font-bold">MK {total?.toFixed(2)}</p>
                 </div>
-                <button className="w-full p-3 bg-green-400 flex gap-1 justify-between rounded-md">
+                <button onClick={handleProceedToCheckout} className="w-full p-3 bg-green-400 flex gap-1 justify-between rounded-md">
                     <p className="text-md text-white font-bold">Proceed to checkout</p>
+                
                     <ArrowRight className="w-6 h-6 text-zinc-600" />
                 </button>
     

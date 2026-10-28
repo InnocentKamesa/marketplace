@@ -3,7 +3,8 @@ import {
     addToCart as addToCartService,
     updateCartItem as updateCartItemService,
     removeFromCart as removeFromCartService,
-    clearCart as clearCartService
+    clearCart as clearCartService,
+    syncCartItemsOnCheckout
 } from "./services/cart.js";
 
 export const getCart = async (req, res) => {
@@ -161,3 +162,24 @@ export const clearCart = async (req, res) => {
         });
     }
 };
+
+export const syncCart = async(req, res, next) => {
+    const updates = req.body;
+    const userId = req.user.id;
+
+    if(!data){
+        return res.status(400).json({message:"Expected product updates"})
+    }
+
+    try {
+        const response = await syncCartItemsOnCheckout(userId, updates); 
+
+        if(response.success === false){
+            return res.status(500).json({message:response.message})
+        }
+        return res.status(200).json({message:response.message, data:response.data})
+    }
+    catch (error){
+        next(error)
+    }
+}
