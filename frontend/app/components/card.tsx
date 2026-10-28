@@ -51,12 +51,12 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
-const API_URL =  "http://localhost:5000"
+const API_URL =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 type CartItemProps = {
   product: ProductItem;
   quantity:number;
-  onQuantityChange: (productId: string, quantity: number) => void;
+  onQuantityChange: (productId: number, quantity: number) => void;
 };
 
 
