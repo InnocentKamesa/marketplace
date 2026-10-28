@@ -199,8 +199,10 @@ export default function CartPage(){
                 </div>
                 <button onClick={handleProceedToCheckout} className="w-full p-3 bg-green-400 flex gap-1 justify-between rounded-md">
                     <p className="text-md text-white font-bold">Proceed to checkout</p>
-                
-                    <ArrowRight className="w-6 h-6 text-zinc-600" />
+                    {
+                        isCheckingOut ? (<ButtonSpinner />) :
+                        (<ArrowRight className="w-6 h-6 text-zinc-600" />)
+                    }
                 </button>
     
 
