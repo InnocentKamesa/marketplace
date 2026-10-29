@@ -1,55 +1,51 @@
 "use client";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton
-} from "@/components/ui/sidebar";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import {Menu} from "lucide-react";
+import {X, Plus, User2} from "lucide-react";
 
 
-export default function AppSideBar() {
-    return (
-        <Sidebar>
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <SidebarMenuButton>
-                                   <Menu className="w-4 h-4"/>
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem>
-                                    <span>Acme Inc</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
-        </Sidebar>
-    )
+import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton,  SidebarGroupAction, SidebarContent, SidebarGroup, SidebarHeader, SidebarFooter, SidebarGroupLabel, SidebarGroupContent } from "@/components/ui/sidebar";
+
+export function AppSideBar() {
+  return (
+    <Sidebar className="bg-white">
+
+        <div className="h-full w-[100%] bg-white p-3">
+      <SidebarHeader className=" flex justify-between flex-row">
+        <p className="text-lg font-semibold line-clamp-1">NRC Marketplace</p>
+        <X className="w-4 h-4 "/>
+        
+    </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup />
+        <SidebarGroup>
+            <SidebarGroupLabel className="font-semibold">Links</SidebarGroupLabel>
+  
+            <SidebarGroupContent>
+                <nav className="px-6">
+                    <ul className="flex flex-col">
+                        <li className="my-1 text-md"><a >Home</a></li>
+                        <li className="my-1 text-md"><a >Categories</a></li>
+                        <li className="my-1  text-md"><a >Explore</a></li>
+                        <li className="my-1  text-md"><a >Profile</a></li>
+                    </ul>
+
+                </nav>
+                
+            </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup />
+      </SidebarContent>
+      <SidebarFooter className="fixed bottom-0 my-4">
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton>
+          <User2 /> Logout
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  </SidebarFooter>
+  </div>
+      
+    </Sidebar>
+  )
 }
+

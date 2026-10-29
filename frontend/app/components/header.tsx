@@ -4,7 +4,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Menu, ShoppingCart } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
-import SideBar from "./sidebar";
+import {AppSideBar} from "./sidebar";
 import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";

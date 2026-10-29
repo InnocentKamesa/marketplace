@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "./globals.css";
-import SideBar from "./components/sidebar";
+import {AppSideBar} from "./components/sidebar";
 import { Inter, Poppins } from 'next/font/google';
 
 const poppins = Poppins({
@@ -30,6 +30,7 @@ export default function RootLayout({
       </head>
       <body className="bg-white h-screen  text-black" suppressHydrationWarning>
         <SidebarProvider>
+          <AppSideBar />
           {children}
           </SidebarProvider>
       </body>

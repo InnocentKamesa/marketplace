@@ -132,7 +132,7 @@ export default function CartPage(){
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
-                },
+                },  
                 body: JSON.stringify({
                     items: cartItems.map(item => ({
                         productId: item.productId,

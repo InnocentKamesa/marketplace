@@ -1,6 +1,7 @@
 "use client";
 
 import {ArrowLeft} from "lucide-react";
+import Image from "next/image";
 import {useRouter} from "next/navigation";
 
 
@@ -21,7 +22,7 @@ export default function CheckoutPage(){
 
 
             {/***main */}
-            <div className="px-4 flex flex-col gap-6">
+            <div className="px-4 flex flex-col gap-6 mb-20">
             {/**summary */}
             <div className="flex flex-col gap-3">
                 <p className="text-md font-semibold">Order Summary</p>
@@ -69,12 +70,14 @@ export default function CheckoutPage(){
             </div>
 
             {/**payment */}
-            <div>
-                <p className="text-md font-semibold">Payment</p>
-                <div className="w-[95%] rounded-lg mx-auto  min-h-30 shadow-md bg-gray-100">
-                 
+            <div className="flex flex-col gap-2">
 
-                </div>
+                <p className="text-md font-semibold">Payment</p>
+                    <div className=" rounded-lg bg-white my-2 shadow-md p-4 flex items-center flex-col gap-3 w-40">
+                        <Image src="/paychangu_logo.png"  width={30} className="w-full h-10" height={30} alt="paychangu logo"/>
+                        <p className="text-sm text-black/80 text-semibold">PayChangu</p>
+                    </div>
+                 
 
             </div>
 
@@ -92,22 +95,22 @@ export default function CheckoutPage(){
 
 
             {/**actions */}
-            <div className="w-full px-2 py-4 items-center flex gap-2 flex-col fixed bottom-0 bg-white">
+            <div className="w-full px-2 py-4 items-center flex gap-1 flex-col fixed bottom-0 bg-white">
                 <div className="flex flex-row justify-between w-full px-2">
-                    <p className="text-md text-black/80">Order</p>
+                    <p className="text-md text-black/80">Order:</p>
                     <p className="text-md text-black font-bold">MK 500, 0000</p>
                 </div>
 
                 <div className="flex flex-row justify-between w-full px-2">
-                    <p className="text-md text-black/80">Delivery</p>
+                    <p className="text-md text-black/80">Delivery:</p>
                     <p className="text-md text-black font-bold">MK 0</p>
                 </div>
 
                 <div className="flex flex-row justify-between w-full px-2">
-                    <p className="text-md text-black/80">Summary</p>
+                    <p className="text-md text-black/80">Summary:</p>
                     <p className="text-md text-black font-bold">MK 500, 0000</p>
                 </div>
-                <button className="w-full p-3 bg-green-400  rounded-md">
+                <button className="w-full p-3 my-2 bg-green-400  rounded-md">
                     <p className="text-md text-white font-bold">Submit Order</p>
                 </button>
     
