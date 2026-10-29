@@ -5,7 +5,8 @@ import {
     addToCart,
     updateCartItem,
     removeFromCart,
-    clearCart
+    clearCart,
+    syncCart
 } from "./controller.js";
 
 import { authenticate } from "../auth/middleware.js";
