@@ -114,14 +114,18 @@ export default function CartPage(){
 
 
     const handleProceedToCheckout = async (): Promise<void> => {
+        console.log("0. Clicked! cartItems length:", cartItems.length, "isCheckingOut:", isCheckingOut);
         if (cartItems.length === 0 || isCheckingOut) {
             return;
         }
 
     setIsCheckingOut(true);
+    console.log("reached")
 
     try {
+        console.log("reached")
         const response = await fetch(
+            
             `${API_URL}/api/cart/items/sync`,
             {
                 method: "PUT",
@@ -139,6 +143,7 @@ export default function CartPage(){
         );
 
         const result = await response.json();
+        console.log("reached")
 
         if (!response.ok || result.success === false) {
             throw new Error(
@@ -148,6 +153,7 @@ export default function CartPage(){
 
         // Navigate only after the backend sync succeeds.
         alert("products synced")
+        setIsCheckingOut(false)
     } catch (error) {
         console.error("Checkout preparation failed:", error);
 
@@ -156,8 +162,6 @@ export default function CartPage(){
                 ? error.message
                 : "Could not update your cart. Please try again."
         );
-    } finally {
-        setIsCheckingOut(false);
     }
 };
 

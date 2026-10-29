@@ -112,6 +112,7 @@ export function CartItemCard({product, quantity, onQuantityChange, setCartItems}
                                 variant="outline"
                                 size="icon"
                                 className="h-6 w-6 border-gray-400"
+                                disabled={quantity <2}
                                 onClick={ () => { onQuantityChange(product.id, quantity-1)}}
                                 
                             >
