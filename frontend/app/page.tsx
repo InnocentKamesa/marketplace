@@ -193,7 +193,7 @@ export default function HomePage() {
         <div className="flex flex-col gap-4">
 
           <ScrollArea>
-            <div className="flex flex-row space-x-2 overflow-scroll-x">
+            <div className="flex flex-row space-x-2 p-2 overflow-scroll-x">
               {featuredProducts.map((product) => (
                 <MainCard key={product.id} product={product} />
               ))}
