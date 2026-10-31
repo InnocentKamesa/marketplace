@@ -26,14 +26,15 @@ cartRouter.patch(
 );
 
 
-cartRouter.put("/items/sync", authenticate, cartSyncValidator, syncCart);
+cartRouter.put("/items/sync", authenticate, syncCart);
 
 
 cartRouter.delete(
     "/items/:itemId",
+    authenticate,
     removeFromCart
 );
 
-cartRouter.delete("/", clearCart);
+cartRouter.delete("/", authenticate, clearCart);
 
 export default cartRouter;

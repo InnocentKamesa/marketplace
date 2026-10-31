@@ -1,5 +1,6 @@
 import { Cart, CartItem} from "../../../models/cart.js";
 import { products } from "../../../models/products.js";
+import sequelize from "../../../config/db.js";
 
 /**
  * Get the user's cart
@@ -159,6 +160,7 @@ export const removeFromCart = async ({
     userId,
     itemId,
 }) => {
+    console.log(userId)
     const cart = await Cart.findOne({
         where: { userId },
     });
@@ -234,6 +236,7 @@ export const syncCartItemsOnCheckout = async(userId, items) => {
     },
     attributes: ["productId"],
     });
+    
 
     if (existingItems.length !== productIds.length) {
     return {
@@ -241,6 +244,21 @@ export const syncCartItemsOnCheckout = async(userId, items) => {
         message:"one or more products are not in cart"
     }
     }
+    //get products and validate quantities
+    const actualProducts = await products.findAll(
+        {
+            where:{
+                id:productIds
+            }
+        }
+    );
+    if(!actualProducts){
+        return {
+            success:false,
+            message:"Products not found, make sure they are available in stock"
+        }
+    }
+
 
     //update items
     const updatedItems = await sequelize.transaction(
@@ -270,11 +288,5 @@ export const syncCartItemsOnCheckout = async(userId, items) => {
         success: true,
         message: "Cart synchronized successfully",
         data: updatedItems,
-    };
-
-
-
-
-
-     
+    };     
 }

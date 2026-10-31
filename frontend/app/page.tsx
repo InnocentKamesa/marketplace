@@ -10,8 +10,10 @@ import { MainCard, SectionCard} from "./components/card";
 import { useRouter } from "next/navigation";
 import Section from "./components/section";
 import type { ProductItem } from "./types/product";
+import {LoadingSpinner} from "./components/spinner";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 type HomeSectionsData = {
   latest: ProductItem[];
@@ -49,6 +51,11 @@ type CategoryCardProps = {
   text: string;
 };
 
+type UserProps = {
+  id:string;
+  first:string;
+}
+
 function CategoryCard({ text }: CategoryCardProps) {
   return (
     <div>
@@ -62,10 +69,8 @@ function CategoryCard({ text }: CategoryCardProps) {
 export default function HomePage() {
   const router = useRouter();
   const [status, setStatus] = useState<"logged" | "not-logged">("not-logged");
-  const [user, setUser] = useState({
-    id:1,
-    first:"User",
-  });
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<UserProps | null>(null);
   const [homeSections, setHomeSections] = useState<HomeSectionsData>(fallbackHomeData);
 
   useEffect(() => {
@@ -127,6 +132,7 @@ export default function HomePage() {
 
     loadHomeData();
     fetchUserData();
+    setLoading(false);
 
     return () => {
       isMounted = false;
@@ -159,9 +165,16 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col bg-gray-50 md:w-[60%] md:mx-auto text-sm text-black/80">
-      <MenuBar status={status}/>
-      <div className="flex flex-col gap-1 px-4 pt-4">
+    <div className="flex w-full flex-col bg-gray-50 md:w-[60%] md:mx-auto text-sm text-black/80">
+      {loading ? (
+        <div className="flex flex-col items-center justify-center h-full">
+                    <LoadingSpinner />
+        </div>
+      ) : (
+        <div>
+          <MenuBar status={status}/>
+        <div className="flex flex-col gap-1 px-4 pt-4">
+
         <p>Welcome  <span  className="font-bold">{user ? user.first : "."}</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
@@ -206,5 +219,10 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+    
+
+      )}
+      </div>
+      
   );
 }

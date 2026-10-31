@@ -113,7 +113,7 @@ export const updateCartItem = async (req, res) => {
 };
 
 export const removeFromCart = async (req, res) => {
-  const userId = 6;
+  const userId = req.user.id;
 
   if(!userId){
     return res.ststus(400).json({message:"User id required"})
@@ -166,13 +166,15 @@ export const clearCart = async (req, res) => {
 export const syncCart = async(req, res, next) => {
     const updates = req.body;
     const userId = req.user.id;
+    console.log(updates);
 
-    if(!data){
+    if(!updates){
         return res.status(400).json({message:"Expected product updates"})
     }
 
     try {
-        const response = await syncCartItemsOnCheckout(userId, updates); 
+        const items = updates.items;
+        const response = await syncCartItemsOnCheckout(userId, items); 
 
         if(response.success === false){
             return res.status(500).json({message:response.message})

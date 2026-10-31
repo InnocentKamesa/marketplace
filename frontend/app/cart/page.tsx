@@ -5,7 +5,7 @@ import {CartItemCard} from "../components/card";
 import {useRouter} from "next/navigation";
 import {useState, useEffect, useMemo} from "react";
 import type {ProductItem} from "../types/product";
-import {ButtonSpinner} from "../components/spinner";
+import {ButtonSpinner, LoadingSpinner} from "../components/spinner";
 
 
 export type CartItem = {
@@ -23,17 +23,21 @@ export type Cart = {
   items: CartItem[];
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
+
 
 export default function CartPage(){
     const router = useRouter();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [cart,setCart] = useState<Cart | null>(null);
     const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const [loading, setLoading] = useState(true);
 
 
 
     const getCartItems = async() => {
+        setLoading(true);
 
         try{
             const response = await fetch(`${API_URL}/api/cart/`, {
@@ -49,6 +53,7 @@ export default function CartPage(){
                 console.error("Failed to retreive cart items");
             
                 setCartItems([]);
+                setLoading(false);
                 return;
             }
             const responseJson = await response.json();
@@ -57,6 +62,7 @@ export default function CartPage(){
             console.log(cartData)
             setCartItems(items);
             setCart(cartData);
+            setLoading(false)
             
         }
         catch(error){
@@ -113,7 +119,8 @@ export default function CartPage(){
 }, [cartItems]);
 
 
-    const handleProceedToCheckout = async (): Promise<void> => {
+    const handleProceedToCheckout = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        e.preventDefault();
         console.log("0. Clicked! cartItems length:", cartItems.length, "isCheckingOut:", isCheckingOut);
         if (cartItems.length === 0 || isCheckingOut) {
             return;
@@ -124,6 +131,13 @@ export default function CartPage(){
 
     try {
         console.log("reached")
+        const payload = {
+                    items: cartItems.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    }))}
+        console.log(payload)
+
         const response = await fetch(
             
             `${API_URL}/api/cart/items/sync`,
@@ -133,26 +147,21 @@ export default function CartPage(){
                 headers: {
                     "Content-Type": "application/json",
                 },  
-                body: JSON.stringify({
-                    items: cartItems.map(item => ({
-                        productId: item.productId,
-                        quantity: item.quantity,
-                    })),
-                }),
-            }
-        );
+                body: JSON.stringify(payload),
+                });
 
         const result = await response.json();
         console.log("reached")
 
         if (!response.ok || result.success === false) {
+            setIsCheckingOut(false);
             throw new Error(
                 result.message ?? "Failed to synchronize cart"
             );
         }
 
         // Navigate only after the backend sync succeeds.
-        alert("products synced")
+        setTimeout(() => {router.push("/checkout")}, 200)
         setIsCheckingOut(false)
     } catch (error) {
         console.error("Checkout preparation failed:", error);
@@ -180,7 +189,13 @@ export default function CartPage(){
             </div>
 
             {/**body */}
-            { cartItems.length == 0  ?
+            {loading ? 
+            (<div className="flex flex-col items-center justify-center h-full">
+                    <LoadingSpinner />
+            </div>
+            ): (
+                <div>
+                    { cartItems.length == 0  ?
             (
                 <div className="w-full flex flex-col gap-3 font-semibold  items-center justify-center h-screen">
                     <p>No items found</p>
@@ -195,6 +210,9 @@ export default function CartPage(){
                 </div>
             )}
 
+                </div>
+            )}
+            
             {/**options */}
             <div className="w-full px-2 py-4 items-center flex gap-2 flex-col fixed bottom-0 bg-white">
                 <div className="flex flex-row justify-between w-full px-2">

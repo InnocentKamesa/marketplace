@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 import PhoneInput from 'react-phone-number-input';
 import {ButtonSpinner} from "../../components/spinner";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000/api"
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
+
 
 export default function RegisterPage() {
     const router = useRouter();

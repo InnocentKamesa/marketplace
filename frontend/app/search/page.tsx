@@ -21,9 +21,8 @@ import {SectionCard} from "../components/card";
 import {LoadingSpinner} from "..//components/spinner";
 import type { ProductItem } from "../types/product";
 
-const API_URL =
-process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
 function SearchContent() {
@@ -80,35 +79,30 @@ function SearchContent() {
   };
 
   return (
-    <div className="flex flex-col bg-gray-50 gap-2">
+    <div className="flex flex-col gap-2">
       {/* Search bar */}
-      <div className="shadow-md background-white/90 backdrop-blur-md sticky top-0 z-50 w-screen">
-        <form
+      <div className="px-4 pt-4  shadow-md background-white backdrop-blur-md sticky top-0 z-50 w-screen flex flex-col gap-2">
+        {/**header */}
+            <div className="flex flex-row justify-between z-50 sticky top-0 bg-white">
+              
+
+                <button onClick={ () => { router.back(); }}>
+                    <ArrowLeft className="h-6 w-6 text-zinc-600"/>
+                </button>
+                <p className="font-bold text-lg">Search</p>
+                <button>
+                    <Funnel className="h-6 w-6 text-zinc-600"/>
+                </button>
+            </div>
+            <form
           onSubmit={(e) => {
             e.preventDefault();
             setLoading(true);
             performSearch();
           }}
         >
-          <Field className="my-3 max-w-[90%] mx-auto w-full">
-            <InputGroup className="py-4 px-2 text-md">
-              <InputGroupAddon align="inline-start">
-                <ArrowLeft
-                  className="h-6 w-6 mr-4 cursor-pointer"
-                  onClick={() => router.back()}
-                />
-              </InputGroupAddon>
-
-              <InputGroupInput
-                id="input-group-search"
-                value={query}
-                type="search"
-                onChange={handleChange}
-                placeholder="Search items and services"
-              />
-
-            </InputGroup>
-          </Field>
+           <input type="search" placeholder="Search items & services" id="input-group-search" value={query} onChange={handleChange} className="rounded-sm px-2 py-3 my-3 border-1 border-gray-300 w-full"/>
+          
         </form>
       </div>
 
@@ -122,7 +116,7 @@ function SearchContent() {
         {/* Products */}
       {products.length === 0 ? (
         <div className="bg-gray-50 min-h-screen w-full flex justify-center items-center">
-          <p className="font-extrabold text-2xl">
+          <p className="font-bold text-lg">
             No Items Found
           </p>
         </div>
@@ -137,22 +131,6 @@ function SearchContent() {
     </div>
       )
     }
-      
-    
- 
-      {/* Bottom options */}
-      <div className="bg-white shadow-md fixed bottom-0 z-50 flex flex-row w-full justify-center gap-18 px-4 py-2">
-        <div className="flex flex-col gap-2">
-          <Funnel className="h-4 w-4" />
-          <p className="text-sm">Filter</p>
-        </div>
-
-        <div className="flex flex-col gap-2 items-start">
-          <ListSortDescending className="h-4 w-4" />
-          <p className="text-sm">Sort</p>
-        </div>
-      </div>
-
     </div>
   );
 }
@@ -170,3 +148,6 @@ export default function SearchPage() {
     </Suspense>
   );
 }
+
+
+

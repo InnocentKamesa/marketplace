@@ -25,7 +25,7 @@ export function MainCard({ product }: { product: ProductItem }) {
       <div className="flex gap-4 max-w-[45%] flex-col">
         <p className="font-bold text-3xl">{product.title}</p>
         <p className="text-sm text-zinc-600 line-clamp-2">{product.description || "Fresh picks from your marketplace."}</p>
-        <Button variant="outline" className="text-green-400" onClick={() => router.push("/products")}>
+        <Button variant="outline" className="text-green-400" onClick={() => router.push(`/product?id=${product.id}`)}>
           <span>Shop now</span>
           <ArrowRight />
         </Button>
@@ -52,7 +52,7 @@ export function SectionCard({ product }: { product: ProductItem }) {
   );
 }
 
-const API_URL =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const API_URL =  "http://localhost:5000"
 
 type CartItemProps = {
   product: ProductItem;

@@ -28,8 +28,8 @@ const productData = {
   ],
 };
 
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 function ProductPageContents() {
     const router = useRouter();
@@ -37,6 +37,8 @@ function ProductPageContents() {
     const searchParams = useSearchParams();
     const [product, setProduct] = useState<ProductItem | null>(null);
     const [loading, setLoading] = useState(false);
+    const [buyNowloading, setbuyNowLoading] = useState(false);
+    const [addCartloading, setaddCartLoading] = useState(false);
 
     const productId = searchParams.get("id");
 
@@ -62,8 +64,6 @@ function ProductPageContents() {
     }
 
     const addProductToCart = async() => {
-        
-        setLoading(true);
 
         if(!quantity || quantity <= 0){
             throw new Error("Please provide a valid product quantity!")
@@ -99,8 +99,18 @@ function ProductPageContents() {
         }
     }
     const handleAddToCart = async(e: React.MouseEvent<HTMLButtonElement>) => {
+        setaddCartLoading(true);
         e.preventDefault();
-        addProductToCart()
+        addProductToCart();
+        setaddCartLoading(false);
+        
+    }
+
+    const handleBuyNow = async(e: React.MouseEvent<HTMLButtonElement>) => {
+        setbuyNowLoading(true)
+        e.preventDefault();
+        addProductToCart();
+        setTimeout(() => {router.push("/cart");setbuyNowLoading(false)}, 200);
     }
 
     useEffect(() => {
@@ -207,8 +217,8 @@ function ProductPageContents() {
 
             {/**actions */}
             <div className="p-6 fixed bottom-0 w-full bg-white flex flex-row justify-between shadow-sm">
-                <button onClick={handleAddToCart} className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">{loading ? <ButtonSpinner /> : "Add To Cart"}</button>
-                <button className="bg-green-400 text-zinc-600 p-2 rounded-md ml-4 w-full ">Buy Now</button>
+                <button onClick={handleAddToCart} className="bg-white border-1 border-green-400 bg-white text-green-400 p-2 rounded-md w-full">{addCartloading ? <ButtonSpinner /> : "Add To Cart"}</button>
+                <button onClick={handleBuyNow} className="bg-green-400 text-zinc-600 p-2 rounded-md ml-4 w-full ">{buyNowloading ? <ButtonSpinner /> : "Buy Now"}</button>
             </div>
         </div>
     )
