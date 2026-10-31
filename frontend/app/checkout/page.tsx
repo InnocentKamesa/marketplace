@@ -43,7 +43,7 @@ export default function CheckoutPage(){
                 <div className="w-[95%] rounded-lg mx-auto  min-h-30 shadow-md bg-white flex flex-col gap-2 p-3">
 
                     <fieldset className="fieldset w-full">
-                        <legend className="fieldset-legend ">Residence</legend>
+                        <legend className="fieldset-legend font-semibold">Residence</legend>
                         <select defaultValue="Pick a browser" className="select select-primary bg-gray-50">
                         <option disabled={true}>Pick area</option>
                         <option>Hostels (boys)</option>
@@ -54,12 +54,12 @@ export default function CheckoutPage(){
 
                     <fieldset className="fieldset">
                         <label className="label" htmlFor="name">Room</label>
-                        <input type="text" id="room" className="input bg-gray-200 w-full rounded-md" placeholder="Room number ..." />
+                        <input type="text" id="room" className="input bg-gray-100 w-full rounded-md" placeholder="Room number ..." />
                     </fieldset>
 
                     <fieldset className="fieldset">
                         <label className="label" htmlFor="name">Additional Information</label>
-                        <input type="text" id="room" className="input bg-gray-200 w-full rounded-md" placeholder="Seller info ..." />
+                        <input type="text" id="room" className="input bg-gray-100 w-full rounded-md" placeholder="Seller info ..." />
                         <p className="label">Optional</p>
                     </fieldset>
 

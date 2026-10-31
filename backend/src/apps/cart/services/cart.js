@@ -1,7 +1,7 @@
 import { Cart, CartItem} from "../../../models/cart.js";
 import { products } from "../../../models/products.js";
 import sequelize from "../../../config/db.js";
-
+import { Op } from 'sequelize';
 /**
  * Get the user's cart
  */
@@ -215,9 +215,10 @@ export const clearCart = async (userId) => {
     };
 };
 
-export const syncCartItemsOnCheckout = async(userId, items) => {
 
-    //get cart
+
+export const syncCartItemsOnCheckout = async (userId, items) => {
+    // 1. Get cart
     const cart = await Cart.findOne({
         where: { userId },
     });
@@ -226,41 +227,58 @@ export const syncCartItemsOnCheckout = async(userId, items) => {
         throw new Error("Cart not found");
     }
 
-    //validate items
+    // 2. Validate items exist in cart
     const productIds = items.map(item => item.productId);
 
     const existingItems = await CartItem.findAll({
-    where: {
-        cartId: cart.id,
-        productId: productIds,
-    },
-    attributes: ["productId"],
+        where: {
+            cartId: cart.id,
+            productId: { [Op.in]: productIds }, // Fixed: use Op.in for array of IDs
+        },
+        attributes: ["productId"],
     });
-    
 
     if (existingItems.length !== productIds.length) {
-    return {
-        success:false,
-        message:"one or more products are not in cart"
-    }
-    }
-    //get products and validate quantities
-    const actualProducts = await products.findAll(
-        {
-            where:{
-                id:productIds
-            }
-        }
-    );
-    if(!actualProducts){
         return {
-            success:false,
-            message:"Products not found, make sure they are available in stock"
-        }
+            success: false,
+            message: "One or more products are not in cart"
+        };
     }
 
+    // 3. Get products and validate quantities / stockqyt
+    const actualProducts = await products.findAll({ // Changed 'products' to 'Product' (check your model variable name)
+        where: {
+            id: { [Op.in]: productIds }
+        }
+    });
 
-    //update items
+    if (!actualProducts || actualProducts.length === 0) {
+        return {
+            success: false,
+            message: "Products not found, make sure they are available in stock"
+        };
+    }
+
+    // Create lookup map for stock validation
+    const productMap = new Map(actualProducts.map(p => [p.id, p]));
+
+    // Check if any item exceeds available stockqyt
+    const invalidItem = items.find(item => {
+        const dbProduct = productMap.get(item.productId);
+        return !dbProduct || dbProduct.stockQTY < item.quantity;
+    });
+    console.log(invalidItem)
+
+    if (invalidItem) {
+        const dbProduct = productMap.get(invalidItem.productId);
+        const available = dbProduct ? dbProduct.stockQTY : 0;
+        return {
+            success: false,
+            message: `Stock check failed for product ID ${invalidItem.productId}. Requested: ${invalidItem.quantity}, Available: ${available}`
+        };
+    }
+
+    // 4. Update items within a transaction
     const updatedItems = await sequelize.transaction(
         async (transaction) => {
             for (const item of items) {
@@ -289,4 +307,4 @@ export const syncCartItemsOnCheckout = async(userId, items) => {
         message: "Cart synchronized successfully",
         data: updatedItems,
     };     
-}
+};

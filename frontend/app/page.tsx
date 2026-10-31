@@ -110,7 +110,6 @@ export default function HomePage() {
 
      const fetchUserData = async () => {
 
-
       try {
         const response = await fetch(`${API_URL}/api/auth/me/`, {
           method: "GET",
@@ -175,7 +174,7 @@ export default function HomePage() {
           <MenuBar status={status}/>
         <div className="flex flex-col gap-1 px-4 pt-4">
 
-        <p>Welcome  <span  className="font-bold">{user ? user.first : "."}</span></p>
+        <p>Welcome  <span  className="font-bold">{user && user.first}</span></p>
         <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
       </div>
       <form onSubmit={(e) => {
