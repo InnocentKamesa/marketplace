@@ -6,22 +6,8 @@ import {useRouter} from "next/navigation";
 import {useState, useEffect, useMemo} from "react";
 import type {ProductItem} from "../types/product";
 import {ButtonSpinner, LoadingSpinner} from "../components/spinner";
+import type {Cart, CartItem} from "@/app/types/cart";
 
-
-export type CartItem = {
-  id: number;
-  cartId: number;
-  productId: number;
-  quantity: number;
-  createdAt: string; // ISO date string from API
-  updatedAt: string; // ISO date string from API
-  product: ProductItem;
-};
-
-export type Cart = {
-    id:string;
-  items: CartItem[];
-};
 
 const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;

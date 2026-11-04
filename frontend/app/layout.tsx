@@ -30,7 +30,6 @@ export default function RootLayout({
       </head>
       <body className="bg-white h-screen  text-black" suppressHydrationWarning>
         <SidebarProvider>
-          <AppSideBar />
           {children}
           </SidebarProvider>
       </body>

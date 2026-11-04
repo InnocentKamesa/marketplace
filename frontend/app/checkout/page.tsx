@@ -1,36 +1,38 @@
 "use client";
 
-import React, { useState } from 'react';
-import { 
-  Check, 
-  Copy, 
-  ShoppingBag, 
-  ShieldCheck, 
-  Truck, 
-  CreditCard, 
-  MapPin, 
-  Smartphone, 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  ChevronRight, 
-  Sparkles, 
-  Info, 
-  Eye, 
-  Code, 
-  CheckCircle2, 
-  Lock, 
-  Building2, 
-  User, 
-  Phone, 
+import React, { useState, useEffect } from 'react';
+import {
+  Check,
+  Copy,
+  ShoppingBag,
+  ShieldCheck,
+  Truck,
+  CreditCard,
+  MapPin,
+  Smartphone,
+  Plus,
+  Edit3,
+  Trash2,
+  ChevronRight,
+  Sparkles,
+  Info,
+  Eye,
+  Code,
+  CheckCircle2,
+  Lock,
+  Building2,
+  User,
+  Phone,
   ArrowRight,
   Zap,
   Globe
 } from 'lucide-react';
-import {AddressCard, DeliveryMethodsCard, PaymentMethodsCard, OrderSummaryCard} from "../components/card";
+import { AddressCard, DeliveryMethodsCard, PaymentMethodsCard, OrderSummaryCard } from "../components/card";
+import { useRouter } from "next/navigation";
+import type { Cart, CartItem, DeliveryOptionsProps } from "@/app/types/cart";
 
 const env = process.env.ENVIRONMENT || "development";
-const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
+const API_URL = env === "development" ? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
 // Sample Mock Data
@@ -58,6 +60,7 @@ const INITIAL_ADDRESSES = [
     note: 'Blue gate on the corner'
   }
 ];
+
 
 const DELIVERY_OPTIONS = [
   {
@@ -115,7 +118,7 @@ export default function CheckoutPage() {
   const [mobileNumber, setMobileNumber] = useState('0991234567');
   const [mobileProvider, setMobileProvider] = useState('airtel'); // 'airtel' | 'tnm'
   const [isAddingNewAddr, setIsAddingNewAddr] = useState(false);
-  const [campusForm, setCampusForm] = useState({block:"Block A", room:"", note:""})
+  const [campusForm, setCampusForm] = useState({ block: "Block A", room: "", note: "" })
   const [newAddrForm, setNewAddrForm] = useState({
     fullName: '',
     phone: '',
@@ -123,32 +126,70 @@ export default function CheckoutPage() {
     city: '',
     label: 'Home'
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const handleCreateOrder = async (e:React.MouseEvent) => {
-    const {block, room, note} = campusForm;
+
+  const getCartItems = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/api/cart/`, {
+        method: "GET",
+        credentials: "include"
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          alert("Session expired, Login");
+          router.push("/auth/login")
+        }
+
+        console.error("Failed to retreive cart items");
+
+        setCartItems([]);
+        setLoading(false);
+        return;
+      }
+      const responseJson = await response.json();
+      const cartData = responseJson?.data as Cart | null;
+      const items = cartData?.items ?? [];
+      console.log(cartData)
+      setCartItems(items);
+      setLoading(false)
+      console.log(cartItems);
+    }
+    catch (error) {
+      console.error("Error:", error);
+      setCartItems([]);
+    }
+  }
+
+  const handleCreateOrder = async (e: React.MouseEvent) => {
+    const { block, room, note } = campusForm;
     const shippingAddress = block.concat(room)
     const payload = {
       shippingAddress,
-      notes:note
+      notes: note
     }
-    try{
+    try {
       const response = await fetch(
-        `${API_URL}/api/orders/checkout`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+        `${API_URL}/api/orders/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
-        credentials:"include",
-        body:JSON.stringify(payload)
-        });
-        const responseJson = await response.json();
-        if(!response.ok){
-          alert(responseJson.message)
-          throw new Error("server did not return success", responseJson.message)
-        }
-        setTimeout(() => {alert("Order created successfully")}, 200)
+        credentials: "include",
+        body: JSON.stringify(payload)
+      });
+      const responseJson = await response.json();
+      if (!response.ok) {
+        alert(responseJson.message)
+        throw new Error("server did not return success", responseJson.message)
+      }
+      setTimeout(() => { alert("Order created successfully") }, 200)
     }
-    catch(error){
+    catch (error) {
       console.error(error)
     }
   }
@@ -159,6 +200,10 @@ export default function CheckoutPage() {
   const shippingFee = selectedDelivery ? selectedDelivery.price : 0;
   const discount = 20.00; // Promo coupon
   const total = subtotal + shippingFee - discount;
+
+  useEffect( () => {
+        getCartItems();
+    }, [])
 
 
   return (
@@ -188,22 +233,22 @@ export default function CheckoutPage() {
 
                 {/* 2-Column Responsive Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                  
+
                   {/* Left Column: Form Steps (8 Cols) */}
                   <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-                    
+
                     {/* SECTION 1: Shipping Address Selection */}
-                    <AddressCard campusForm={campusForm} setCampusForm={setCampusForm}/>
+                    <AddressCard campusForm={campusForm} setCampusForm={setCampusForm} />
 
                     {/* SECTION 2: Delivery Speed Options */}
-                    <DeliveryMethodsCard 
+                    <DeliveryMethodsCard
                       options={DELIVERY_OPTIONS}
                       selectedDeliveryId={selectedDeliveryId}
                       setSelectedDeliveryId={setSelectedDeliveryId}
                     />
 
                     {/* SECTION 3: Payment Options (Mobile Money / PayChangu / Card) */}
-                    <PaymentMethodsCard 
+                    <PaymentMethodsCard
                       paymentMethod="paychangu"
                       setPaymentMethod={setPaymentMethod}
                       mobileNumber={mobileNumber}
@@ -215,7 +260,7 @@ export default function CheckoutPage() {
 
                   {/* Right Column: Order Summary Card (4 Cols Sticky) */}
                   <div className="lg:col-span-5 xl:col-span-4 sticky top-24 space-y-4">
-                    <OrderSummaryCard 
+                    <OrderSummaryCard
                       items={ORDER_ITEMS}
                       subtotal={subtotal}
                       shippingFee={shippingFee}
@@ -248,9 +293,9 @@ export default function CheckoutPage() {
                   <span>Interactive Selection & Add Address Modal</span>
                 </div>
 
-        
 
-                <DeliveryMethodsCard 
+
+                <DeliveryMethodsCard
                   options={DELIVERY_OPTIONS}
                   selectedDeliveryId={selectedDeliveryId}
                   setSelectedDeliveryId={setSelectedDeliveryId}
@@ -265,7 +310,7 @@ export default function CheckoutPage() {
                   <span>Includes Airtel Money, TNM Mpamba, & Cards</span>
                 </div>
 
-                <PaymentMethodsCard 
+                <PaymentMethodsCard
                   paymentMethod={paymentMethod}
                   setPaymentMethod={setPaymentMethod}
                   mobileNumber={mobileNumber}
@@ -282,7 +327,7 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-white">Order Summary Card View</span>
                 </div>
 
-                <OrderSummaryCard 
+                <OrderSummaryCard
                   items={ORDER_ITEMS}
                   subtotal={subtotal}
                   shippingFee={shippingFee}

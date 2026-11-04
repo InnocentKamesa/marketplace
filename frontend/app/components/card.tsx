@@ -7,7 +7,7 @@ import { ArrowRight, Star, Smartphone, ShieldCheck, Check, Zap, CreditCard, Phon
 import { useRouter} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {useState} from "react";
-import type {CartItem} from "../cart/page";
+import type {CartItem, DeliveryOptionsProps} from "@/app/types/cart";
 
 
 const formatPrice = (value?: number | string) => {
@@ -369,9 +369,17 @@ export function PaymentMethodsCard({
   );
 }
 
+type OrderSummaryCardProps = {
+  items: CartItem[];
+  subtotal: number;
+  shippingFee: number;
+  discount: number;
+  total: number;
+  selectedDelivery: DeliveryOptionsProps | null;
+  handleCreateOrder: (e:React.MouseEvent) => void;
+};
 
-
-export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery, handleCreateOrder }) {
+export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery, handleCreateOrder }: OrderSummaryCardProps) {
 
 
   return (
