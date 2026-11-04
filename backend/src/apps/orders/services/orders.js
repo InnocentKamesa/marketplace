@@ -68,6 +68,7 @@ export const getUserOrders = async (userId) => {
 };
 
 export const createOrderFromCart = async ({
+    
     userId,
     shippingAddress,
     notes,
@@ -137,6 +138,8 @@ export const createOrderFromCart = async ({
     const deliveryFee = 0;
     const totalAmount = Number((subtotal + deliveryFee).toFixed(2));
 
+    console.log("Checkpoint  reached")
+
     const newOrder = await order.create({
         buyerId: userId,
         orderNumber: generateOrderNumber(),
@@ -150,6 +153,8 @@ export const createOrderFromCart = async ({
         notes: notes || null,
         placedAt: new Date(),
     });
+
+    console.log("Checkpoint  2 reached")
 
     await Promise.all(
         itemsToCreate.map((item) =>

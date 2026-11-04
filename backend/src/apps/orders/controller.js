@@ -9,8 +9,9 @@ import {
 } from "./services/orders.js";
 
 
-export const checkout = async (req, res) => {
-    const userId = 1;
+export const checkout = async (req, res, next) => {
+    const userId = req.user.id;
+    console.log(req.body);
 
     try {
         const { shippingAddress, notes, paymentMethod } = req.body;

@@ -1,4 +1,5 @@
 import express from "express";
+import {authenticate} from "../auth/middleware.js";
 
 import {
     checkout,
@@ -13,7 +14,7 @@ import {
 
 const orderRouter = express.Router();
 
-orderRouter.post("/checkout/", checkout);
+orderRouter.post("/checkout/", authenticate, checkout);
 orderRouter.post("/buy-now/", buyNow);
 orderRouter.get("/my-orders/", getMyOrders);
 orderRouter.post("/:id/pay/changu/", initializePayment);

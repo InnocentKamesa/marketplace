@@ -151,8 +151,8 @@ export function CartItemCard({product, quantity, onQuantityChange, setCartItems}
 }
 
 
-export function AddressCard({}) {
-  const [campusForm, setCampusForm] = useState({block:"", room:"", note:""})
+export function AddressCard({campusForm, setCampusForm}) {
+  
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200/90 shadow-sm text-gray-900 space-y-5">
       <div>
@@ -371,7 +371,9 @@ export function PaymentMethodsCard({
 
 
 
-export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery }) {
+export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery, handleCreateOrder }) {
+
+
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.04)] text-gray-900 transition-all">
       <div className="flex items-center justify-between pb-4 border-b border-gray-100">
@@ -385,9 +387,11 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
       <div className="divide-y divide-gray-100 my-4 max-h-60 overflow-y-auto pr-1">
         {items.map((item) => (
           <div key={item.id} className="py-3 flex gap-3">
-            <img 
+            <Image
               src={item.image} 
               alt={item.title} 
+              width={400}
+              height={400}
               className="w-14 h-14 rounded-lg object-cover bg-gray-50 border border-gray-100 shrink-0" 
             />
             <div className="flex-1 min-w-0">
@@ -423,7 +427,7 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
       </div>
 
       {/* Main Action CTA */}
-      <button className="w-full mt-6 bg-green-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-xs flex items-center justify-center gap-2">
+      <button  onClick={handleCreateOrder} className="w-full mt-6 bg-green-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-xs flex items-center justify-center gap-2">
         <ShieldCheck className="w-4 h-4" />
         <span>Pay ${total.toFixed(2)} Now</span>
       </button>

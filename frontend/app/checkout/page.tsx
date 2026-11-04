@@ -29,6 +29,10 @@ import {
 } from 'lucide-react';
 import {AddressCard, DeliveryMethodsCard, PaymentMethodsCard, OrderSummaryCard} from "../components/card";
 
+const env = process.env.ENVIRONMENT || "development";
+const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
+
+
 // Sample Mock Data
 const INITIAL_ADDRESSES = [
   {
@@ -111,6 +115,7 @@ export default function CheckoutPage() {
   const [mobileNumber, setMobileNumber] = useState('0991234567');
   const [mobileProvider, setMobileProvider] = useState('airtel'); // 'airtel' | 'tnm'
   const [isAddingNewAddr, setIsAddingNewAddr] = useState(false);
+  const [campusForm, setCampusForm] = useState({block:"Block A", room:"", note:""})
   const [newAddrForm, setNewAddrForm] = useState({
     fullName: '',
     phone: '',
@@ -119,6 +124,35 @@ export default function CheckoutPage() {
     label: 'Home'
   });
 
+  const handleCreateOrder = async (e:React.MouseEvent) => {
+    const {block, room, note} = campusForm;
+    const shippingAddress = block.concat(room)
+    const payload = {
+      shippingAddress,
+      notes:note
+    }
+    try{
+      const response = await fetch(
+        `${API_URL}/api/orders/checkout`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        credentials:"include",
+        body:JSON.stringify(payload)
+        });
+        const responseJson = await response.json();
+        if(!response.ok){
+          alert(responseJson.message)
+          throw new Error("server did not return success", responseJson.message)
+        }
+        setTimeout(() => {alert("Order created successfully")}, 200)
+    }
+    catch(error){
+      console.error(error)
+    }
+  }
+
   // Calculate Totals
   const subtotal = ORDER_ITEMS.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const selectedDelivery = DELIVERY_OPTIONS.find(d => d.id === selectedDeliveryId);
@@ -126,31 +160,6 @@ export default function CheckoutPage() {
   const discount = 20.00; // Promo coupon
   const total = subtotal + shippingFee - discount;
 
-  const handleCopy = (code) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
-  };
-
-  const handleAddNewAddress = (e) => {
-    e.preventDefault();
-    if (!newAddrForm.fullName || !newAddrForm.street) return;
-    const created = {
-      id: `addr-${Date.now()}`,
-      isDefault: false,
-      label: newAddrForm.label || 'Custom Address',
-      fullName: newAddrForm.fullName,
-      phone: newAddrForm.phone || '+265 99 000 0000',
-      street: newAddrForm.street,
-      institution: 'Campus Area',
-      city: newAddrForm.city || 'Blantyre',
-      note: ''
-    };
-    setAddresses([...addresses, created]);
-    setSelectedAddrId(created.id);
-    setIsAddingNewAddr(false);
-    setNewAddrForm({ fullName: '', phone: '', street: '', city: '', label: 'Home' });
-  };
 
   return (
     <div className="min-h-screen  text-slate-100 font-sans antialiased pb-24 bg-gray-50">
@@ -184,7 +193,7 @@ export default function CheckoutPage() {
                   <div className="lg:col-span-7 xl:col-span-8 space-y-6">
                     
                     {/* SECTION 1: Shipping Address Selection */}
-                    <AddressCard />
+                    <AddressCard campusForm={campusForm} setCampusForm={setCampusForm}/>
 
                     {/* SECTION 2: Delivery Speed Options */}
                     <DeliveryMethodsCard 
@@ -213,6 +222,7 @@ export default function CheckoutPage() {
                       discount={discount}
                       total={total}
                       selectedDelivery={selectedDelivery}
+                      handleCreateOrder={handleCreateOrder}
                     />
 
                     {/* Trust Seals */}
@@ -238,16 +248,7 @@ export default function CheckoutPage() {
                   <span>Interactive Selection & Add Address Modal</span>
                 </div>
 
-                <ShippingAddressCard 
-                  addresses={addresses} 
-                  selectedAddrId={selectedAddrId} 
-                  setSelectedAddrId={setSelectedAddrId}
-                  isAddingNewAddr={isAddingNewAddr}
-                  setIsAddingNewAddr={setIsAddingNewAddr}
-                  newAddrForm={newAddrForm}
-                  setNewAddrForm={setNewAddrForm}
-                  handleAddNewAddress={handleAddNewAddress}
-                />
+        
 
                 <DeliveryMethodsCard 
                   options={DELIVERY_OPTIONS}
@@ -288,6 +289,7 @@ export default function CheckoutPage() {
                   discount={discount}
                   total={total}
                   selectedDelivery={selectedDelivery}
+                  campusForm={campusForm}
                 />
               </div>
             )}
@@ -318,3 +320,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
