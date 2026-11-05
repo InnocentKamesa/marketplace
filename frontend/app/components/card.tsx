@@ -7,8 +7,19 @@ import { ArrowRight, Star, Smartphone, ShieldCheck, Check, Zap, CreditCard, Phon
 import { useRouter} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {useState} from "react";
-import type {CartItem, DeliveryOptionsProps} from "@/app/types/cart";
+import type {CartItem, DeliveryOptionsProps, DeliveryMethodsCardProps, PaymentMethodsCardProps} from "@/app/types/cart";
+import { type Dispatch, type SetStateAction } from "react";
 
+type CampusFormState = {
+  block: string;
+  room: string;
+  note: string;
+};
+
+type AddressCardProps = {
+  campusForm: CampusFormState;
+  setCampusForm: Dispatch<SetStateAction<CampusFormState>>;
+};
 
 const formatPrice = (value?: number | string) => {
   const numericValue = Number(value ?? 0);
@@ -42,12 +53,12 @@ export function MainCard({ product }: { product: ProductItem }) {
 }
 
 
-export function SectionCard({ product, image }: { product: ProductItem, image:string }) {
+export function SectionCard({ product}: { product: ProductItem }) {
   const router = useRouter();
 
   return (
     <div onClick={() => router.push(`/product?id=${product.id}`)} className="p-2 bg-white max-w-45 flex flex-col shadow-lg rounded-lg shrink-0 cursor-pointer border-gray-200 hover:shadow-md border-1">
-      <Image alt={product.title} src={image} width={40} height={50} className="h-full w-40 h-40 rounded-sm" />
+      <Image alt={product.title} src="/headset preview.png" width={40} height={50} className="h-full w-40 h-40 rounded-sm" />
       <div className="flex-1 flex flex-col gap-1 mt-2 p-2">
         <p className="text-md line-clamp-2">{product.title}</p>
         <p className="text-lg font-bold">{formatPrice(product.price)}</p>
@@ -151,7 +162,7 @@ export function CartItemCard({product, quantity, onQuantityChange, setCartItems}
 }
 
 
-export function AddressCard({campusForm, setCampusForm}) {
+export function AddressCard({campusForm, setCampusForm}: AddressCardProps) {
   
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200/90 shadow-sm text-gray-900 space-y-5">
@@ -212,7 +223,7 @@ export function AddressCard({campusForm, setCampusForm}) {
 }
 
 
-export function DeliveryMethodsCard({ options, selectedDeliveryId, setSelectedDeliveryId }) {
+export function DeliveryMethodsCard({ options, selectedDeliveryId, setSelectedDeliveryId }: DeliveryMethodsCardProps) {
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-gray-900 transition-all">
       <div className="flex items-center gap-3 pb-4 mb-5 border-b border-gray-100">
@@ -225,7 +236,7 @@ export function DeliveryMethodsCard({ options, selectedDeliveryId, setSelectedDe
 
       <div className="space-y-3">
         {options.map((opt) => {
-          const isSelected = selectedDeliveryId === opt.id;
+          const isSelected = Number(selectedDeliveryId) === Number(opt.id);
           const IconComponent = opt.icon;
           return (
             <div
@@ -272,7 +283,7 @@ export function PaymentMethodsCard({
   setMobileNumber, 
   mobileProvider, 
   setMobileProvider 
-}) {
+}: PaymentMethodsCardProps) {
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-gray-900 transition-all">
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-gray-100">
@@ -375,7 +386,7 @@ type OrderSummaryCardProps = {
   shippingFee: number;
   discount: number;
   total: number;
-  selectedDelivery: DeliveryOptionsProps | null;
+  selectedDelivery: DeliveryOptionsProps | undefined;
   handleCreateOrder: (e:React.MouseEvent) => void;
 };
 
@@ -396,18 +407,18 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
         {items.map((item) => (
           <div key={item.id} className="py-3 flex gap-3">
             <Image
-              src={item.image} 
-              alt={item.title} 
+              src="/headset preview.png" 
+              alt={item.product.title} 
               width={400}
               height={400}
               className="w-14 h-14 rounded-lg object-cover bg-gray-50 border border-gray-100 shrink-0" 
             />
             <div className="flex-1 min-w-0">
-              <h4 className="font-semibold text-xs text-gray-900 truncate">{item.title}</h4>
-              <p className="text-[11px] text-gray-500 mt-0.5">{item.variant}</p>
+              <h4 className="font-semibold text-xs text-gray-900 truncate">{item.product.title}</h4>
+              <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2">{item.product.description}</p>
               <div className="flex justify-between items-center mt-1.5">
                 <span className="text-[10px] text-gray-400 font-medium">Qty: {item.quantity}</span>
-                <span className="font-bold text-xs text-gray-900">MK{(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-bold text-xs text-gray-900">{((Number(item.product.price)) * Number(item.quantity)).toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -437,7 +448,7 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
       {/* Main Action CTA */}
       <button  onClick={handleCreateOrder} className="w-full mt-6 bg-green-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-xs flex items-center justify-center gap-2">
         <ShieldCheck className="w-4 h-4" />
-        <span>Pay ${total.toFixed(2)} Now</span>
+        <span>Pay MK{total.toFixed(2)} Now</span>
       </button>
 
       <p className="text-[10px] text-center text-gray-400 mt-3 flex items-center justify-center gap-1">

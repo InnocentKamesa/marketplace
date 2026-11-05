@@ -20,7 +20,7 @@ export default function Section({ title, products }: SectionProps) {
       <ScrollArea>
         <div className="flex flex-row space-x-4 overflow-scroll-x py-1 bg-gray-50">
           {visibleProducts.length > 0 ? (
-            visibleProducts.map((product) => <SectionCard key={product.id} product={product} image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop" />)
+            visibleProducts.map((product) => <SectionCard key={product.id} product={product} />)
           ) : (
             <div className="rounded-md border border-dashed border-zinc-300 bg-zinc-50 p-4 text-sm text-zinc-500">
               No products available for this section yet.

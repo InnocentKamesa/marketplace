@@ -1,4 +1,6 @@
+import { LucideIcon } from "lucide-react";
 import type { ProductItem } from "./product";
+import type {CampusFormProps} from "../checkout/page"
 
 export type CartItem = {
   id: number;
@@ -19,8 +21,29 @@ export type DeliveryOptionsProps = {
   id:string;
   name:string;
   time:string;
-  price:string;
+  price:number;
   badge:string;
-  icon:string;
+  icon:LucideIcon;
   description:string;
 };
+
+export type AddressProps = {
+  campusForm: CampusFormProps;
+  setCampusForm: React.Dispatch<React.SetStateAction<number>>;
+};
+
+
+export type DeliveryMethodsCardProps = {
+  options:DeliveryOptionsProps[];
+  selectedDeliveryId:string;
+  setSelectedDeliveryId: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export type PaymentMethodsCardProps = {
+  paymentMethod:string;
+  setPaymentMethod: React.Dispatch<React.SetStateAction<string>>;
+  mobileNumber:string;
+  setMobileNumber: React.Dispatch<React.SetStateAction<string>>;
+  mobileProvider:string;
+  setMobileProvider: React.Dispatch<React.SetStateAction<string>>;
+}

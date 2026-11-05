@@ -104,6 +104,13 @@ const ORDER_ITEMS = [
   }
 ];
 
+
+export type CampusFormProps = {
+  block: string;
+  room: string;
+  note: string;
+}
+
 export default function CheckoutPage() {
   const [activeSection, setActiveSection] = useState('full-checkout'); // 'full-checkout' | 'shipping' | 'payment' | 'summary'
   const [cardStyle, setCardStyle] = useState('clean'); // 'clean' | 'elevated' | 'bordered'
@@ -118,7 +125,11 @@ export default function CheckoutPage() {
   const [mobileNumber, setMobileNumber] = useState('0991234567');
   const [mobileProvider, setMobileProvider] = useState('airtel'); // 'airtel' | 'tnm'
   const [isAddingNewAddr, setIsAddingNewAddr] = useState(false);
-  const [campusForm, setCampusForm] = useState({ block: "Block A", room: "", note: "" })
+  const [campusForm, setCampusForm] = useState<CampusFormProps>({
+    block: '',
+    room: '',
+    note: ''
+  });
   const [newAddrForm, setNewAddrForm] = useState({
     fullName: '',
     phone: '',
@@ -157,7 +168,6 @@ export default function CheckoutPage() {
       console.log(cartData)
       setCartItems(items);
       setLoading(false)
-      console.log(cartItems);
     }
     catch (error) {
       console.error("Error:", error);
@@ -187,18 +197,19 @@ export default function CheckoutPage() {
         alert(responseJson.message)
         throw new Error("server did not return success", responseJson.message)
       }
-      setTimeout(() => { alert("Order created successfully") }, 200)
+      setTimeout(() => { alert("Order created successfully"); router.push("/checkout/success") }, 200)
     }
     catch (error) {
       console.error(error)
     }
-  }
+  };
 
   // Calculate Totals
-  const subtotal = ORDER_ITEMS.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const subtotal = cartItems.reduce((sum: number, i:CartItem) => {
+  return sum + Number(i.product.price) * Number(i.quantity);}, 0);
   const selectedDelivery = DELIVERY_OPTIONS.find(d => d.id === selectedDeliveryId);
   const shippingFee = selectedDelivery ? selectedDelivery.price : 0;
-  const discount = 20.00; // Promo coupon
+  const discount = 0; // Promo coupon
   const total = subtotal + shippingFee - discount;
 
   useEffect( () => {
@@ -261,7 +272,7 @@ export default function CheckoutPage() {
                   {/* Right Column: Order Summary Card (4 Cols Sticky) */}
                   <div className="lg:col-span-5 xl:col-span-4 sticky top-24 space-y-4">
                     <OrderSummaryCard
-                      items={ORDER_ITEMS}
+                      items={cartItems}
                       subtotal={subtotal}
                       shippingFee={shippingFee}
                       discount={discount}
@@ -328,13 +339,13 @@ export default function CheckoutPage() {
                 </div>
 
                 <OrderSummaryCard
-                  items={ORDER_ITEMS}
+                  items={cartItems}
                   subtotal={subtotal}
                   shippingFee={shippingFee}
                   discount={discount}
                   total={total}
                   selectedDelivery={selectedDelivery}
-                  campusForm={campusForm}
+                  handleCreateOrder={handleCreateOrder}
                 />
               </div>
             )}
@@ -343,22 +354,7 @@ export default function CheckoutPage() {
         ) : (
           /* CODE SNIPPET VIEW */
           <div className="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="bg-slate-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-bold text-white">Tailwind CSS + React Component Code</h3>
-                <p className="text-xs text-slate-400 mt-0.5">Copyable self-contained JSX structure</p>
-              </div>
-              <button
-                onClick={() => handleCopy(getCheckoutCodeSnippet())}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all shadow-md"
-              >
-                {copiedCode ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copiedCode ? 'Copied Code!' : 'Copy React Component'}
-              </button>
-            </div>
-            <pre className="p-6 text-xs font-mono text-slate-300 overflow-x-auto max-h-[600px] leading-relaxed">
-              <code>{getCheckoutCodeSnippet()}</code>
-            </pre>
+
           </div>
         )}
       </main>

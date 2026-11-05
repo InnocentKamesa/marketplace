@@ -19,7 +19,6 @@ export const products = sequelize.define("Products", {
     sellerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 1,
     },
     description:{
         type:DataTypes.STRING(500),
