@@ -448,7 +448,7 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
       {/* Main Action CTA */}
       <button  onClick={handleCreateOrder} className="w-full mt-6 bg-green-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-xs flex items-center justify-center gap-2">
         <ShieldCheck className="w-4 h-4" />
-        <span>Pay MK{total.toFixed(2)} Now</span>
+        <span>Confirm Order</span>
       </button>
 
       <p className="text-[10px] text-center text-gray-400 mt-3 flex items-center justify-center gap-1">

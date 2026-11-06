@@ -31,6 +31,8 @@ import { AddressCard, DeliveryMethodsCard, PaymentMethodsCard, OrderSummaryCard 
 import { useRouter } from "next/navigation";
 import type { Cart, CartItem, DeliveryOptionsProps } from "@/app/types/cart";
 
+
+
 const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development" ? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
@@ -175,6 +177,7 @@ export default function CheckoutPage() {
     }
   }
 
+
   const handleCreateOrder = async (e: React.MouseEvent) => {
     const { block, room, note } = campusForm;
     const shippingAddress = block.concat(room)
@@ -195,9 +198,17 @@ export default function CheckoutPage() {
       const responseJson = await response.json();
       if (!response.ok) {
         alert(responseJson.message)
+        console.log(response.status);
         throw new Error("server did not return success", responseJson.message)
       }
-      setTimeout(() => { alert("Order created successfully"); router.push("/checkout/success") }, 200)
+      console.log("Order created successfully:", responseJson);
+      const {id} = responseJson.order;
+      if(!id){
+        throw new Error("Order did not ewturn an ID")
+      }
+      setTimeout(() => {
+        router.push(`checkout/success?id=${id}`);
+      }, 200);
     }
     catch (error) {
       console.error(error)
@@ -219,6 +230,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen  text-slate-100 font-sans antialiased pb-24 bg-gray-50">
+
 
       {/* Main Preview Container */}
       <main className="max-w-7xl w-screen mx-auto px-4 sm:px-6 lg:px-8 pt-8">
