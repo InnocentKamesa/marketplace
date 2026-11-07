@@ -1,6 +1,11 @@
+"use client";
+
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { SectionCard } from "./card";
 import type { ProductItem } from "../types/product";
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
+
 
 type SectionProps = {
   title: string;
@@ -30,5 +35,80 @@ export default function Section({ title, products }: SectionProps) {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </div>
+  );
+}
+
+interface Props {
+  id: string;
+  title: string;
+  subtitle: string;
+  products: ProductItem[];
+  onQuickView: (p: ProductItem) => void;
+  onAddToCart: (p: ProductItem) => void;
+}
+
+export  function VerticalProductGrid({
+  id,
+  title,
+  subtitle,
+  products,
+  onQuickView,
+  onAddToCart,
+}: Props) {
+  return (
+    <section id={id} className="scroll-mt-32 p-2">
+      <div className="flex items-end justify-between mb-4 border-b border-slate-100 dark:border-slate-900 pb-3">
+        <div>
+          <h2 className="text-lg font-light tracking-tight text-slate-900 dark:text-white">
+            {title}
+          </h2>
+          <p className="text-xs text-slate-400">{subtitle}</p>
+        </div>
+        <span className="text-xs text-slate-400 font-mono">
+          {products.length} Items
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className="group bg-white dark:bg-gray-100 border border-gray-50 dark:border-gray-50 rounded-2xl p-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition"
+          >
+            <div>
+              <div
+                onClick={() => onQuickView(product)}
+                className="relative w-full aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-3 cursor-pointer"
+              >
+                <Image
+                  src="/headset preview.png"
+                  alt={product.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition duration-300"
+                />
+              </div>
+              <h3
+                onClick={() => onQuickView(product)}
+                className="text-xs font-medium text-gray-900 dark:text-gray-900 line-clamp-2 mb-2 cursor-pointer hover:text-emerald-600 transition"
+              >
+                {product.title}
+              </h3>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80">
+              <span className="text-xs font-semibold font-mono text-green-400 dark:text-green-400">
+                MWK {product.price.toLocaleString()}
+              </span>
+              <button
+                onClick={() => onAddToCart(product)}
+                className="px-2.5 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-[11px] font-medium rounded-lg hover:opacity-90 transition"
+              >
+                Buy
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

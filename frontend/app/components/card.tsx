@@ -3,12 +3,13 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ArrowRight, Star, Smartphone, ShieldCheck, Check, Zap, CreditCard, Phone, Info, Trash, Minus, Plus, Edit3, Lock } from "lucide-react";
+import { ArrowRight, Star, Smartphone, ShieldCheck, Check, Zap, CreditCard, Phone, Info, Trash, Minus, Plus, Edit3, Lock, SlidersHorizontal } from "lucide-react";
 import { useRouter} from "next/navigation";
 import type { ProductItem } from "../types/product";
 import {useState} from "react";
 import type {CartItem, DeliveryOptionsProps, DeliveryMethodsCardProps, PaymentMethodsCardProps} from "@/app/types/cart";
 import { type Dispatch, type SetStateAction } from "react";
+import { ButtonSpinner } from "./spinner";
 
 type CampusFormState = {
   block: string;
@@ -244,7 +245,7 @@ export function DeliveryMethodsCard({ options, selectedDeliveryId, setSelectedDe
               onClick={() => setSelectedDeliveryId(opt.id)}
               className={`cursor-pointer rounded-xl p-4 border transition-all flex items-center gap-4 ${
                 isSelected
-                  ? 'border-green-600 bg-indigo-50/20 ring-2 ring-indigo-600/20 shadow-sm'
+                  ? 'border-emerald-800 bg-indigo-50/20 ring-2 ring-emerald-600/20 shadow-sm'
                   : 'border-gray-200 hover:border-gray-300 bg-white'
               }`}
             >
@@ -388,9 +389,10 @@ type OrderSummaryCardProps = {
   total: number;
   selectedDelivery: DeliveryOptionsProps | undefined;
   handleCreateOrder: (e:React.MouseEvent) => void;
+  loading:boolean;
 };
 
-export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery, handleCreateOrder }: OrderSummaryCardProps) {
+export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total, selectedDelivery, handleCreateOrder, loading }: OrderSummaryCardProps) {
 
 
   return (
@@ -447,13 +449,60 @@ export function OrderSummaryCard({ items, subtotal, shippingFee, discount, total
 
       {/* Main Action CTA */}
       <button  onClick={handleCreateOrder} className="w-full mt-6 bg-green-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-indigo-200 transition-all text-xs flex items-center justify-center gap-2">
+        {
+          loading ? (<ButtonSpinner />) :
+          <div className="flex gap-2">
         <ShieldCheck className="w-4 h-4" />
         <span>Confirm Order</span>
+        </div>
+}
       </button>
 
       <p className="text-[10px] text-center text-gray-400 mt-3 flex items-center justify-center gap-1">
         <Lock className="w-3 h-3 text-emerald-500" /> Buyer Protection Active · Free Instant Cancellation
       </p>
     </div>
+  );
+}
+
+interface Props {
+  activeCategory: string;
+  onSelectCategory: (cat: string) => void;
+}
+
+const CATEGORIES = [
+  { id: "all", label: "All Items" },
+  { id: "laptops", label: "Laptops & Computing" },
+  { id: "audio", label: "Audio & Sound" },
+  { id: "accessories", label: "Power & Peripherals" },
+];
+
+
+export  function CategoryBar({ activeCategory, onSelectCategory }: Props) {
+  return (
+    <nav className="sticky top-16 z-30 bg-white/90 backdrop-blur-md  py-3 px-4 sm:px-6">
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+        <button className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shrink-0">
+          <SlidersHorizontal className="w-4 h-4" />
+        </button>
+        <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 shrink-0" />
+        {CATEGORIES.map((cat) => {
+          const isActive = activeCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => onSelectCategory(cat.id)}
+              className={`px-4 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-all shrink-0 ${
+                isActive
+                  ? "bg-slate-900 text-white dark:bg-emerald-400 dark:text-gray-900 shadow-xs"
+                  : "bg-slate-100 dark:bg-gray-100 text-black dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800"
+              }`}
+            >
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
+    </nav>
   );
 }

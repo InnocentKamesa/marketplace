@@ -1,19 +1,89 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import MenuBar from "./components/header";
-import { Search } from "lucide-react";
+import NavBar from "./components/navbar";
+import { ArrowRight, Link, Search, Sparkles, } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Field } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { MainCard, SectionCard} from "./components/card";
+import { MainCard, SectionCard, CategoryBar} from "./components/card";
 import { useRouter } from "next/navigation";
-import Section from "./components/section";
+import Section, { VerticalProductGrid } from "./components/section";
 import type { ProductItem } from "./types/product";
 import {LoadingSpinner} from "./components/spinner";
+import TrendingCarousel from "./components/carousel";
+import Navbar from "./components/navbar";
+
 
 const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
+
+const PRODUCTS_DATA: Product[] = [
+  {
+    id: "f1",
+    title: "Logitech MX Master 3S Wireless Mouse",
+    price: 45000,
+    category: "accessories",
+    image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&auto=format&fit=crop&q=80",
+    condition: "Brand New",
+    badge: "Hot Deal",
+    seller: "TechHub Lilongwe",
+    description: "Quiet clicks, 8K DPI sensor, tracks on glass, ergonomic design for developers.",
+  },
+  {
+    id: "f2",
+    title: "Sony WH-1000XM5 Noise Canceling Headphones",
+    price: 185000,
+    category: "audio",
+    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80",
+    condition: "Like New",
+    badge: "Featured",
+    seller: "AudioDirect",
+    description: "Industry-leading noise canceling with two processors and 8 microphones.",
+  },
+  {
+    id: "l1",
+    title: "ThinkPad L14 Gen 1 (Core i5, 16GB RAM)",
+    price: 280000,
+    category: "laptops",
+    image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80",
+    condition: "Like New",
+    badge: "Best Seller",
+    seller: "Rodric C.",
+    description: "Solid developer machine running Ubuntu Linux/Windows 11. 256GB NVMe SSD.",
+  },
+  {
+    id: "a1",
+    title: "Anker PowerCore 20,000mAh Power Bank",
+    price: 28000,
+    category: "accessories",
+    image: "https://images.unsplash.com/photo-1609592424074-954f9d0c644d?w=600&auto=format&fit=crop&q=80",
+    condition: "Brand New",
+    badge: "Essentials",
+    seller: "GadgetCentral",
+    description: "Dual USB-A output ports with high-speed charging capabilities.",
+  },
+  {
+    id: "l2",
+    title: "MacBook Air M1 (8GB RAM / 256GB SSD)",
+    price: 520000,
+    category: "laptops",
+    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
+    condition: "Brand New",
+    seller: "AppleStore MW",
+    description: "Silent fanless design, up to 18 hours battery life, crisp Retina display.",
+  },
+  {
+    id: "a2",
+    title: "Sony WH-CH520 Wireless Headphones",
+    price: 35000,
+    category: "audio",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80",
+    condition: "Brand New",
+    seller: "AudioDirect",
+    description: "50-hour battery life, multipoint Bluetooth connection, lightweight frame.",
+  },
+];
 
 type HomeSectionsData = {
   latest: ProductItem[];
@@ -56,15 +126,6 @@ type UserProps = {
   first:string;
 }
 
-function CategoryCard({ text }: CategoryCardProps) {
-  return (
-    <div>
-      <div className="rounded-full text-zinc-600 shadow-md px-4 py-2 bg-green-400 text-sm font-semibold">
-        <p className="line-clamp-1">{text}</p>
-      </div>
-    </div>
-  );
-}
 
 export default function HomePage() {
   const router = useRouter();
@@ -72,6 +133,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserProps | null>(null);
   const [homeSections, setHomeSections] = useState<HomeSectionsData>(fallbackHomeData);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+
 
   useEffect(() => {
     let isMounted = true;
@@ -139,6 +205,21 @@ export default function HomePage() {
   },
    []);
 
+   const handleAddToCart = (product: ProductItem) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    setIsCartOpen(true);
+  };
+
   const sectionCards = useMemo(
     () => [
       { key: "latest", title: "Latest arrivals", products: homeSections.latest },
@@ -149,6 +230,9 @@ export default function HomePage() {
     ],
     [homeSections],
   );
+
+
+
 
   const featuredProducts = homeSections.latest.slice(0, 3);
   const recommendedProducts = [
@@ -165,61 +249,76 @@ export default function HomePage() {
 
   return (
     <div className="flex w-full flex-col bg-gray-50 md:w-[60%] md:mx-auto text-sm text-black/80">
-      {loading ? (
+      {!PRODUCTS_DATA ? (
         <div className="flex flex-col items-center justify-center h-full">
                     <LoadingSpinner />
         </div>
       ) : (
         <div>
-          <MenuBar status={status}/>
-        <div className="flex flex-col gap-1 px-4 pt-4">
+          {/**nav */}
+          <Navbar
+            cartCount={0}
+            onOpenCart={() => setIsCartOpen(true)}
+          />
 
-        <p>Welcome  <span  className="font-bold">{user && user.first}</span></p>
-        <p className="font-semibold text-lg max-w-[90%]">What are you looking to buy today?</p>
-      </div>
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        handleSearch("" + (document.getElementById("search") as HTMLInputElement)?.value);
-        
-      }}
-      className="flex "
-      >
-        <input type="search" placeholder="Search items & services" id="search" className="w-[90%] mx-auto rounded-sm px-2 py-3 my-3 border border-gray-300"/>
-
-      </form>
-      
-
-      <div className="bg-gray-50 w-screen min-h-screen rounded-t-lg p-4 flex flex-col space-y-6 overflow-auto">
-        <div className="flex flex-col gap-4">
-
-          <ScrollArea>
-            <div className="flex flex-row space-x-2 p-2 overflow-scroll-x">
-              {featuredProducts.map((product) => (
-                <MainCard key={product.id} product={product} />
-              ))}
+          <main>
+            {/**hero */}
+            <section className="px-4 sm:px-6 py-6 sm:py-10 text-gray-900">
+            <div className="bg-gray-100 dark:bg-slate-500/60 border border-gray-50 dark:border-gray-50 rounded-3xl p-6 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="max-w-xl space-y-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-medium rounded-full">
+                <Sparkles className="w-3.5 h-3.5" /> Campus Direct Tech
+              </span>
+              <h1 className="text-2xl sm:text-4xl font-light tracking-tight text-slate-900 dark:text-white">
+                Clean gadget marketplace for student developers.
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-800">
+                Laptops, audio equipment, and peripherals with instant campus delivery.
+              </p>
             </div>
-            <ScrollBar orientation="horizontal" className="hidden" />
-          </ScrollArea>
-        </div>
-
-        {sectionCards.map((section) => (
-          <Section key={section.key} title={section.title} products={section.products} />
-        ))}
-
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-row justify-between my-3">
-            <p className="text-lg">Recommended for you</p>
+            <Link
+              href="#laptops"
+              className="px-5 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-900 dark:hover:bg-slate-200 dark:text-black text-black text-xs font-medium rounded-xl transition flex items-center gap-2 whitespace-nowrap shadow-xs"
+            >
+              Explore Products <ArrowRight className="w-3.5 h-3.5 text-green-800" />
+            </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 overflow-hidden">
-            {recommendedProducts.map((product) => (
-              <SectionCard key={`${product.type}-${product.id}`} product={product} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-    
+            </section>
 
+            {/**categories */}
+            <CategoryBar
+              activeCategory={activeCategory}
+              onSelectCategory={setActiveCategory}
+            />
+
+            {/**carousel*/}
+            {/* Horizontal Scroll Section: Trending Deals */}
+        {(activeCategory === "all" || activeCategory === "trending") && (
+          <TrendingCarousel
+            products={PRODUCTS_DATA}
+            onQuickView={setSelectedProduct}
+            onAddToCart={handleAddToCart}
+          />
+        )}
+
+          {/**product sections */}
+        {(activeCategory === "all" || activeCategory === "accessories") && (
+            <VerticalProductGrid
+              id="accessories"
+              title="Power & Peripherals"
+              subtitle="Mice, chargers, USB hubs, and adapters"
+              products={PRODUCTS_DATA.filter((p) => p.category === "accessories")}
+              onQuickView={setSelectedProduct}
+              onAddToCart={handleAddToCart}
+            />
+          )}
+          </main>
+
+          <footer className="border-t border-gray-100 dark:border-gray-200 py-8 text-center text-xs text-slate-400 font-mono">
+        NRC MARKETPLACE • LILONGWE
+      </footer>
+
+        </div>
       )}
       </div>
       

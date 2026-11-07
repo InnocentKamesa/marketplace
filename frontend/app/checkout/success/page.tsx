@@ -5,6 +5,9 @@ import { CheckCircle2, ArrowLeft, Check, Package } from "lucide-react";
 import type { OrderProps } from "@/app/types/order";
 import Image from "next/image";
 import Script from "next/script";
+import { LoadingSpinner } from "@/app/components/spinner";
+import {useRouter} from "next/navigation";
+
 
 const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
@@ -13,10 +16,12 @@ console.log(process.env.NEXT_PUBLIC_PAYCHANGU_PUBLIC_TEST)
 
 
 function OrderSuccessPageContents() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const [order, setOrder] = useState<OrderProps | null>(null);
 
   const getOrder = async() => {
+    
         const orderId = searchParams.get("id");
     try {
       const response = await fetch(`${API_URL}/api/orders/${orderId}`,{
@@ -50,7 +55,7 @@ function OrderSuccessPageContents() {
           "tx_ref": `${tx_ref}-3`,
           "amount": Number(amount),
           "currency": "MWK",
-          "callback_url": "https://example.com/callbackurl",
+          "callback_url": `http://localhost:3000/order/success?id=${order?.id}`,
           "return_url": `${API_URL}/api/checkout/success?id=${order?.id}`,
           "customer":{
             "email": email,
@@ -93,13 +98,12 @@ function OrderSuccessPageContents() {
     }
   }
 return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-white text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
       {
         order === null ? (
-        <div className="flex items-center justify-center h-screen">
-          <CheckCircle2 className="w-12 h-12 text-emerald-500 animate-spin" />
-          <span className="ml-4 text-lg font-medium">Loading order details...</span>
+        <div className="flex items-center justify-center h-screen w-screen">
+          <LoadingSpinner />
         </div>
       ) : (
       <main className="max-w-5xl mx-auto p-4 sm:p-8">
@@ -179,6 +183,9 @@ return (
           </button>
           </div>
           <button
+          onClick={()=> {
+            setTimeout( () => router.push("/"), 200)
+          }}
             className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-slate-800 text-white font-medium text-sm rounded-xl transition shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />

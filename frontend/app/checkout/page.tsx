@@ -30,7 +30,7 @@ import {
 import { AddressCard, DeliveryMethodsCard, PaymentMethodsCard, OrderSummaryCard } from "../components/card";
 import { useRouter } from "next/navigation";
 import type { Cart, CartItem, DeliveryOptionsProps } from "@/app/types/cart";
-
+import { ButtonSpinner } from '../components/spinner';
 
 
 const env = process.env.ENVIRONMENT || "development";
@@ -116,28 +116,17 @@ export type CampusFormProps = {
 export default function CheckoutPage() {
   const [activeSection, setActiveSection] = useState('full-checkout'); // 'full-checkout' | 'shipping' | 'payment' | 'summary'
   const [cardStyle, setCardStyle] = useState('clean'); // 'clean' | 'elevated' | 'bordered'
-  const [copiedCode, setCopiedCode] = useState(false);
   const [viewMode, setViewMode] = useState('preview'); // 'preview' | 'code'
 
   // Interactive Form States
-  const [addresses, setAddresses] = useState(INITIAL_ADDRESSES);
-  const [selectedAddrId, setSelectedAddrId] = useState('addr-1');
   const [selectedDeliveryId, setSelectedDeliveryId] = useState('del-standard');
   const [paymentMethod, setPaymentMethod] = useState('mobile_money'); // 'mobile_money' | 'card' | 'paychangu'
   const [mobileNumber, setMobileNumber] = useState('0991234567');
   const [mobileProvider, setMobileProvider] = useState('airtel'); // 'airtel' | 'tnm'
-  const [isAddingNewAddr, setIsAddingNewAddr] = useState(false);
   const [campusForm, setCampusForm] = useState<CampusFormProps>({
-    block: '',
+    block: 'Block A',
     room: '',
     note: ''
-  });
-  const [newAddrForm, setNewAddrForm] = useState({
-    fullName: '',
-    phone: '',
-    street: '',
-    city: '',
-    label: 'Home'
   });
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -179,8 +168,15 @@ export default function CheckoutPage() {
 
 
   const handleCreateOrder = async (e: React.MouseEvent) => {
+    setLoading(true);
     const { block, room, note } = campusForm;
-    const shippingAddress = block.concat(room)
+    console.log(`${block}, ${room}`)
+    if(!block || !room){
+      alert("Block and room number are required")
+      setLoading(false);
+     throw new Error("Block and room number are required") 
+    }
+    const shippingAddress = `${block}, Room: ${room}`
     const payload = {
       shippingAddress,
       notes: note
@@ -198,7 +194,11 @@ export default function CheckoutPage() {
       const responseJson = await response.json();
       if (!response.ok) {
         alert(responseJson.message)
+        if(response.status === 401){
+          router.push("/auth/login")
+        }
         console.log(response.status);
+        setLoading(false);
         throw new Error("server did not return success", responseJson.message)
       }
       console.log("Order created successfully:", responseJson);
@@ -211,7 +211,11 @@ export default function CheckoutPage() {
       }, 200);
     }
     catch (error) {
+      setLoading(false)
       console.error(error)
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -290,6 +294,7 @@ export default function CheckoutPage() {
                       discount={discount}
                       total={total}
                       selectedDelivery={selectedDelivery}
+                      loading={loading}
                       handleCreateOrder={handleCreateOrder}
                     />
 
@@ -357,6 +362,7 @@ export default function CheckoutPage() {
                   discount={discount}
                   total={total}
                   selectedDelivery={selectedDelivery}
+                  loading={loading}
                   handleCreateOrder={handleCreateOrder}
                 />
               </div>

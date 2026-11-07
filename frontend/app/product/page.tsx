@@ -90,7 +90,6 @@ function ProductPageContents() {
                 throw new Error("Failed to add Product")
             }
             const responseJson = await response.json();
-            alert(responseJson.message)
             setLoading(false);
 
         }
