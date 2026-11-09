@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import type{ ProductItem } from "@/app/types/product";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from "lucide-react";
 import { ButtonSpinner } from "./spinner";
 
 interface Props {
@@ -63,10 +63,6 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart, l
                   fill
                   className="object-cover group-hover:scale-105 transition duration-300"
                 />
-      
-                <span className="absolute top-2 left-2 px-2 py-0.5 bg-slate-900/80 text-white backdrop-blur-md text-[10px] font-mono rounded-md">
-                  <Eye className="w-3 h-3 inline-block" />
-                </span>
                 <button
                   onClick={() => onQuickView(product)}
                   className="absolute bottom-2 right-2 p-2 bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 rounded-lg opacity-0 group-hover:opacity-100 transition shadow-xs"
@@ -90,7 +86,7 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart, l
                 onClick={() => onAddToCart(product)}
                 className="px-2.5 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-[11px] font-medium rounded-lg hover:opacity-90 transition"
               >
-                {loading ? <ButtonSpinner /> : "Add"}
+                {loading ? <ButtonSpinner /> : <ShoppingCart className="w-4 h-4"/>}
               </button>
             </div>
           </div>

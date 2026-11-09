@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { SectionCard } from "./card";
 import type { ProductItem } from "../types/product";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ShoppingCart } from "lucide-react";
 
 
 type SectionProps = {
@@ -79,7 +79,7 @@ export  function VerticalProductGrid({
             <div>
               <div
                 onClick={() => onQuickView(product)}
-                className="relative w-full aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-3 cursor-pointer"
+                className="relative w-full aspect-square rounded-xl overflow-hidden mb-3 cursor-pointer"
               >
                 <Image
                   src="/headset preview.png"
@@ -104,7 +104,7 @@ export  function VerticalProductGrid({
                 onClick={() => onAddToCart(product)}
                 className="px-2.5 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-[11px] font-medium rounded-lg hover:opacity-90 transition"
               >
-                Buy
+                <ShoppingCart className="w-4 h-4"/>
               </button>
             </div>
           </div>

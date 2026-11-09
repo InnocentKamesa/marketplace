@@ -14,7 +14,7 @@ import TrendingCarousel from "./components/carousel";
 import {Navbar, BottomNav} from "./components/navbar";
 import type {CartItem} from "./types/cart";
 
-const env = process.env.ENVIRONMENT || "development";
+const env = process.env.NEXT_PUBLIC_ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
