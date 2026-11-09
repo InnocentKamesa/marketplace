@@ -4,14 +4,16 @@ import { useRef } from "react";
 import Image from "next/image";
 import type{ ProductItem } from "@/app/types/product";
 import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ButtonSpinner } from "./spinner";
 
 interface Props {
   products: ProductItem[];
   onQuickView: (p: ProductItem) => void;
   onAddToCart: (p: ProductItem) => void;
+  loading:boolean;
 }
 
-export default function TrendingCarousel({ products, onQuickView, onAddToCart }: Props) {
+export default function TrendingCarousel({ products, onQuickView, onAddToCart, loading }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -54,18 +56,17 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart }:
             className="w-60 sm:w-64 shrink-0 bg-gray-100 dark:bg-gray-100 border border-gray-50 dark:border-gray-50 rounded-2xl p-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition"
           >
             <div>
-              <div className="relative w-full h-40 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-3 group">
+              <div className="relative w-full h-40 rounded-xl overflow-hidden  mb-3 group">
                 <Image
                   src="/headset preview.png"
                   alt={product.title}
                   fill
                   className="object-cover group-hover:scale-105 transition duration-300"
                 />
-                {product && (
-                  <span className="absolute top-2 left-2 px-2 py-0.5 bg-slate-900/80 text-white backdrop-blur-md text-[10px] font-mono rounded-md">
-                    <Eye />
-                  </span>
-                )}
+      
+                <span className="absolute top-2 left-2 px-2 py-0.5 bg-slate-900/80 text-white backdrop-blur-md text-[10px] font-mono rounded-md">
+                  <Eye className="w-3 h-3 inline-block" />
+                </span>
                 <button
                   onClick={() => onQuickView(product)}
                   className="absolute bottom-2 right-2 p-2 bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 rounded-lg opacity-0 group-hover:opacity-100 transition shadow-xs"
@@ -83,13 +84,13 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart }:
 
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80">
               <span className="text-xs font-semibold font-mono text-emerald-600 dark:text-emerald-400">
-                MWK {product.price.toLocaleString() }
+                MWK {product.price?.toLocaleString()}
               </span>
               <button
                 onClick={() => onAddToCart(product)}
                 className="px-2.5 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-[11px] font-medium rounded-lg hover:opacity-90 transition"
               >
-                Add
+                {loading ? <ButtonSpinner /> : "Add"}
               </button>
             </div>
           </div>

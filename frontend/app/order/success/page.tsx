@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Check, ArrowRight, Loader2, Download, Package } from "lucide-react";
 import type { OrderProps } from "@/app/types/order";
@@ -12,7 +12,7 @@ const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
-export default function OrderPaymentSuccessPage() {
+function OrderPaymentSuccessPageContents() {
   const searchParams = useSearchParams();
   const [order, setOrder] = useState<OrderProps | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -126,7 +126,7 @@ export default function OrderPaymentSuccessPage() {
                 <div className="flex items-center gap-3">
                   <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0">
                     <Image
-                      src={item.product?.image || "/headset preview.png"}
+                      src={"/headset preview.png"}
                       alt={item.title}
                       fill
                       className="object-cover"
@@ -161,7 +161,7 @@ export default function OrderPaymentSuccessPage() {
             <div className="flex justify-between items-center pt-2 font-semibold text-slate-900 dark:text-white text-sm">
               <span>Total Paid</span>
               <span className="text-emerald-600 dark:text-emerald-400 font-mono">
-                {order.currency || "MWK"} {order.total?.toLocaleString()}
+                {order.currency || "MWK"} {order.totalAmount?.toLocaleString()}
               </span>
             </div>
           </div>
@@ -191,3 +191,18 @@ export default function OrderPaymentSuccessPage() {
     </div>
   );
 }
+
+export default function OrderPaymentSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white dark:bg-white text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center">
+        <Loader2 className="w-8 h-8 text-slate-400 animate-spin" />
+        <span className="mt-4 text-xs font-mono tracking-widest text-slate-400 uppercase">
+          Verifying payment...
+        </span>
+      </div>
+    }>
+      <OrderPaymentSuccessPageContents />
+    </Suspense>
+  );
+} 

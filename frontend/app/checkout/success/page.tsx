@@ -186,7 +186,7 @@ return (
           onClick={()=> {
             setTimeout( () => router.push("/"), 200)
           }}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-slate-800 text-white font-medium text-sm rounded-xl transition shadow-md"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-slate-800 text-white font-medium text-sm rounded-xl transition shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />
            Continue shopping

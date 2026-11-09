@@ -7,12 +7,13 @@ export type OrderProps = {
     createdAt:string;
     paymentMethod:string;
     paymentStatus:string;
-    total:number;
+    totalAmount:number;
     subtotal:number;
     deliveryFee:number;
     currency:string;
     shippingAddress:string;
     items: OrderItemProps[];
+    status:string;
 
 }
 

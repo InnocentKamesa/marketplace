@@ -57,6 +57,7 @@ export  function VerticalProductGrid({
 }: Props) {
   return (
     <section id={id} className="scroll-mt-32 p-2">
+
       <div className="flex items-end justify-between mb-4 border-b border-slate-100 dark:border-slate-900 pb-3">
         <div>
           <h2 className="text-lg font-light tracking-tight text-slate-900 dark:text-white">
@@ -97,7 +98,7 @@ export  function VerticalProductGrid({
 
             <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80">
               <span className="text-xs font-semibold font-mono text-green-400 dark:text-green-400">
-                MWK {product.price.toLocaleString()}
+                MWK {product.price?.toLocaleString()}
               </span>
               <button
                 onClick={() => onAddToCart(product)}

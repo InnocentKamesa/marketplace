@@ -3,14 +3,16 @@
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 interface Props {
   cartCount: number;
   onOpenCart: () => void;
+  status: "not-logged"  | "logged" ;
 }
 
-export default function Navbar({ cartCount, onOpenCart }: Props) {
+export default function Navbar({ cartCount, onOpenCart, status }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <header className="sticky top-0 z-40 bg-white/90  backdrop-blur-md border-b border-zinc-50 dark:border-zinc-50">
@@ -38,7 +40,12 @@ export default function Navbar({ cartCount, onOpenCart }: Props) {
             className="relative p-2 text-green-600 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition"
             aria-label="Open Cart"
           >
-            <ShoppingCart className="w-4 h-4 stroke-[1.75] text-green-600" />
+            {status === "logged" ?
+            <ShoppingCart className="w-4 h-4 stroke-[1.75] text-green-600"  onClick={() => {setTimeout( () => { router.push("cart")}, 200)}}/>
+            : (
+              <p className="text-xs text-green-400 hover:underline" onClick={() => {router.push("/auth/login")}}>Sign In</p>
+            )
+            }
             {cartCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-emerald-600 text-white text-[10px] font-mono font-bold rounded-full flex items-center justify-center">
                 {cartCount}

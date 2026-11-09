@@ -13,74 +13,52 @@ import type { ProductItem } from "./types/product";
 import {LoadingSpinner} from "./components/spinner";
 import TrendingCarousel from "./components/carousel";
 import Navbar from "./components/navbar";
-
+import type {CartItem} from "./types/cart";
 
 const env = process.env.ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
-const PRODUCTS_DATA: Product[] = [
+const PRODUCTS_DATA: ProductItem[] = [
   {
-    id: "f1",
+    id: 1,
     title: "Logitech MX Master 3S Wireless Mouse",
     price: 45000,
     category: "accessories",
-    image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&auto=format&fit=crop&q=80",
-    condition: "Brand New",
-    badge: "Hot Deal",
-    seller: "TechHub Lilongwe",
     description: "Quiet clicks, 8K DPI sensor, tracks on glass, ergonomic design for developers.",
   },
   {
-    id: "f2",
+    id: 2,
     title: "Sony WH-1000XM5 Noise Canceling Headphones",
     price: 185000,
     category: "audio",
-    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80",
-    condition: "Like New",
-    badge: "Featured",
-    seller: "AudioDirect",
     description: "Industry-leading noise canceling with two processors and 8 microphones.",
   },
   {
-    id: "l1",
+    id: 3,
     title: "ThinkPad L14 Gen 1 (Core i5, 16GB RAM)",
     price: 280000,
     category: "laptops",
-    image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80",
-    condition: "Like New",
-    badge: "Best Seller",
-    seller: "Rodric C.",
     description: "Solid developer machine running Ubuntu Linux/Windows 11. 256GB NVMe SSD.",
   },
   {
-    id: "a1",
+    id: 4,
     title: "Anker PowerCore 20,000mAh Power Bank",
     price: 28000,
     category: "accessories",
-    image: "https://images.unsplash.com/photo-1609592424074-954f9d0c644d?w=600&auto=format&fit=crop&q=80",
-    condition: "Brand New",
-    badge: "Essentials",
-    seller: "GadgetCentral",
     description: "Dual USB-A output ports with high-speed charging capabilities.",
   },
   {
-    id: "l2",
+    id: 5,
     title: "MacBook Air M1 (8GB RAM / 256GB SSD)",
     price: 520000,
     category: "laptops",
-    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&auto=format&fit=crop&q=80",
-    condition: "Brand New",
-    seller: "AppleStore MW",
     description: "Silent fanless design, up to 18 hours battery life, crisp Retina display.",
   },
   {
-    id: "a2",
+    id: 6,
     title: "Sony WH-CH520 Wireless Headphones",
     price: 35000,
     category: "audio",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80",
-    condition: "Brand New",
-    seller: "AudioDirect",
     description: "50-hour battery life, multipoint Bluetooth connection, lightweight frame.",
   },
 ];
@@ -154,17 +132,7 @@ export default function HomePage() {
 
         const result = await response.json();
         console.log(result)
-        const apiData = result?.data ?? {};
-
         if (!isMounted) return;
-
-        setHomeSections({
-          latest: Array.isArray(apiData.latest) && apiData.latest.length ? apiData.latest : fallbackHomeData.latest,
-          services: Array.isArray(apiData.services) && apiData.services.length ? apiData.services : fallbackHomeData.services,
-          essentials: Array.isArray(apiData.essentials) && apiData.essentials.length ? apiData.essentials : fallbackHomeData.essentials,
-          electronics: Array.isArray(apiData.electronics) && apiData.electronics.length ? apiData.electronics : fallbackHomeData.electronics,
-          campusLiving: Array.isArray(apiData.campusLiving) && apiData.campusLiving.length ? apiData.campusLiving : fallbackHomeData.campusLiving,
-        });
       } catch (error) {
         console.error("Home page data fetch failed:", error);
 
@@ -175,6 +143,7 @@ export default function HomePage() {
     };
 
      const fetchUserData = async () => {
+
 
       try {
         const response = await fetch(`${API_URL}/api/auth/me/`, {
@@ -189,7 +158,7 @@ export default function HomePage() {
         const responseJson = await response.json();
         setUser(responseJson?.data ?? null);
         setStatus("logged");
-        console.log("User data fetched:", user);
+        console.log("User data fetched:", responseJson);
       } catch (error) {
         console.error("User data fetch failed:", error);
       }
@@ -204,51 +173,49 @@ export default function HomePage() {
     };
   },
    []);
+   console.log(status)
 
-   const handleAddToCart = (product: ProductItem) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { product, quantity: 1 }];
-    });
-    setIsCartOpen(true);
-  };
+  const addProductToCart = async(product:ProductItem) => {
+    setLoading(true);
 
-  const sectionCards = useMemo(
-    () => [
-      { key: "latest", title: "Latest arrivals", products: homeSections.latest },
-      { key: "services", title: "Services", products: homeSections.services },
-      { key: "essentials", title: "Essentials", products: homeSections.essentials },
-      { key: "electronics", title: "Electronics", products: homeSections.electronics },
-      { key: "campusLiving", title: "Campus living", products: homeSections.campusLiving },
-    ],
-    [homeSections],
-  );
+        if(!product){
+            throw new Error("Please provide a valid product to add to cart!")
+        }
+        const payload = {
+            productId:product.id,
+            quantity: 1
+        }
+        try{
+            console.log(payload);
+            const response = await fetch(`${API_URL}/api/cart/items/`, {
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                credentials:"include",
+                body:JSON.stringify(payload)
+            }); 
+            if(!response.ok){
+                const responseJson = await response.json();
+            alert(responseJson.message)
+                setLoading(false);
+                throw new Error("Failed to add Product")
+            }
+            const responseJson = await response.json();
+            setLoading(false);
 
+        }
+        catch (error){
+            console.error(error)
+        }
+    }
 
-
-
-  const featuredProducts = homeSections.latest.slice(0, 3);
-  const recommendedProducts = [
-    ...homeSections.latest,
-    ...homeSections.services,
-    ...homeSections.essentials,
-    ...homeSections.electronics,
-    ...homeSections.campusLiving,
-  ].slice(0, 4);
+  
 
   const handleSearch = (query: string) => {
     router.push(`/search?query=${encodeURIComponent(query)}`);
   }
 
   return (
-    <div className="flex w-full flex-col bg-gray-50 md:w-[60%] md:mx-auto text-sm text-black/80">
+    <div className="flex font-sans antialiased w-full flex-col bg-gray-50 md:w-[60%] md:mx-auto text-sm text-black/80">
       {!PRODUCTS_DATA ? (
         <div className="flex flex-col items-center justify-center h-full">
                     <LoadingSpinner />
@@ -259,6 +226,7 @@ export default function HomePage() {
           <Navbar
             cartCount={0}
             onOpenCart={() => setIsCartOpen(true)}
+            status={status}
           />
 
           <main>
@@ -297,7 +265,8 @@ export default function HomePage() {
           <TrendingCarousel
             products={PRODUCTS_DATA}
             onQuickView={setSelectedProduct}
-            onAddToCart={handleAddToCart}
+            loading={loading}
+            onAddToCart={addProductToCart}
           />
         )}
 
@@ -309,7 +278,7 @@ export default function HomePage() {
               subtitle="Mice, chargers, USB hubs, and adapters"
               products={PRODUCTS_DATA.filter((p) => p.category === "accessories")}
               onQuickView={setSelectedProduct}
-              onAddToCart={handleAddToCart}
+              onAddToCart={addProductToCart}
             />
           )}
           </main>
