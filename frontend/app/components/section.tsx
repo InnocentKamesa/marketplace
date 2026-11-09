@@ -56,25 +56,25 @@ export  function VerticalProductGrid({
   onAddToCart,
 }: Props) {
   return (
-    <section id={id} className="scroll-mt-32 p-2">
+    <section id={id} className="scroll-mt-32 p-2 my-5">
 
       <div className="flex items-end justify-between mb-4 border-b border-slate-100 dark:border-slate-900 pb-3">
         <div>
-          <h2 className="text-lg font-light tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-lg font-light tracking-tight text-slate-900 dark:text-gray-900">
             {title}
           </h2>
           <p className="text-xs text-slate-400">{subtitle}</p>
         </div>
-        <span className="text-xs text-slate-400 font-mono">
-          {products.length} Items
+        <span className="text-xs hover:underline text-slate-400 font-mono">
+          See All
         </span>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex flex-row gap-4 overflow-auto">
         {products.map((product) => (
           <div
             key={product.id}
-            className="group bg-white dark:bg-gray-100 border border-gray-50 dark:border-gray-50 rounded-2xl p-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition"
+            className="group bg-white shrink-0 dark:bg-gray-100 border border-gray-50 dark:border-gray-50 rounded-2xl p-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition"
           >
             <div>
               <div

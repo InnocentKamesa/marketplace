@@ -1,5 +1,7 @@
 "use client";
 
+
+import { Home, Compass, PlusCircle, ShoppingBag, User } from "lucide-react";
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,7 +12,7 @@ interface Props {
   status: "not-logged"  | "logged" ;
 }
 
-export default function Navbar({ cartCount, onOpenCart, status }: Props) {
+export function Navbar({ cartCount, onOpenCart, status }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
 
@@ -76,5 +78,101 @@ export default function Navbar({ cartCount, onOpenCart, status }: Props) {
         </div>
       )}
     </header>
+  );
+}
+
+interface BottomNavProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  cartCount: number;
+  onOpenCart: () => void;
+  onOpenCategories: () => void;
+}
+
+export function BottomNav({
+  activeTab,
+  setActiveTab,
+  cartCount,
+  onOpenCart,
+  onOpenCategories,
+}: BottomNavProps) {
+  return (
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95  backdrop-blur-md border-t border-slate-100 dark:border-slate-900 px-2 py-2">
+      <div className="flex items-center justify-around">
+        {/* Home */}
+        <button
+          onClick={() => setActiveTab("home")}
+          className={`flex flex-col items-center gap-1 p-1.5 transition ${
+            activeTab === "home"
+              ? "text-emerald-600 dark:text-emerald-600"
+              : "text-gray-500 hover:text-gray-500"
+          }`}
+        >
+          <Home className="w-5 h-5 stroke-[1.75]" />
+          <span className="text-[10px] font-mono tracking-tight">Home</span>
+        </button>
+
+        {/* Categories Drawer Trigger */}
+        <button
+          onClick={() => {
+            setActiveTab("categories");
+            onOpenCategories();
+          }}
+          className={`flex flex-col items-center gap-1 p-1.5 transition ${
+            activeTab === "categories"
+              ? "text-emerald-600 dark:text-emerald-600"
+              : "text-gray-500 hover:text-gray-500"
+          }`}
+        >
+          <Compass className="w-5 h-5 stroke-[1.75]" />
+          <span className="text-[10px] font-mono tracking-tight">Explore</span>
+        </button>
+
+        {/* Sell Button (Highlighted Action) */}
+        <Link
+          href="/sell"
+          className="flex flex-col items-center gap-1 p-1.5 text-gray-500 dark:text-gray-400"
+        >
+          <PlusCircle className="w-6 h-6 stroke-[2]" />
+          <span className="text-[10px] font-mono font-semibold tracking-tight">Sell</span>
+        </Link>
+
+        {/* Shopping Bag */}
+        <button
+          onClick={() => {
+            setActiveTab("cart");
+            onOpenCart();
+          }}
+          className={`relative flex flex-col items-center gap-1 p-1.5 transition ${
+            activeTab === "cart"
+              ? "text-emerald-600 dark:text-emerald-600"
+              : "text-gray-500 hover:text-gray-500"
+          }`}
+        >
+          <div className="relative">
+            <ShoppingCart className="w-5 h-5 stroke-[1.75]" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-2 w-4 h-4 bg-emerald-600 text-white text-[9px] font-mono font-bold rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] font-mono tracking-tight">Cart</span>
+        </button>
+
+        {/* Account */}
+        <button
+          onClick={() => setActiveTab("account")}
+          className={`flex flex-col items-center gap-1 p-1.5 transition ${
+            activeTab === "account"
+              ? "text-emerald-600 dark:text-emerald-600"
+              : "text-gray-500 hover:text-gray-500"
+          }`}
+        >
+          <User className="w-5 h-5 stroke-[1.75]" />
+          <span className="text-[10px] font-mono tracking-tight">Account</span>
+        </button>
+      </div>
+    </nav>
   );
 }
