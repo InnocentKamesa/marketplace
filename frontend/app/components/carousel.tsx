@@ -10,7 +10,7 @@ interface Props {
   products: ProductItem[];
   onQuickView: (p: ProductItem) => void;
   onAddToCart: (p: ProductItem) => void;
-  cartLoading:number;
+  cartLoading:number | null;
 }
 
 export default function TrendingCarousel({ products, onQuickView, onAddToCart, cartLoading }: Props) {
