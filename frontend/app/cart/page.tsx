@@ -9,7 +9,7 @@ import {ButtonSpinner, LoadingSpinner} from "../components/spinner";
 import type {Cart, CartItem} from "@/app/types/cart";
 
 
-const env = process.env.ENVIRONMENT || "development";
+const env = process.env.NEXT_PUBLIC_ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -161,18 +161,27 @@ export default function CartPage(){
 };
 
     return (
-        <div className="w-full flex flex-col min-h-screen bg-gray-50 gap-4 mb-20">
-            {/**header */}
-            <div className="flex flex-row justify-between p-4 z-50 sticky top-0 bg-white">
+        <div className="w-screen flex flex-col min-h-screen bg-gray-50 gap-4 mb-20">
+             <div className="md:w-[75%] w-full flex flex-col gap-4 mx-auto px-2 sm:px-6 lg:px-8 min-h-screen py-4 sm:py-12">
 
-                <button onClick={ () => { router.back(); }}>
-                    <ArrowLeft className="h-6 w-6 text-zinc-600"/>
-                </button>
-                <p className="font-bold text-lg">Shopping Cart</p>
-                <button onClick={handleClearcart}>
+            {/**header */}
+            <header className="z-50 bg-white backdrop-blur-lg flex flex-row  justify-between sticky top-3 py-4 md:flex-row md:items-center md:justify-between gap-6 border-b border-[#E8E6E1] ">
+          <div>
+            <div className="flex items-center gap-2 text-xs tracking-widest uppercase text-[#7A807C] mb-1">
+              
+              NRC<span className='text-green-400'>Marketplace</span>
+            </div>
+            <h1 className="text-3xl font-light tracking-tight text-[#1C201D]">Shopping Cart</h1>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button onClick={handleClearcart}>
                     <Trash className="h-6 w-6 text-zinc-600"/>
                 </button>
-            </div>
+            
+          </div>
+        </header>
+            
 
             {/**body */}
             {loading ? 
@@ -200,12 +209,12 @@ export default function CartPage(){
             )}
             
             {/**options */}
-            <div className="w-full px-2 py-4 items-center flex gap-2 flex-col fixed bottom-0 bg-white">
-                <div className="flex flex-row justify-between w-full px-2">
+            <div className=" px-4 py-4 items-center w-full flex gap-2 flex-col fixed md:max-w-[75%]  bottom-0 bg-white">
+                <div className="flex flex-row justify-between w-full px-">
                     <p className="text-md text-black/80">Total</p>
                     <p className="text-md text-black font-bold">MK {total?.toFixed(2)}</p>
                 </div>
-                <button onClick={handleProceedToCheckout} className="w-full p-3 bg-green-400 flex gap-1 justify-between rounded-md">
+                <button onClick={handleProceedToCheckout} className="w-full p-3 bg-green-600 shadow-lg text-white shadow-indigo-200 text-sm flex gap-1 justify-between rounded-md">
                     <p className="text-md text-white font-bold">Proceed to checkout</p>
                     {
                         isCheckingOut ? (<ButtonSpinner />) :
@@ -214,6 +223,7 @@ export default function CartPage(){
                 </button>
     
 
+            </div>
             </div>
         </div>
     )

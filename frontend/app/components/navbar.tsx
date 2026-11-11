@@ -31,7 +31,7 @@ export function Navbar({ cartCount, onOpenCart, status }: Props) {
           <input
             type="text"
             placeholder="Search laptops, audio, accessories..."
-            className="w-full pl-9 pr-4 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-slate-400 transition placeholder:text-slate-400"
+            className="w-full pl-9 pr-4 py-1.5  border border-slate-200/60 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-slate-400 transition placeholder:text-slate-400"
           />
         </div>
 

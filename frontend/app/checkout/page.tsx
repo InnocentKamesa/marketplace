@@ -33,7 +33,7 @@ import type { Cart, CartItem, DeliveryOptionsProps } from "@/app/types/cart";
 import { ButtonSpinner } from '../components/spinner';
 
 
-const env = process.env.ENVIRONMENT || "development";
+const env = process.env.NEXT_PUBLIC_ENVIRONMENT || "development";
 const API_URL = env === "development" ? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -233,30 +233,28 @@ export default function CheckoutPage() {
 
 
   return (
-    <div className="min-h-screen  text-slate-100 font-sans antialiased pb-24 bg-gray-50">
+    <div className="min-h-screen w-screen text-slate-100 pb-24 px-4 bg-gray-50">
 
+      {/**header */}
+            <header className="z-50 bg-white backdrop-blur-lg flex px-4 flex-row w-full justify-between sticky top-0 py-4 md:flex-row md:items-center md:justify-between gap-6 border-b border-[#E8E6E1] ">
+          <div>
+            <div className="flex items-center gap-2 text-xs tracking-widest uppercase text-[#7A807C] mb-1">
+              
+              NRC<span className='text-green-400'>Marketplace</span>
+            </div>
+            <h1 className="text-3xl font-light tracking-tight text-[#1C201D]">Checkout</h1>
+          </div>
 
-      {/* Main Preview Container */}
-      <main className="max-w-7xl w-screen mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <div className="flex items-center gap-4">
+            
+          </div>
+        </header>
+
+      <main className=" w-screen mx-auto sm:px-6 lg:px-8 pt-6">
         {viewMode === 'preview' ? (
           <div>
             {activeSection === 'full-checkout' && (
-              <div className="space-y-6">
-                {/* Checkout Header Breadcrumb */}
-                <div className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-2xl px-6 py-4">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400">
-                    <span className="text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4" /> Cart
-                    </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                    <span className="text-white font-bold bg-indigo-600/20 text-indigo-400 px-2.5 py-1 rounded-md border border-indigo-500/30">
-                      2. Shipping & Payment
-                    </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                    <span>3. Confirmation</span>
-                  </div>
-
-                </div>
+              <div className="space-y-4">
 
                 {/* 2-Column Responsive Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

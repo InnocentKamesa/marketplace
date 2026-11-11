@@ -28,7 +28,7 @@ import type { OrderProps } from '@/app/types/order';
 import { useRouter } from 'next/navigation';
 
 
-const env = process.env.ENVIRONMENT || "development";
+const env = process.env.NEXT_PUBLIC_ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -100,6 +100,7 @@ export default function BuyerOrderDashboardPage(){
     return (
     <div className="min-h-screen bg-[#F9F8F6] text-[#2C302E] font-sans antialiased selection:bg-[#E2E8E4] selection:text-[#1F2421] w-screen">
               <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                
 
         {/* Minimal Zen Header */}
         <header className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-[#E8E6E1] pb-6">

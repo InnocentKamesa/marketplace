@@ -21,7 +21,7 @@ const API_URL = env === "development"? "http://localhost:5000" : process.env.NEX
 export const PRODUCTS_DATA: ProductItem[] = [
   // --- Electronics ---
   {
-    id: 101,
+    id: 1,
     title: "ThinkPad USB-C 65W Charger",
     description: "Original Lenovo 65W type-C fast charger. Works with ThinkPad, Dell, and HP laptops.",
     price: 35000,
@@ -164,6 +164,7 @@ export default function HomePage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("home");
+  const [cartLoading, setCartLoading] = useState<number | null>(null);
 
 
   useEffect(() => {
@@ -221,7 +222,7 @@ export default function HomePage() {
    console.log(status)
 
   const addProductToCart = async(product:ProductItem) => {
-    setLoading(true);
+    setCartLoading(product.id);
 
         if(!product){
             throw new Error("Please provide a valid product to add to cart!")
@@ -238,14 +239,20 @@ export default function HomePage() {
                 credentials:"include",
                 body:JSON.stringify(payload)
             }); 
+            const responseJson = await response.json();
             if(!response.ok){
-                const responseJson = await response.json();
-            alert(responseJson.message)
-                setLoading(false);
+              
+                if(response.status === 401){
+                  alert("Session expired, Login!")
+                  router.push("/auth/login")
+                }
+                if(response.status === 400){
+                  alert(responseJson.message);
+                }
+                setCartLoading(null);
                 throw new Error("Failed to add Product")
             }
-            const responseJson = await response.json();
-            setLoading(false);
+            setCartLoading(null);
 
         }
         catch (error){
@@ -310,7 +317,7 @@ export default function HomePage() {
           <TrendingCarousel
             products={PRODUCTS_DATA}
             onQuickView={setSelectedProduct}
-            loading={loading}
+            cartLoading={cartLoading}
             onAddToCart={addProductToCart}
           />
         )}

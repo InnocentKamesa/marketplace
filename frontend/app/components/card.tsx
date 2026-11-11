@@ -237,8 +237,9 @@ export function DeliveryMethodsCard({ options, selectedDeliveryId, setSelectedDe
 
       <div className="space-y-3">
         {options.map((opt) => {
-          const isSelected = Number(selectedDeliveryId) === Number(opt.id);
+          const isSelected = selectedDeliveryId === opt.id;
           const IconComponent = opt.icon;
+          console.log(isSelected)
           return (
             <div
               key={opt.id}

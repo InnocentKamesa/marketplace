@@ -9,7 +9,7 @@ import { LoadingSpinner } from "@/app/components/spinner";
 import {useRouter} from "next/navigation";
 
 
-const env = process.env.ENVIRONMENT || "development";
+const env = process.env.NEXT_PUBLIC_ENVIRONMENT || "development";
 const API_URL = env === "development"? "http://localhost:5000" : process.env.NEXT_PUBLIC_API_URL;
 
 console.log(process.env.NEXT_PUBLIC_PAYCHANGU_PUBLIC_TEST)
@@ -55,8 +55,8 @@ function OrderSuccessPageContents() {
           "tx_ref": `${tx_ref}-3`,
           "amount": Number(amount),
           "currency": "MWK",
-          "callback_url": `http://localhost:3000/order/success?id=${order?.id}`,
-          "return_url": `${API_URL}/api/checkout/success?id=${order?.id}`,
+          "callback_url": `${API_URL}/api/checkout/success?id=${order?.id}`,
+          "return_url": `http://localhost:5000/order/success?id=${order?.id}`,
           "customer":{
             "email": email,
             "first_name": first,
@@ -186,7 +186,7 @@ return (
           onClick={()=> {
             setTimeout( () => router.push("/"), 200)
           }}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 hover:bg-slate-800 text-white font-medium text-sm rounded-xl transition shadow-md"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-600 shadow-lg shadow-indigo-200 hover:bg-slate-800 text-white font-medium text-sm rounded-xl transition shadow-md"
           >
             <ArrowLeft className="w-4 h-4" />
            Continue shopping

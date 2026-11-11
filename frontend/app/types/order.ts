@@ -28,3 +28,17 @@ type OrderItemProps = {
     subTotal:number;
     quantity:number;
 }
+
+export type SellerOrderProps = {
+    id: number;
+    buyerId:number;
+    fulfillmentStatus:string;
+    orderId:number;
+    product: ProductItem;
+    quantity:number;
+    subtotal:number;
+    unitPrice:number;
+    createdAt:string;
+    updatedAt:string;
+    order: OrderProps;
+}

@@ -6,6 +6,7 @@ import {
     createPaymentLink,
     confirmPayment,
     updateOrderStatus,
+    getSellerOrders as getSellerOrdersService,
 } from "./services/orders.js";
 
 
@@ -85,6 +86,28 @@ export const getMyOrders = async (req, res) => {
     }
 };
 
+
+export const getSellerOrders = async (req, res) => {
+    const userId = 1;
+
+
+    try {
+        const orders = await getSellerOrdersService(userId);
+
+
+        return res.status(200).json({
+            success: true,
+            orders,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+
 export const getOrder = async (req, res) => {
     const userId = 1;
 
@@ -106,6 +129,8 @@ export const getOrder = async (req, res) => {
         });
     }
 };
+
+
 
 export const initializePayment = async (req, res) => {
     const userId = 1;

@@ -67,6 +67,33 @@ export const getUserOrders = async (userId) => {
     });
 };
 
+
+
+export const getSellerOrders = async (userId) => {
+    return await OrderItem.findAll({
+        where: { sellerId: userId },
+                include: [
+                    {
+                        model: products,
+                        as: "product",
+                    },
+                    {
+                        model: order,
+                        as: "order",
+                        attributes: [
+                            "id",
+                            "orderNumber",
+                            "status",
+                            "paymentStatus",
+                            "buyerId",
+                            "shippingAddress",
+                        ]
+                    },
+                ],
+        order: [["createdAt", "DESC"]],
+    });
+};
+
 export const createOrderFromCart = async ({
     
     userId,

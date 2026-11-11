@@ -10,10 +10,10 @@ interface Props {
   products: ProductItem[];
   onQuickView: (p: ProductItem) => void;
   onAddToCart: (p: ProductItem) => void;
-  loading:boolean;
+  cartLoading:number;
 }
 
-export default function TrendingCarousel({ products, onQuickView, onAddToCart, loading }: Props) {
+export default function TrendingCarousel({ products, onQuickView, onAddToCart, cartLoading }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -50,8 +50,11 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart, l
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
       >
-        {products.map((product) => (
+        {products.map((product) => {
+          const isLoading = cartLoading === product.id;
+          return(
           <div
+
             key={product.id}
             className="w-60 sm:w-64 shrink-0 bg-gray-100 dark:bg-gray-100 border border-gray-50 dark:border-gray-50 rounded-2xl p-3 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition"
           >
@@ -86,11 +89,12 @@ export default function TrendingCarousel({ products, onQuickView, onAddToCart, l
                 onClick={() => onAddToCart(product)}
                 className="px-2.5 py-1 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-[11px] font-medium rounded-lg hover:opacity-90 transition"
               >
-                {loading ? <ButtonSpinner /> : <ShoppingCart className="w-4 h-4"/>}
+                {isLoading ? <ButtonSpinner /> : <ShoppingCart className="w-4 h-4"/>}
               </button>
             </div>
           </div>
-        ))}
+          )
+})}
       </div>
     </section>
   );
