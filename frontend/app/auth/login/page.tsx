@@ -62,15 +62,15 @@ export default function LoginPahge() {
 }
 ;
     return (
-    <div className="flex flex-col gap-4 w-screen font-sans antialiased px-4 max-w-sm min-h-dvh">
-
+    <div className="flex flex-col gap-4 w-screen h-screen font-sans antialiased px-4">
+      <div className="w-full h-full flex items-center">
       <div className="flex flex-col gap-2 px-2 my-4 ">
         <p className="font-bold text-2xl">Login</p>
         <p className="text-sm sm:text-base text-black/60">Kindly fill in the details to login</p>
       </div>
           
             {/**login form */}
-            <form method="POST" onSubmit={handleSubmit} className="flex flex-col gap-2 px-2">
+            <form method="POST" onSubmit={handleSubmit} className="flex flex-col gap-2 px-2 w-full">
             
               {/**email */}
               <label className="input my-2 w-full">
@@ -100,6 +100,7 @@ export default function LoginPahge() {
         <p className="text-md">Dont have an account? </p>
         <Link href="/auth/register/"  className="text-green-900 text-md">Register</Link>
       </div>
+    </div>
     </div>
   )
 
