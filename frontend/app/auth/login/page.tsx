@@ -61,8 +61,7 @@ export default function LoginPahge() {
   }
 }
 ;
-
-  return (
+    return (
     <div className="flex flex-col gap-4 w-screen font-sans antialiased px-4">
 
       <div className="flex flex-col gap-2 px-2 my-4 ">
@@ -93,7 +92,7 @@ export default function LoginPahge() {
           border-none text-white text-sm font-medium">
           {loading ? <ButtonSpinner /> : "Sign In"}
         </button>
-            </form>
+          </form>
       
     
       {/**Sign up prompt */}
@@ -103,4 +102,6 @@ export default function LoginPahge() {
       </div>
     </div>
   )
+
+
 }
