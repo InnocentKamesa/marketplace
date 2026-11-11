@@ -62,7 +62,7 @@ export default function LoginPahge() {
 }
 ;
     return (
-    <div className="flex flex-col gap-4 w-screen font-sans antialiased px-4">
+    <div className="flex flex-col gap-4 w-screen font-sans antialiased px-4 max-w-sm min-h-dvh">
 
       <div className="flex flex-col gap-2 px-2 my-4 ">
         <p className="font-bold text-2xl">Login</p>
