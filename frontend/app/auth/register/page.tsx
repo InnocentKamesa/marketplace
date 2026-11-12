@@ -146,7 +146,13 @@ export default function RegisterPage() {
                 </label>
 
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-primary bg-green-400 text-zinc-600 rounded-md border-0 my-2" type="submit">Register</button>
+        <button
+          type="submit"
+          className="btn w-full h-12 min-h-12 rounded-xl
+          bg-emerald-500 hover:bg-emerald-600
+          border-none text-white text-sm font-medium">
+          {loading ? <ButtonSpinner /> : "Sign Up"}
+        </button>
             </form>
             {/**Sign in prompt */}
             <div className="flex flex-row gap-2 items-center my-4">
