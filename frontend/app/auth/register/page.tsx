@@ -95,8 +95,8 @@ export default function RegisterPage() {
         <div className="flex flex-col gap-4">
 
             <div className="flex flex-col gap-2 px-2 my-4">
-                <p className="font-bold text-3xl">Create an Account</p>
-                <p className="text-sm text-black/60">Fill in the form below to register</p>
+                <p className="font-bold self-start text-3xl">Create an Account</p>
+                <p className="text-sm text-black/60 self-start">Fill in the form below to register</p>
             </div>
 
             {/**register form */}
